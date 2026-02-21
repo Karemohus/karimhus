@@ -559,14 +559,29 @@
 
         document.getElementById('fileInput').addEventListener('change', async (e) => {
             for (const f of e.target.files) {
-                toast('جاري رفع ' + f.name);
+                toast('جاري رفع ' + f.name + '...');
                 try {
-                    await db.storage.from('files').upload(f.name, f, { upsert: true });
-                    toast('تم ✅');
-                } catch (err) { toast('خطأ', true); }
+                    // إنشاء اسم فريد للملف لتجنب التعارض
+                    const fileName = Date.now() + '_' + f.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+                    const { data, error } = await db.storage.from('files').upload(fileName, f, { 
+                        cacheControl: '3600',
+                        upsert: true 
+                    });
+                    
+                    if (error) {
+                        console.error('Upload error:', error);
+                        toast('خطأ: ' + error.message, true);
+                    } else {
+                        console.log('Upload success:', data);
+                        toast('تم رفع ' + f.name + ' ✅');
+                    }
+                } catch (err) { 
+                    console.error('Upload exception:', err);
+                    toast('خطأ: ' + err.message, true); 
+                }
             }
             e.target.value = '';
-            loadFiles();
+            await loadFiles();
         });
 
         window.deleteFile = async (name) => {
