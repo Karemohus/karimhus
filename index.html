@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مركز دعم الموظفين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F46E5; --primary-light: #EEF2FF;
+            --success: #10B981; --bg: #F8FAFC;
+            --card: #FFFFFF; --text: #1E293B;
+            --text-light: #64748B; --border: #E2E8F0;
+            --gradient: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--bg); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 16px; }
+        body.en { direction: ltr; font-family: 'Inter', sans-serif; }
+        
+        .container { width: 100%; max-width: 480px; height: 94vh; max-height: 850px; background: var(--card); border-radius: 24px; box-shadow: 0 20px 60px rgba(79,70,229,0.15); display: flex; flex-direction: column; overflow: hidden; }
+        
+        .header { background: var(--gradient); padding: 20px; color: white; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .lang-switch { display: flex; background: rgba(255,255,255,0.15); border-radius: 10px; overflow: hidden; }
+        .lang-btn { padding: 8px 14px; background: transparent; border: none; color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: 0.2s; }
+        .lang-btn.active { background: rgba(255,255,255,0.25); color: white; }
+        .header-main { display: flex; align-items: center; gap: 14px; }
+        .avatar { width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .header-info h1 { font-size: 18px; font-weight: 700; }
+        .header-info p { font-size: 13px; opacity: 0.9; }
+        
+        .chat { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+        .chat::-webkit-scrollbar { width: 4px; }
+        .chat::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        
+        .msg { display: flex; gap: 10px; animation: fadeIn 0.3s; }
+        .msg.user { flex-direction: row-reverse; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
+        .msg-avatar { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+        .msg.bot .msg-avatar { background: var(--primary-light); }
+        .msg.user .msg-avatar { background: var(--gradient); color: white; }
+        .msg-content { max-width: 85%; }
+        .msg-bubble { padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.6; }
+        .msg.bot .msg-bubble { background: var(--bg); color: var(--text); border-bottom-right-radius: 5px; }
+        body.en .msg.bot .msg-bubble { border-bottom-right-radius: 18px; border-bottom-left-radius: 5px; }
+        .msg.user .msg-bubble { background: var(--gradient); color: white; border-bottom-left-radius: 5px; }
+        .msg-time { font-size: 10px; color: var(--text-light); margin-top: 4px; padding: 0 4px; }
+        
+        .btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 12px; }
+        .menu-btn { padding: 16px 12px; background: white; border: 2px solid var(--border); border-radius: 14px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 8px; font-family: inherit; }
+        .menu-btn:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
+        .menu-btn .icon { font-size: 28px; }
+        .menu-btn .label { font-size: 13px; font-weight: 600; color: var(--text); }
+        
+        .quick-btns { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+        .quick-btn { padding: 10px 16px; background: white; border: 2px solid var(--primary); border-radius: 22px; color: var(--primary); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .quick-btn:hover { background: var(--primary); color: white; }
+        .quick-btn.green { border-color: var(--success); color: var(--success); }
+        .quick-btn.green:hover { background: var(--success); color: white; }
+        
+        .info-card { background: linear-gradient(135deg, var(--primary-light), #F3E8FF); border-radius: 14px; padding: 14px; margin-top: 12px; white-space: pre-line; font-size: 14px; line-height: 1.7; }
+        
+        .back-btn { display: inline-flex; align-items: center; gap: 5px; padding: 8px 16px; background: white; border: 1px solid var(--border); border-radius: 20px; color: var(--text-light); font-family: inherit; font-size: 12px; cursor: pointer; margin-top: 12px; }
+        .back-btn:hover { border-color: var(--primary); color: var(--primary); }
+        
+        .typing { display: flex; gap: 4px; padding: 14px 18px; background: var(--bg); border-radius: 18px; width: fit-content; }
+        .typing span { width: 7px; height: 7px; background: var(--text-light); border-radius: 50%; animation: bounce 1.4s infinite; }
+        .typing span:nth-child(2) { animation-delay: 0.2s; }
+        .typing span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
+        
+        .input-area { padding: 14px 16px; background: white; border-top: 1px solid var(--border); }
+        .input-wrap { display: flex; gap: 10px; }
+        .input-field { flex: 1; padding: 12px 18px; border: 2px solid var(--border); border-radius: 25px; font-family: inherit; font-size: 14px; outline: none; }
+        .input-field:focus { border-color: var(--primary); }
+        .send-btn { width: 48px; height: 48px; background: var(--gradient); border: none; border-radius: 50%; color: white; font-size: 18px; cursor: pointer; }
+        
+        .sent-badge { display: inline-block; background: #D1FAE5; color: #065F46; padding: 3px 10px; border-radius: 10px; font-size: 11px; margin-top: 6px; }
+        
+        .loading { text-align: center; padding: 60px 20px; color: var(--text-light); }
+        .loading-spinner { width: 40px; height: 40px; border: 4px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .error { text-align: center; padding: 50px 20px; color: var(--text-light); }
+        .error span { font-size: 50px; display: block; margin-bottom: 10px; }
+        
+        @media (max-width: 500px) { body { padding: 0; } .container { height: 100vh; max-height: none; border-radius: 0; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-top">
+                <div></div>
+                <div class="lang-switch">
+                    <button class="lang-btn active" id="btnAr" onclick="switchLang('ar')">عربي</button>
+                    <button class="lang-btn" id="btnEn" onclick="switchLang('en')">EN</button>
+                </div>
+            </div>
+            <div class="header-main">
+                <div class="avatar">🤖</div>
+                <div class="header-info">
+                    <h1 id="title">مركز دعم الموظفين</h1>
+                    <p id="subtitle">جاري التحميل...</p>
+                </div>
+            </div>
+        </div>
+        <div class="chat" id="chat">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>جاري التحميل...</p>
+            </div>
+        </div>
+        <div class="input-area">
+            <div class="input-wrap">
+                <input type="text" class="input-field" id="input" placeholder="اكتب سؤالك..." autocomplete="off">
+                <button class="send-btn" onclick="sendMsg()">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // ============ Supabase Config ============
+        import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+        
+        const SUPABASE_URL = 'https://nrsnsysjmhboovutirdn.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5yc25zeXNqbWhib292dXRpcmRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MDYxNjYsImV4cCI6MjA4NzE4MjE2Nn0.A6XRe0wUA267hogwWnNpXe08B-MrL1HSjBVbURyLdsU';
+        
+        const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        let categories = [];
+        let items = [];
+        let subItems = [];
+        let settings = {};
+        let lang = localStorage.getItem('appLang') || 'ar';
+        let history = [];
+        let userId = localStorage.getItem('appUserId');
+        
+        if (!userId) {
+            userId = 'user_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('appUserId', userId);
+        }
+        
+        const L = {
+            ar: { title: 'مركز دعم الموظفين', subtitle: 'جاهز لمساعدتك', welcome: 'أهلاً بك! 👋<br>كيف يمكنني مساعدتك؟', placeholder: 'اكتب سؤالك...', back: '→ رجوع', home: '🏠 الرئيسية', sent: '✓ تم الإرسال', free: 'سؤال حر', freePrompt: 'اكتب سؤالك وسأساعدك 😊', received: '📩 تم استلام سؤالك وسيتم الرد قريباً', error: 'خطأ في الاتصال', noData: 'لا توجد بيانات' },
+            en: { title: 'Employee Support', subtitle: 'Ready to help', welcome: 'Welcome! 👋<br>How can I help?', placeholder: 'Type question...', back: '← Back', home: '🏠 Home', sent: '✓ Sent', free: 'Free Question', freePrompt: 'Type your question 😊', received: '📩 Question received, we\'ll respond soon', error: 'Connection error', noData: 'No data available' }
+        };
+
+        // ============ Load Data ============
+        async function loadData() {
+            try {
+                const { data: settingsData } = await db.from('settings').select('*').limit(1).single();
+                if (settingsData) settings = settingsData;
+                
+                const { data: catData } = await db.from('categories').select('*').eq('is_active', true).order('sort_order');
+                categories = catData || [];
+                
+                const { data: itemsData } = await db.from('items').select('*').eq('is_active', true).order('sort_order');
+                items = itemsData || [];
+                
+                const { data: subData } = await db.from('sub_items').select('*').eq('is_active', true).order('sort_order');
+                subItems = subData || [];
+                
+                document.getElementById('subtitle').textContent = L[lang].subtitle;
+                showMain();
+                
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('chat').innerHTML = `<div class="error"><span>❌</span><p>${L[lang].error}</p></div>`;
+            }
+        }
+
+        // ============ Language ============
+        window.switchLang = (l) => {
+            lang = l;
+            localStorage.setItem('appLang', l);
+            document.body.className = l === 'en' ? 'en' : '';
+            document.documentElement.lang = l;
+            document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('btnAr').className = 'lang-btn' + (l === 'ar' ? ' active' : '');
+            document.getElementById('btnEn').className = 'lang-btn' + (l === 'en' ? ' active' : '');
+            document.getElementById('title').textContent = L[l].title;
+            document.getElementById('subtitle').textContent = L[l].subtitle;
+            document.getElementById('input').placeholder = L[l].placeholder;
+            showMain();
+        };
+
+        function T(k) { return L[lang][k]; }
+        function getName(obj, field) { return obj[field + '_' + lang] || obj[field + '_ar'] || ''; }
+
+        // ============ Chat Functions ============
+        function time() { return new Date().toLocaleTimeString(lang === 'ar' ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' }); }
+        function scroll() { const c = document.getElementById('chat'); c.scrollTop = c.scrollHeight; }
+
+        function typing() {
+            const d = document.createElement('div');
+            d.className = 'msg bot'; d.id = 'typing';
+            d.innerHTML = `<div class="msg-avatar">🤖</div><div class="msg-content"><div class="typing"><span></span><span></span><span></span></div></div>`;
+            document.getElementById('chat').appendChild(d);
+            scroll();
+        }
+
+        function untype() { const t = document.getElementById('typing'); if (t) t.remove(); }
+
+        function bot(txt, extra = '') {
+            untype();
+            const d = document.createElement('div');
+            d.className = 'msg bot';
+            d.innerHTML = `<div class="msg-avatar">🤖</div><div class="msg-content">${txt ? `<div class="msg-bubble">${txt}</div>` : ''}${extra}<div class="msg-time">${time()}</div></div>`;
+            document.getElementById('chat').appendChild(d);
+            scroll();
+        }
+
+        function user(txt) {
+            const d = document.createElement('div');
+            d.className = 'msg user';
+            d.innerHTML = `<div class="msg-avatar">👤</div><div class="msg-content"><div class="msg-bubble">${txt}</div><div class="msg-time">${time()}</div></div>`;
+            document.getElementById('chat').appendChild(d);
+            scroll();
+        }
+
+        // ============ Webhook ============
+        async function webhook(type, data) {
+            if (!settings.webhook_url) return;
+            
+            const payload = { type, ...data, lang, timestamp: new Date().toISOString(), userId };
+
+            try {
+                if (navigator.sendBeacon) {
+                    navigator.sendBeacon(settings.webhook_url, JSON.stringify(payload));
+                } else {
+                    fetch(settings.webhook_url, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
+                }
+            } catch (e) {}
+
+            try {
+                await db.from('chat_logs').insert({
+                    user_id: userId,
+                    action_type: type,
+                    category_id: data.category_id || null,
+                    item_id: data.item_id || null,
+                    sub_item_id: data.sub_item_id || null,
+                    message: data.message || null,
+                    lang
+                });
+            } catch (e) {}
+        }
+
+        // ============ Navigation ============
+        function showMain() {
+            document.getElementById('chat').innerHTML = '';
+            history = [];
+            
+            if (!categories.length) {
+                bot(T('noData'));
+                return;
+            }
+
+            typing();
+            setTimeout(() => {
+                let btns = categories.map(c => 
+                    `<button class="menu-btn" onclick="openCat('${c.id}')">
+                        <span class="icon">${c.icon}</span>
+                        <span class="label">${getName(c, 'name')}</span>
+                    </button>`
+                ).join('');
+                btns += `<button class="menu-btn" onclick="freeQ()"><span class="icon">💬</span><span class="label">${T('free')}</span></button>`;
+                bot(T('welcome'), `<div class="btn-grid">${btns}</div>`);
+            }, 400);
+        }
+
+        window.openCat = (catId) => {
+            const cat = categories.find(c => c.id === catId);
+            if (!cat) return;
+            
+            history.push({ type: 'main' });
+            user(getName(cat, 'name'));
+            
+            const catItems = items.filter(i => i.category_id === catId);
+            
+            typing();
+            setTimeout(() => {
+                if (!catItems.length) {
+                    bot(T('noData'), `<button class="back-btn" onclick="goBack()">${T('back')}</button>`);
+                    return;
+                }
+                let btns = catItems.map(i => 
+                    `<button class="quick-btn" onclick="openItem('${i.id}')">${i.icon} ${getName(i, 'label')}</button>`
+                ).join('');
+                bot(`${cat.icon} ${getName(cat, 'name')}`, `<div class="quick-btns">${btns}</div><button class="back-btn" onclick="goBack()">${T('back')}</button>`);
+            }, 400);
+        };
+
+        window.openItem = (itemId) => {
+            const item = items.find(i => i.id === itemId);
+            if (!item) return;
+            
+            history.push({ type: 'cat', catId: item.category_id });
+            user(getName(item, 'label'));
+
+            const itemSubs = subItems.filter(s => s.item_id === itemId);
+
+            if (item.has_children && itemSubs.length) {
+                typing();
+                setTimeout(() => {
+                    let btns = itemSubs.map(s => 
+                        `<button class="quick-btn" onclick="openSub('${s.id}')">${s.icon} ${getName(s, 'label')}</button>`
+                    ).join('');
+                    bot(`${item.icon} ${getName(item, 'label')}`, `<div class="quick-btns">${btns}</div><button class="back-btn" onclick="goBack()">${T('back')}</button>`);
+                }, 400);
+            } else {
+                if (item.send_webhook) {
+                    webhook('item_click', { category_id: item.category_id, item_id: item.id, label: getName(item, 'label') });
+                }
+                
+                typing();
+                setTimeout(() => {
+                    const resp = getName(item, 'response') || T('received');
+                    const badge = item.send_webhook ? `<span class="sent-badge">${T('sent')}</span>` : '';
+                    bot('', `<div class="info-card">${resp}</div>${badge}<div class="quick-btns" style="margin-top:10px;"><button class="quick-btn green" onclick="goHome()">${T('home')}</button></div><button class="back-btn" onclick="goBack()">${T('back')}</button>`);
+                }, 500);
+            }
+        };
+
+        window.openSub = (subId) => {
+            const sub = subItems.find(s => s.id === subId);
+            if (!sub) return;
+            
+            const item = items.find(i => i.id === sub.item_id);
+            history.push({ type: 'item', itemId: sub.item_id });
+            user(getName(sub, 'label'));
+
+            if (sub.send_webhook) {
+                webhook('sub_item_click', { 
+                    category_id: item?.category_id, 
+                    item_id: sub.item_id, 
+                    sub_item_id: sub.id, 
+                    label: getName(sub, 'label') 
+                });
+            }
+
+            typing();
+            setTimeout(() => {
+                const resp = getName(sub, 'response') || T('received');
+                const badge = sub.send_webhook ? `<span class="sent-badge">${T('sent')}</span>` : '';
+                bot('', `<div class="info-card">${resp}</div>${badge}<div class="quick-btns" style="margin-top:10px;"><button class="quick-btn green" onclick="goHome()">${T('home')}</button></div><button class="back-btn" onclick="goBack()">${T('back')}</button>`);
+            }, 500);
+        };
+
+        window.freeQ = () => {
+            history.push({ type: 'main' });
+            user(T('free'));
+            typing();
+            setTimeout(() => {
+                bot(T('freePrompt'), `<button class="back-btn" onclick="goBack()">${T('back')}</button>`);
+                document.getElementById('input').focus();
+            }, 400);
+        };
+
+        window.goBack = () => {
+            if (!history.length) return;
+            user(T('back'));
+            const h = history.pop();
+            
+            if (h.type === 'main') showMain();
+            else if (h.type === 'cat') openCatDirect(h.catId);
+            else if (h.type === 'item') openItemDirect(h.itemId);
+            else showMain();
+        };
+
+        window.goHome = () => {
+            user(T('home'));
+            showMain();
+        };
+
+        function openCatDirect(catId) {
+            const cat = categories.find(c => c.id === catId);
+            const catItems = items.filter(i => i.category_id === catId);
+            if (!catItems.length) { showMain(); return; }
+            
+            typing();
+            setTimeout(() => {
+                let btns = catItems.map(i => 
+                    `<button class="quick-btn" onclick="openItem('${i.id}')">${i.icon} ${getName(i, 'label')}</button>`
+                ).join('');
+                bot(`${cat?.icon || ''} ${getName(cat, 'name')}`, `<div class="quick-btns">${btns}</div><button class="back-btn" onclick="goBack()">${T('back')}</button>`);
+            }, 300);
+        }
+
+        function openItemDirect(itemId) {
+            const item = items.find(i => i.id === itemId);
+            const itemSubs = subItems.filter(s => s.item_id === itemId);
+            if (!itemSubs.length) { openCatDirect(item?.category_id); return; }
+            
+            typing();
+            setTimeout(() => {
+                let btns = itemSubs.map(s => 
+                    `<button class="quick-btn" onclick="openSub('${s.id}')">${s.icon} ${getName(s, 'label')}</button>`
+                ).join('');
+                bot(`${item?.icon || ''} ${getName(item, 'label')}`, `<div class="quick-btns">${btns}</div><button class="back-btn" onclick="goBack()">${T('back')}</button>`);
+            }, 300);
+        }
+
+        // ============ Free Question ============
+        window.sendMsg = () => {
+            const inp = document.getElementById('input');
+            const txt = inp.value.trim();
+            if (!txt) return;
+            
+            user(txt);
+            inp.value = '';
+            
+            webhook('free_question', { message: txt });
+            
+            typing();
+            setTimeout(() => {
+                bot('', `<div class="info-card">${T('received')}</div><span class="sent-badge">${T('sent')}</span><div class="quick-btns" style="margin-top:10px;"><button class="quick-btn green" onclick="goHome()">${T('home')}</button></div>`);
+            }, 700);
+        };
+
+        // ============ Init ============
+        document.getElementById('input').addEventListener('keypress', e => { if (e.key === 'Enter') window.sendMsg(); });
+        
+        document.getElementById('btnAr').className = 'lang-btn' + (lang === 'ar' ? ' active' : '');
+        document.getElementById('btnEn').className = 'lang-btn' + (lang === 'en' ? ' active' : '');
+        document.body.className = lang === 'en' ? 'en' : '';
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        document.getElementById('title').textContent = L[lang].title;
+        document.getElementById('input').placeholder = L[lang].placeholder;
+        
+        loadData();
+    </script>
+</body>
+</html>
