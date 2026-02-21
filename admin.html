@@ -19,321 +19,239 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Tajawal', sans-serif; background: var(--bg); min-height: 100vh; }
         
-        .header { background: linear-gradient(135deg, var(--primary), #8B5CF6); color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; }
-        .header h1 { font-size: 20px; display: flex; align-items: center; gap: 10px; }
-        .header-btns { display: flex; gap: 10px; }
-        .header-btn { padding: 8px 16px; background: rgba(255,255,255,0.2); border: none; border-radius: 8px; color: white; font-family: inherit; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-        .header-btn:hover { background: rgba(255,255,255,0.3); }
+        .header { background: linear-gradient(135deg, var(--primary), #8B5CF6); color: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .header h1 { font-size: 18px; display: flex; align-items: center; gap: 10px; }
+        .header-btn { padding: 8px 16px; background: rgba(255,255,255,0.2); border: none; border-radius: 8px; color: white; font-family: inherit; font-size: 13px; cursor: pointer; }
         
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .container { max-width: 1300px; margin: 0 auto; padding: 20px; }
         
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab { padding: 12px 24px; background: var(--card); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+        .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab { padding: 10px 20px; background: var(--card); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 6px; }
         .tab:hover { border-color: var(--primary); }
         .tab.active { background: var(--primary); color: white; border-color: var(--primary); }
         
         .card { background: var(--card); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .card-header h2 { font-size: 18px; display: flex; align-items: center; gap: 10px; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        .card-header h2 { font-size: 16px; display: flex; align-items: center; gap: 8px; }
+        .card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
         
-        .btn { padding: 10px 20px; border: none; border-radius: 10px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+        .btn { padding: 8px 16px; border: none; border-radius: 8px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-success { background: var(--success); color: white; }
-        .btn-sm { padding: 6px 12px; font-size: 12px; }
         
-        /* Sections List */
-        .section-item { background: var(--bg); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
-        .section-header { padding: 16px 20px; display: flex; align-items: center; gap: 15px; cursor: pointer; }
-        .section-header:hover { background: var(--primary-light); }
-        .section-icon { width: 50px; height: 50px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        .section-info { flex: 1; }
-        .section-info h3 { font-size: 16px; margin-bottom: 4px; }
-        .section-info p { font-size: 12px; color: var(--text-light); }
-        .section-badges { display: flex; gap: 6px; }
-        .badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-        .badge.questions { background: var(--cyan-light); color: var(--cyan); }
-        .badge.action { background: var(--purple-light); color: var(--purple); }
-        .section-actions { display: flex; gap: 6px; }
-        .icon-btn { width: 36px; height: 36px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; }
-        .icon-btn.edit { background: var(--warning-light); color: var(--warning); }
-        .icon-btn.delete { background: var(--danger-light); color: var(--danger); }
-        .icon-btn.add { background: var(--success-light); color: var(--success); }
+        .folders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
+        .folder-card { background: var(--bg); border-radius: 12px; overflow: hidden; }
+        .folder-header { padding: 12px 15px; background: var(--primary-light); display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .folder-header:hover { background: #E0E7FF; }
+        .folder-header .icon { font-size: 20px; }
+        .folder-header .name { flex: 1; font-weight: 700; font-size: 14px; }
+        .folder-header .count { background: var(--primary); color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; }
+        .folder-actions button { width: 26px; height: 26px; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; margin-left: 3px; }
+        .folder-actions .edit { background: var(--warning-light); color: var(--warning); }
+        .folder-actions .delete { background: var(--danger-light); color: var(--danger); }
+        .folder-content { padding: 10px; display: none; }
+        .folder-card.open .folder-content { display: block; }
         
-        .section-content { padding: 0 20px 20px; display: none; }
-        .section-item.open .section-content { display: block; }
+        .action-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: white; border-radius: 8px; margin-bottom: 6px; }
+        .action-item .icon { font-size: 18px; }
+        .action-item .info { flex: 1; }
+        .action-item .info .name { font-weight: 600; font-size: 13px; }
+        .action-item .info .type { font-size: 10px; color: var(--text-light); }
+        .action-item .actions button { width: 24px; height: 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 10px; margin-left: 3px; }
+        .action-item .actions .edit { background: var(--warning-light); color: var(--warning); }
+        .action-item .actions .delete { background: var(--danger-light); color: var(--danger); }
         
-        /* Questions */
-        .questions-list { background: white; border-radius: 10px; padding: 15px; }
-        .question-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg); border-radius: 8px; margin-bottom: 8px; }
-        .question-order { width: 30px; height: 30px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
-        .question-info { flex: 1; }
-        .question-info h4 { font-size: 14px; margin-bottom: 2px; }
-        .question-info span { font-size: 11px; color: var(--text-light); }
-        .question-var { background: var(--cyan-light); color: var(--cyan); padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; }
+        .add-btn { width: 100%; padding: 10px; border: 2px dashed var(--border); border-radius: 8px; background: transparent; color: var(--text-light); font-family: inherit; font-size: 12px; cursor: pointer; }
+        .add-btn:hover { border-color: var(--primary); color: var(--primary); }
         
-        .add-question-btn { width: 100%; padding: 12px; border: 2px dashed var(--border); border-radius: 8px; background: transparent; color: var(--text-light); font-family: inherit; cursor: pointer; margin-top: 10px; }
-        .add-question-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .tree-container { max-height: 600px; overflow-y: auto; }
+        .tree-node { margin-bottom: 4px; }
+        .node-row { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: var(--bg); border-radius: 8px; font-size: 13px; }
+        .node-row:hover { background: var(--primary-light); }
+        .node-row .icon { font-size: 18px; }
+        .node-row .label { flex: 1; font-weight: 600; }
+        .node-row .badges { display: flex; gap: 4px; flex-wrap: wrap; }
+        .badge { padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; }
+        .badge.var { background: var(--cyan-light); color: var(--cyan); }
+        .badge.action { background: var(--success-light); color: var(--success); }
+        .badge.condition { background: var(--warning-light); color: var(--warning); }
+        .node-actions button { width: 24px; height: 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 10px; margin-left: 3px; }
+        .node-actions .add { background: var(--success-light); color: var(--success); }
+        .node-actions .edit { background: var(--warning-light); color: var(--warning); }
+        .node-actions .delete { background: var(--danger-light); color: var(--danger); }
+        .node-children { margin-right: 25px; padding-right: 12px; border-right: 2px solid var(--border); }
         
-        /* Action Box */
-        .action-box { background: linear-gradient(135deg, var(--purple-light), var(--primary-light)); border-radius: 10px; padding: 15px; margin-top: 15px; }
-        .action-box h4 { font-size: 13px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-        .action-type { display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: white; border-radius: 20px; font-size: 12px; font-weight: 600; }
-        
-        /* Files Page */
-        .upload-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 40px; text-align: center; cursor: pointer; }
-        .upload-zone:hover { border-color: var(--primary); background: var(--primary-light); }
-        .upload-zone span { font-size: 40px; display: block; margin-bottom: 10px; }
-        .upload-zone input { display: none; }
-        
-        .files-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
-        .file-card { background: var(--bg); border-radius: 12px; padding: 15px; text-align: center; position: relative; }
-        .file-card .icon { font-size: 36px; margin-bottom: 8px; }
-        .file-card .name { font-size: 12px; font-weight: 600; word-break: break-all; }
-        .file-card .delete { position: absolute; top: 8px; left: 8px; width: 24px; height: 24px; border-radius: 50%; background: var(--danger); color: white; border: none; cursor: pointer; }
-        
-        /* Settings */
         .settings-group { margin-bottom: 20px; }
-        .settings-group label { display: block; font-weight: 600; margin-bottom: 8px; }
-        .settings-group input { width: 100%; max-width: 500px; padding: 12px 16px; border: 2px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 14px; }
+        .settings-group label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; }
+        .settings-group input { width: 100%; max-width: 450px; padding: 10px 14px; border: 2px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; }
         .settings-group input:focus { outline: none; border-color: var(--primary); }
         
-        /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 15px; }
         .modal.active { display: flex; }
-        .modal-box { background: white; border-radius: 16px; padding: 25px; width: 100%; max-width: 550px; max-height: 90vh; overflow-y: auto; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .modal-header h2 { font-size: 18px; }
-        .close-btn { width: 36px; height: 36px; border: none; border-radius: 8px; background: var(--bg); font-size: 18px; cursor: pointer; }
+        .modal-box { background: white; border-radius: 16px; padding: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .modal-header h2 { font-size: 16px; }
+        .close-btn { width: 32px; height: 32px; border: none; border-radius: 8px; background: var(--bg); font-size: 16px; cursor: pointer; }
         
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 14px; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 12px; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 12px; border: 2px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; }
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         
-        .action-types { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 16px; }
-        .action-type-btn { padding: 12px 8px; border: 2px solid var(--border); border-radius: 10px; text-align: center; cursor: pointer; font-size: 11px; }
-        .action-type-btn:hover { border-color: var(--primary); }
-        .action-type-btn.active { border-color: var(--primary); background: var(--primary-light); }
-        .action-type-btn span { font-size: 20px; display: block; margin-bottom: 4px; }
+        .type-btns { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+        .type-btn { padding: 8px 12px; border: 2px solid var(--border); border-radius: 8px; background: white; cursor: pointer; font-size: 11px; display: flex; align-items: center; gap: 5px; font-family: inherit; }
+        .type-btn:hover { border-color: var(--primary); }
+        .type-btn.active { border-color: var(--primary); background: var(--primary-light); }
+        .type-btn span { font-size: 16px; }
         
-        .files-select { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px; background: var(--bg); border-radius: 8px; min-height: 50px; margin-top: 8px; }
-        .file-tag { display: flex; align-items: center; gap: 4px; padding: 4px 10px; background: var(--primary-light); color: var(--primary); border-radius: 20px; font-size: 12px; }
-        .file-tag button { background: none; border: none; color: var(--danger); cursor: pointer; }
+        .switch-row { display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg); border-radius: 8px; margin-bottom: 14px; }
+        .switch { width: 44px; height: 24px; background: var(--border); border-radius: 12px; position: relative; cursor: pointer; transition: 0.2s; }
+        .switch.on { background: var(--success); }
+        .switch::after { content: ''; position: absolute; width: 20px; height: 20px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: 0.2s; }
+        .switch.on::after { left: 22px; }
         
-        .modal-btns { display: flex; gap: 10px; margin-top: 20px; }
-        .modal-btns button { flex: 1; padding: 14px; border-radius: 10px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; border: none; }
+        .upload-area { border: 2px dashed var(--border); border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; }
+        .upload-area:hover { border-color: var(--primary); background: var(--primary-light); }
+        .upload-area input { display: none; }
+        
+        .modal-btns { display: flex; gap: 10px; margin-top: 18px; }
+        .modal-btns button { flex: 1; padding: 12px; border-radius: 10px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
         .btn-cancel { background: var(--bg); color: var(--text); }
         .btn-save { background: var(--success); color: white; }
         
-        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--success); color: white; padding: 12px 30px; border-radius: 10px; font-weight: 600; opacity: 0; transition: 0.3s; z-index: 2000; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--success); color: white; padding: 10px 25px; border-radius: 10px; font-weight: 600; opacity: 0; transition: 0.3s; z-index: 2000; font-size: 13px; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         .toast.error { background: var(--danger); }
         
         .page { display: none; }
         .page.active { display: block; }
-        
-        .empty { text-align: center; padding: 50px; color: var(--text-light); }
-        .empty span { font-size: 50px; display: block; margin-bottom: 10px; }
+        .empty { text-align: center; padding: 40px; color: var(--text-light); }
+        .empty span { font-size: 40px; display: block; margin-bottom: 8px; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🎛️ لوحة التحكم</h1>
-        <div class="header-btns">
-            <button class="header-btn" onclick="window.open('index.html','_blank')">👁️ معاينة الفورم</button>
-        </div>
+        <h1>🎛️ لوحة التحكم الذكية</h1>
+        <button class="header-btn" onclick="window.open('index.html','_blank')">👁️ معاينة</button>
     </div>
     
     <div class="container">
         <div class="tabs">
-            <div class="tab active" onclick="showPage('sections', this)">📂 الأقسام</div>
-            <div class="tab" onclick="showPage('files', this)">📁 الملفات</div>
+            <div class="tab active" onclick="showPage('tree', this)">🌳 الشجرة</div>
+            <div class="tab" onclick="showPage('actions', this)">📁 الملفات والأكشنات</div>
             <div class="tab" onclick="showPage('settings', this)">⚙️ الإعدادات</div>
         </div>
         
-        <!-- Sections Page -->
-        <div class="page active" id="page-sections">
+        <div class="page active" id="page-tree">
             <div class="card">
                 <div class="card-header">
-                    <h2>📂 الأقسام والأسئلة</h2>
-                    <button class="btn btn-success" onclick="openSectionModal()">➕ قسم جديد</button>
+                    <h2>🌳 شجرة الأقسام والأسئلة</h2>
+                    <button class="btn btn-success" onclick="openNodeModal(null)">➕ قسم رئيسي</button>
                 </div>
-                <div id="sectionsContainer"></div>
+                <div class="tree-container" id="treeContainer"></div>
             </div>
         </div>
         
-        <!-- Files Page -->
-        <div class="page" id="page-files">
+        <div class="page" id="page-actions">
             <div class="card">
                 <div class="card-header">
-                    <h2>📁 إدارة الملفات</h2>
+                    <h2>📁 الملفات والأكشنات</h2>
+                    <div class="card-actions">
+                        <button class="btn btn-primary" onclick="openFolderModal()">➕ فولدر</button>
+                        <button class="btn btn-success" onclick="openActionModal()">➕ أكشن</button>
+                    </div>
                 </div>
-                <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
-                    <span>📤</span>
-                    <p>اسحب الملفات هنا أو اضغط للاختيار</p>
-                    <p style="font-size:12px;color:var(--text-light);margin-top:5px;">PDF, Word, Excel, صور</p>
-                    <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.png,.jpg,.jpeg">
-                </div>
-                <div class="files-grid" id="filesGrid"></div>
+                <div class="folders-grid" id="foldersGrid"></div>
             </div>
         </div>
         
-        <!-- Settings Page -->
         <div class="page" id="page-settings">
             <div class="card">
-                <div class="card-header">
-                    <h2>⚙️ الإعدادات</h2>
-                </div>
+                <div class="card-header"><h2>⚙️ الإعدادات</h2></div>
                 <div class="settings-group">
                     <label>🔑 Gemini API Key</label>
                     <input type="password" id="geminiKey" placeholder="AIzaSy...">
                 </div>
                 <div class="settings-group">
-                    <label>🔗 Webhook URL (اختياري)</label>
-                    <input type="text" id="webhookUrl" placeholder="https://hook.make.com/...">
+                    <label>🔗 Webhook URL</label>
+                    <input type="text" id="webhookUrl" placeholder="https://...">
                 </div>
-                <button class="btn btn-success" onclick="saveSettings()">💾 حفظ الإعدادات</button>
+                <button class="btn btn-success" onclick="saveSettings()">💾 حفظ</button>
             </div>
         </div>
     </div>
     
-    <!-- Section Modal -->
-    <div class="modal" id="sectionModal">
+    <!-- Folder Modal -->
+    <div class="modal" id="folderModal">
         <div class="modal-box">
-            <div class="modal-header">
-                <h2 id="sectionModalTitle">إضافة قسم</h2>
-                <button class="close-btn" onclick="closeModal('sectionModal')">×</button>
-            </div>
-            <form onsubmit="saveSection(event)">
-                <input type="hidden" id="sectionId">
-                
+            <div class="modal-header"><h2 id="folderModalTitle">فولدر جديد</h2><button class="close-btn" onclick="closeModal('folderModal')">×</button></div>
+            <form onsubmit="saveFolder(event)">
+                <input type="hidden" id="folderId">
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>الأيقونة</label>
-                        <input type="text" id="sectionIcon" placeholder="💰" maxlength="2" required>
-                    </div>
-                    <div class="form-group">
-                        <label>الترتيب</label>
-                        <input type="number" id="sectionOrder" value="0" min="0">
-                    </div>
+                    <div class="form-group"><label>الأيقونة</label><input type="text" id="folderIcon" value="📂" maxlength="2"></div>
+                    <div class="form-group"><label>الاسم</label><input type="text" id="folderName" required></div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>الاسم عربي</label>
-                        <input type="text" id="sectionNameAr" required>
-                    </div>
-                    <div class="form-group">
-                        <label>الاسم إنجليزي</label>
-                        <input type="text" id="sectionNameEn" required>
-                    </div>
-                </div>
-                
-                <h3 style="font-size:14px;margin:20px 0 12px;display:flex;align-items:center;gap:8px;">⚡ الأكشن (بعد الأسئلة)</h3>
-                
-                <div class="action-types">
-                    <div class="action-type-btn active" data-type="ai" onclick="setActionType('ai')"><span>🤖</span>AI</div>
-                    <div class="action-type-btn" data-type="static" onclick="setActionType('static')"><span>📝</span>ثابتة</div>
-                    <div class="action-type-btn" data-type="phone" onclick="setActionType('phone')"><span>📞</span>اتصال</div>
-                    <div class="action-type-btn" data-type="whatsapp" onclick="setActionType('whatsapp')"><span>💬</span>واتساب</div>
-                    <div class="action-type-btn" data-type="webhook" onclick="setActionType('webhook')"><span>🔗</span>Webhook</div>
-                </div>
-                
-                <div id="aiSection">
-                    <div class="form-group">
-                        <label>📎 الملفات (AI يبحث فيها)</label>
-                        <select id="fileSelectSection" onchange="addFileToSection()">
-                            <option value="">-- اختر ملف --</option>
-                        </select>
-                        <div class="files-select" id="selectedSectionFiles"></div>
-                    </div>
-                    <div class="form-group">
-                        <label>تعليمات AI</label>
-                        <textarea id="sectionPrompt" rows="2" placeholder="ابحث عن بيانات الموظف باستخدام المعلومات المدخلة..."></textarea>
-                    </div>
-                </div>
-                
-                <div id="staticSection" style="display:none;">
-                    <div class="form-group">
-                        <label>الرد عربي</label>
-                        <textarea id="sectionRespAr" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>الرد إنجليزي</label>
-                        <textarea id="sectionRespEn" rows="3"></textarea>
-                    </div>
-                </div>
-                
-                <div id="phoneSection" style="display:none;">
-                    <div class="form-group">
-                        <label>رقم الهاتف (مع كود الدولة)</label>
-                        <input type="text" id="sectionPhone" placeholder="966501234567">
-                    </div>
-                </div>
-                
-                <div class="modal-btns">
-                    <button type="button" class="btn-cancel" onclick="closeModal('sectionModal')">إلغاء</button>
-                    <button type="submit" class="btn-save">💾 حفظ</button>
-                </div>
+                <div class="modal-btns"><button type="button" class="btn-cancel" onclick="closeModal('folderModal')">إلغاء</button><button type="submit" class="btn-save">💾 حفظ</button></div>
             </form>
         </div>
     </div>
     
-    <!-- Question Modal -->
-    <div class="modal" id="questionModal">
+    <!-- Action Modal -->
+    <div class="modal" id="actionModal">
         <div class="modal-box">
-            <div class="modal-header">
-                <h2 id="questionModalTitle">إضافة سؤال</h2>
-                <button class="close-btn" onclick="closeModal('questionModal')">×</button>
-            </div>
-            <form onsubmit="saveQuestion(event)">
-                <input type="hidden" id="questionId">
-                <input type="hidden" id="questionSectionId">
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>الأيقونة</label>
-                        <input type="text" id="questionIcon" placeholder="❓" maxlength="2" required>
-                    </div>
-                    <div class="form-group">
-                        <label>الترتيب</label>
-                        <input type="number" id="questionOrder" value="1" min="1">
-                    </div>
+            <div class="modal-header"><h2 id="actionModalTitle">أكشن جديد</h2><button class="close-btn" onclick="closeModal('actionModal')">×</button></div>
+            <form onsubmit="saveAction(event)">
+                <input type="hidden" id="actionId">
+                <div class="form-group"><label>📂 الفولدر</label><select id="actionFolder"></select></div>
+                <label style="font-weight:600;font-size:12px;margin-bottom:8px;display:block;">نوع الأكشن:</label>
+                <div class="type-btns">
+                    <button type="button" class="type-btn active" data-type="file_ai" onclick="setActionType('file_ai')"><span>🤖</span> ملف + AI</button>
+                    <button type="button" class="type-btn" data-type="static" onclick="setActionType('static')"><span>📝</span> رد ثابت</button>
+                    <button type="button" class="type-btn" data-type="phone" onclick="setActionType('phone')"><span>📞</span> اتصال</button>
+                    <button type="button" class="type-btn" data-type="whatsapp" onclick="setActionType('whatsapp')"><span>💬</span> واتساب</button>
+                    <button type="button" class="type-btn" data-type="webhook" onclick="setActionType('webhook')"><span>🔗</span> Webhook</button>
                 </div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>السؤال عربي</label>
-                        <input type="text" id="questionLabelAr" placeholder="ما اسمك؟" required>
-                    </div>
-                    <div class="form-group">
-                        <label>السؤال إنجليزي</label>
-                        <input type="text" id="questionLabelEn" placeholder="What's your name?" required>
-                    </div>
+                    <div class="form-group"><label>الأيقونة</label><input type="text" id="actionIcon" value="📄" maxlength="2"></div>
+                    <div class="form-group"><label>الاسم</label><input type="text" id="actionName" required></div>
+                </div>
+                <div id="fileAiFields">
+                    <div class="form-group"><label>📤 رفع ملف</label><div class="upload-area" onclick="document.getElementById('actionFile').click()"><span style="font-size:24px;">📤</span><p style="font-size:12px;color:var(--text-light);" id="uploadLabel">اضغط لاختيار ملف</p><input type="file" id="actionFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.png,.jpg,.jpeg"></div></div>
+                    <div class="form-group"><label>🤖 تعليمات AI</label><textarea id="actionPrompt" rows="2" placeholder="ابحث عن بيانات الموظف..."></textarea></div>
+                </div>
+                <div id="staticFields" style="display:none;"><div class="form-group"><label>الرد عربي</label><textarea id="actionRespAr" rows="2"></textarea></div><div class="form-group"><label>الرد إنجليزي</label><textarea id="actionRespEn" rows="2"></textarea></div></div>
+                <div id="phoneFields" style="display:none;"><div class="form-group"><label>📱 رقم الهاتف</label><input type="text" id="actionPhone" placeholder="966501234567"></div></div>
+                <div id="webhookFields" style="display:none;"><div class="form-group"><label>🔗 Webhook URL</label><input type="text" id="actionWebhook" placeholder="https://..."></div></div>
+                <div class="modal-btns"><button type="button" class="btn-cancel" onclick="closeModal('actionModal')">إلغاء</button><button type="submit" class="btn-save">💾 حفظ</button></div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Node Modal -->
+    <div class="modal" id="nodeModal">
+        <div class="modal-box">
+            <div class="modal-header"><h2 id="nodeModalTitle">إضافة عنصر</h2><button class="close-btn" onclick="closeModal('nodeModal')">×</button></div>
+            <form onsubmit="saveNode(event)">
+                <input type="hidden" id="nodeId">
+                <div class="form-group"><label>📍 يضاف تحت</label><select id="nodeParent"></select></div>
+                <div class="form-row">
+                    <div class="form-group"><label>الأيقونة</label><input type="text" id="nodeIcon" value="📁" maxlength="2"></div>
+                    <div class="form-group"><label>الترتيب</label><input type="number" id="nodeOrder" value="0" min="0"></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>اسم المتغير (بالإنجليزي)</label>
-                        <input type="text" id="questionVar" placeholder="name, emp_id, month" required>
-                    </div>
-                    <div class="form-group">
-                        <label>نوع الإدخال</label>
-                        <select id="questionType" onchange="toggleOptionsField()">
-                            <option value="text">نص</option>
-                            <option value="number">رقم</option>
-                            <option value="select">اختيارات</option>
-                            <option value="date">تاريخ</option>
-                        </select>
-                    </div>
+                    <div class="form-group"><label>الاسم عربي</label><input type="text" id="nodeLabelAr" required></div>
+                    <div class="form-group"><label>الاسم إنجليزي</label><input type="text" id="nodeLabelEn" required></div>
                 </div>
-                <div class="form-group" id="optionsField" style="display:none;">
-                    <label>الاختيارات (سطر لكل اختيار)</label>
-                    <textarea id="questionOptions" rows="3" placeholder="الراتب الحالي&#10;راتب شهر سابق"></textarea>
+                <div class="form-row">
+                    <div class="form-group"><label>🔤 اسم المتغير</label><input type="text" id="nodeVar" placeholder="name, emp_id"></div>
+                    <div class="form-group"><label>📋 نوع الإدخال</label><select id="nodeInputType" onchange="toggleNodeOptions()"><option value="none">بدون (قسم)</option><option value="text">نص</option><option value="number">رقم</option><option value="select">اختيارات</option><option value="date">تاريخ</option></select></div>
                 </div>
-                
-                <div class="modal-btns">
-                    <button type="button" class="btn-cancel" onclick="closeModal('questionModal')">إلغاء</button>
-                    <button type="submit" class="btn-save">💾 حفظ</button>
-                </div>
+                <div class="form-group" id="nodeOptionsGroup" style="display:none;"><label>الاختيارات (سطر لكل اختيار)</label><textarea id="nodeOptions" rows="3" placeholder="HR&#10;Finance&#10;IT"></textarea></div>
+                <div class="form-group" id="nodeConditionGroup" style="display:none;"><label>🔗 يظهر فقط إذا الإجابة السابقة =</label><input type="text" id="nodeCondition" placeholder="HR"></div>
+                <div class="switch-row"><div class="switch" id="hasActionSwitch" onclick="toggleHasAction()"></div><label style="flex:1;">⚡ ينفذ أكشن بعد هذا العنصر</label></div>
+                <div id="nodeActionGroup" style="display:none;"><div class="form-group"><label>🎬 اختر الأكشن</label><select id="nodeAction"></select></div></div>
+                <div class="modal-btns"><button type="button" class="btn-cancel" onclick="closeModal('nodeModal')">إلغاء</button><button type="submit" class="btn-save">💾 حفظ</button></div>
             </form>
         </div>
     </div>
@@ -342,349 +260,163 @@
 
     <script type="module">
         import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-        
         const SUPABASE_URL = 'https://nrsnsysjmhboovutirdn.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5yc25zeXNqbWhib292dXRpcmRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MDYxNjYsImV4cCI6MjA4NzE4MjE2Nn0.A6XRe0wUA267hogwWnNpXe08B-MrL1HSjBVbURyLdsU';
-        
         const db = createClient(SUPABASE_URL, SUPABASE_KEY);
         
-        let sections = [], questions = [], files = [], settings = {};
-        let actionType = 'ai';
-        let selectedFiles = [];
+        let folders = [], actions = [], tree = [], settings = {};
+        let actionType = 'file_ai', hasAction = false;
 
-        // Load Data
         async function loadData() {
-            try {
-                const { data: s } = await db.from('settings').select('*').limit(1).single();
-                if (s) {
-                    settings = s;
-                    document.getElementById('geminiKey').value = s.gemini_key || '';
-                    document.getElementById('webhookUrl').value = s.webhook_url || '';
-                }
-                
-                const { data: sec } = await db.from('sections').select('*').eq('is_active', true).order('sort_order');
-                sections = sec || [];
-                
-                const { data: q } = await db.from('questions').select('*').eq('is_active', true).order('sort_order');
-                questions = q || [];
-                
-                await loadFiles();
-                renderSections();
-            } catch (e) { console.error(e); }
+            const { data: s } = await db.from('settings').select('*').limit(1).single();
+            if (s) { settings = s; document.getElementById('geminiKey').value = s.gemini_key || ''; document.getElementById('webhookUrl').value = s.webhook_url || ''; }
+            const { data: f } = await db.from('folders').select('*').eq('is_active', true).order('sort_order');
+            folders = f || [];
+            const { data: a } = await db.from('actions').select('*').eq('is_active', true).order('sort_order');
+            actions = a || [];
+            const { data: t } = await db.from('tree').select('*').eq('is_active', true).order('sort_order');
+            tree = t || [];
+            renderFolders(); renderTree(); updateSelects();
         }
 
-        async function loadFiles() {
-            const { data } = await db.storage.from('files').list();
-            files = data || [];
-            renderFiles();
-            updateFileSelects();
-        }
-
-        // Render Sections
-        function renderSections() {
-            const container = document.getElementById('sectionsContainer');
-            if (!sections.length) {
-                container.innerHTML = '<div class="empty"><span>📭</span><p>لا توجد أقسام</p><p style="font-size:13px;">اضغط "قسم جديد" للبدء</p></div>';
-                return;
-            }
-            
-            container.innerHTML = sections.map(sec => {
-                const secQuestions = questions.filter(q => q.section_id === sec.id);
-                const actionLabel = { ai: '🤖 AI', static: '📝 ثابتة', phone: '📞 اتصال', whatsapp: '💬 واتساب', webhook: '🔗 Webhook' }[sec.action_type] || '🤖 AI';
-                
-                return `
-                    <div class="section-item" id="sec_${sec.id}">
-                        <div class="section-header" onclick="toggleSection('${sec.id}')">
-                            <div class="section-icon">${sec.icon}</div>
-                            <div class="section-info">
-                                <h3>${sec.name_ar}</h3>
-                                <p>${sec.name_en}</p>
-                            </div>
-                            <div class="section-badges">
-                                <span class="badge questions">❓ ${secQuestions.length} سؤال</span>
-                                <span class="badge action">${actionLabel}</span>
-                            </div>
-                            <div class="section-actions" onclick="event.stopPropagation()">
-                                <button class="icon-btn add" onclick="openQuestionModal('${sec.id}')" title="إضافة سؤال">➕</button>
-                                <button class="icon-btn edit" onclick="editSection('${sec.id}')" title="تعديل">✏️</button>
-                                <button class="icon-btn delete" onclick="deleteSection('${sec.id}')" title="حذف">🗑️</button>
-                            </div>
-                        </div>
-                        <div class="section-content">
-                            <div class="questions-list">
-                                <h4 style="font-size:13px;color:var(--text-light);margin-bottom:12px;">❓ الأسئلة (بالترتيب)</h4>
-                                ${secQuestions.length ? secQuestions.map(q => `
-                                    <div class="question-item">
-                                        <div class="question-order">${q.sort_order}</div>
-                                        <span style="font-size:18px;">${q.icon}</span>
-                                        <div class="question-info">
-                                            <h4>${q.label_ar}</h4>
-                                            <span>${q.label_en}</span>
-                                        </div>
-                                        <span class="question-var">{${q.var_name}}</span>
-                                        <div>
-                                            <button class="icon-btn edit" onclick="editQuestion('${q.id}')">✏️</button>
-                                            <button class="icon-btn delete" onclick="deleteQuestion('${q.id}')">🗑️</button>
-                                        </div>
-                                    </div>
-                                `).join('') : '<p style="text-align:center;color:var(--text-light);padding:20px;">لا توجد أسئلة</p>'}
-                                <button class="add-question-btn" onclick="openQuestionModal('${sec.id}')">➕ إضافة سؤال</button>
-                            </div>
-                            <div class="action-box">
-                                <h4>⚡ الأكشن بعد الأسئلة</h4>
-                                <span class="action-type">${actionLabel}</span>
-                                ${sec.action_files?.length ? `<p style="font-size:11px;margin-top:8px;">📎 ${sec.action_files.join(', ')}</p>` : ''}
-                            </div>
-                        </div>
-                    </div>
-                `;
+        function renderFolders() {
+            const grid = document.getElementById('foldersGrid');
+            if (!folders.length) { grid.innerHTML = '<div class="empty"><span>📭</span><p>لا توجد فولدرات</p></div>'; return; }
+            grid.innerHTML = folders.map(f => {
+                const fa = actions.filter(a => a.folder_id === f.id);
+                return `<div class="folder-card" id="folder_${f.id}"><div class="folder-header" onclick="toggleFolder('${f.id}')"><span class="icon">${f.icon}</span><span class="name">${f.name}</span><span class="count">${fa.length}</span><div class="folder-actions" onclick="event.stopPropagation()"><button class="edit" onclick="editFolder('${f.id}')">✏️</button><button class="delete" onclick="deleteFolder('${f.id}')">🗑️</button></div></div><div class="folder-content">${fa.map(a => `<div class="action-item"><span class="icon">${a.icon}</span><div class="info"><div class="name">${a.name}</div><div class="type">${getActionTypeLabel(a.action_type)}</div></div><div class="actions"><button class="edit" onclick="editAction('${a.id}')">✏️</button><button class="delete" onclick="deleteAction('${a.id}')">🗑️</button></div></div>`).join('') || '<p style="text-align:center;color:var(--text-light);padding:10px;font-size:12px;">فارغ</p>'}<button class="add-btn" onclick="openActionModal('${f.id}')">➕ أكشن جديد</button></div></div>`;
             }).join('');
         }
 
-        // Render Files
-        function renderFiles() {
-            const el = document.getElementById('filesGrid');
-            if (!files.length) { el.innerHTML = ''; return; }
-            el.innerHTML = files.map(f => {
-                const ext = f.name.split('.').pop().toLowerCase();
-                let icon = '📄';
-                if (ext === 'pdf') icon = '📕';
-                else if (['doc','docx'].includes(ext)) icon = '📘';
-                else if (['xls','xlsx','csv'].includes(ext)) icon = '📗';
-                else if (['png','jpg','jpeg'].includes(ext)) icon = '🖼️';
-                return `<div class="file-card"><button class="delete" onclick="deleteFile('${f.name}')">×</button><div class="icon">${icon}</div><div class="name">${f.name}</div></div>`;
-            }).join('');
+        function getActionTypeLabel(type) { return { file_ai: '🤖 ملف + AI', static: '📝 رد ثابت', phone: '📞 اتصال', whatsapp: '💬 واتساب', webhook: '🔗 Webhook' }[type] || type; }
+        window.toggleFolder = (id) => document.getElementById('folder_' + id)?.classList.toggle('open');
+
+        window.openFolderModal = (id) => {
+            document.getElementById('folderModalTitle').textContent = id ? 'تعديل الفولدر' : 'فولدر جديد';
+            document.getElementById('folderId').value = id || '';
+            const f = id ? folders.find(x => x.id === id) : null;
+            document.getElementById('folderIcon').value = f?.icon || '📂';
+            document.getElementById('folderName').value = f?.name || '';
+            openModal('folderModal');
+        };
+        window.editFolder = (id) => openFolderModal(id);
+        window.saveFolder = async (e) => { e.preventDefault(); const id = document.getElementById('folderId').value; const data = { icon: document.getElementById('folderIcon').value, name: document.getElementById('folderName').value }; if (id) await db.from('folders').update(data).eq('id', id); else await db.from('folders').insert({ ...data, sort_order: folders.length }); toast('تم ✅'); closeModal('folderModal'); loadData(); };
+        window.deleteFolder = async (id) => { if (!confirm('حذف الفولدر؟')) return; await db.from('folders').update({ is_active: false }).eq('id', id); toast('تم'); loadData(); };
+
+        window.openActionModal = (folderId) => {
+            document.getElementById('actionModalTitle').textContent = 'أكشن جديد';
+            document.getElementById('actionId').value = '';
+            document.getElementById('actionIcon').value = '📄';
+            document.getElementById('actionName').value = '';
+            document.getElementById('actionPrompt').value = '';
+            document.getElementById('actionRespAr').value = '';
+            document.getElementById('actionRespEn').value = '';
+            document.getElementById('actionPhone').value = '';
+            document.getElementById('actionWebhook').value = '';
+            document.getElementById('uploadLabel').textContent = 'اضغط لاختيار ملف';
+            document.getElementById('actionFile').dataset.fileName = '';
+            setActionType('file_ai');
+            updateFolderSelect(folderId);
+            openModal('actionModal');
+        };
+        window.editAction = (id) => {
+            const a = actions.find(x => x.id === id);
+            document.getElementById('actionModalTitle').textContent = 'تعديل الأكشن';
+            document.getElementById('actionId').value = id;
+            document.getElementById('actionIcon').value = a.icon;
+            document.getElementById('actionName').value = a.name;
+            document.getElementById('actionPrompt').value = a.ai_prompt || '';
+            document.getElementById('actionRespAr').value = a.response_ar || '';
+            document.getElementById('actionRespEn').value = a.response_en || '';
+            document.getElementById('actionPhone').value = a.phone_number || '';
+            document.getElementById('actionWebhook').value = a.webhook_url || '';
+            document.getElementById('uploadLabel').textContent = a.file_name ? '✅ ' + a.file_name.split('_').slice(1).join('_') : 'اضغط لاختيار ملف';
+            document.getElementById('actionFile').dataset.fileName = a.file_name || '';
+            setActionType(a.action_type);
+            updateFolderSelect(a.folder_id);
+            openModal('actionModal');
+        };
+        window.setActionType = (type) => { actionType = type; document.querySelectorAll('.type-btn').forEach(b => b.classList.toggle('active', b.dataset.type === type)); document.getElementById('fileAiFields').style.display = type === 'file_ai' ? '' : 'none'; document.getElementById('staticFields').style.display = type === 'static' ? '' : 'none'; document.getElementById('phoneFields').style.display = (type === 'phone' || type === 'whatsapp') ? '' : 'none'; document.getElementById('webhookFields').style.display = type === 'webhook' ? '' : 'none'; };
+        document.getElementById('actionFile').addEventListener('change', async (e) => { const file = e.target.files[0]; if (!file) return; document.getElementById('uploadLabel').textContent = '⏳ جاري الرفع...'; const fileName = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_'); const { error } = await db.storage.from('files').upload(fileName, file, { upsert: true }); if (error) { toast('خطأ', true); return; } document.getElementById('uploadLabel').textContent = '✅ ' + file.name; document.getElementById('actionFile').dataset.fileName = fileName; toast('تم ✅'); });
+        window.saveAction = async (e) => { e.preventDefault(); const id = document.getElementById('actionId').value; const data = { folder_id: document.getElementById('actionFolder').value || null, icon: document.getElementById('actionIcon').value, name: document.getElementById('actionName').value, action_type: actionType, file_name: document.getElementById('actionFile').dataset.fileName || null, ai_prompt: document.getElementById('actionPrompt').value || null, response_ar: document.getElementById('actionRespAr').value || null, response_en: document.getElementById('actionRespEn').value || null, phone_number: document.getElementById('actionPhone').value || null, webhook_url: document.getElementById('actionWebhook').value || null }; if (id) await db.from('actions').update(data).eq('id', id); else await db.from('actions').insert({ ...data, sort_order: actions.length }); toast('تم ✅'); closeModal('actionModal'); loadData(); };
+        window.deleteAction = async (id) => { if (!confirm('حذف؟')) return; await db.from('actions').update({ is_active: false }).eq('id', id); toast('تم'); loadData(); };
+        function updateFolderSelect(selected) { document.getElementById('actionFolder').innerHTML = '<option value="">-- بدون --</option>' + folders.map(f => `<option value="${f.id}" ${f.id === selected ? 'selected' : ''}>${f.icon} ${f.name}</option>`).join(''); }
+
+        function renderTree() {
+            const container = document.getElementById('treeContainer');
+            const roots = tree.filter(n => !n.parent_id);
+            if (!roots.length) { container.innerHTML = '<div class="empty"><span>🌳</span><p>لا توجد عناصر</p></div>'; return; }
+            container.innerHTML = roots.map(n => renderNode(n)).join('');
+        }
+        function renderNode(node) {
+            const children = tree.filter(n => n.parent_id === node.id);
+            const action = node.action_id ? actions.find(a => a.id === node.action_id) : null;
+            let badges = '';
+            if (node.var_name) badges += `<span class="badge var">{${node.var_name}}</span>`;
+            if (node.show_if_value) badges += `<span class="badge condition">إذا: ${node.show_if_value}</span>`;
+            if (action) badges += `<span class="badge action">${action.icon} ${action.name}</span>`;
+            return `<div class="tree-node"><div class="node-row"><span class="icon">${node.icon}</span><span class="label">${node.label_ar}</span><div class="badges">${badges}</div><div class="node-actions"><button class="add" onclick="openNodeModal('${node.id}')">➕</button><button class="edit" onclick="editNode('${node.id}')">✏️</button><button class="delete" onclick="deleteNode('${node.id}')">🗑️</button></div></div>${children.length ? `<div class="node-children">${children.map(c => renderNode(c)).join('')}</div>` : ''}</div>`;
         }
 
-        function updateFileSelects() {
-            const options = '<option value="">-- اختر ملف --</option>' + files.map(f => `<option value="${f.name}">${f.name}</option>`).join('');
-            document.getElementById('fileSelectSection').innerHTML = options;
-        }
-
-        // Pages
-        window.showPage = (page, el) => {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.getElementById('page-' + page).classList.add('active');
-            el.classList.add('active');
+        window.openNodeModal = (parentId) => {
+            document.getElementById('nodeModalTitle').textContent = parentId ? 'إضافة عنصر فرعي' : 'إضافة قسم رئيسي';
+            document.getElementById('nodeId').value = '';
+            document.getElementById('nodeIcon').value = parentId ? '❓' : '📁';
+            document.getElementById('nodeOrder').value = '0';
+            document.getElementById('nodeLabelAr').value = '';
+            document.getElementById('nodeLabelEn').value = '';
+            document.getElementById('nodeVar').value = '';
+            document.getElementById('nodeInputType').value = parentId ? 'text' : 'none';
+            document.getElementById('nodeOptions').value = '';
+            document.getElementById('nodeCondition').value = '';
+            document.getElementById('nodeAction').value = '';
+            hasAction = false;
+            document.getElementById('hasActionSwitch').classList.remove('on');
+            document.getElementById('nodeActionGroup').style.display = 'none';
+            updateParentSelect(parentId);
+            updateActionSelect();
+            toggleNodeOptions();
+            checkShowCondition(parentId);
+            openModal('nodeModal');
         };
-
-        window.toggleSection = (id) => document.getElementById('sec_' + id)?.classList.toggle('open');
-
-        // Section Modal
-        window.openSectionModal = () => {
-            document.getElementById('sectionModalTitle').textContent = 'إضافة قسم';
-            document.getElementById('sectionId').value = '';
-            document.getElementById('sectionIcon').value = '';
-            document.getElementById('sectionOrder').value = sections.length;
-            document.getElementById('sectionNameAr').value = '';
-            document.getElementById('sectionNameEn').value = '';
-            document.getElementById('sectionPrompt').value = '';
-            document.getElementById('sectionRespAr').value = '';
-            document.getElementById('sectionRespEn').value = '';
-            document.getElementById('sectionPhone').value = '';
-            selectedFiles = [];
-            renderSelectedFiles();
-            setActionType('ai');
-            openModal('sectionModal');
+        window.editNode = (id) => {
+            const n = tree.find(x => x.id === id);
+            document.getElementById('nodeModalTitle').textContent = 'تعديل العنصر';
+            document.getElementById('nodeId').value = id;
+            document.getElementById('nodeIcon').value = n.icon;
+            document.getElementById('nodeOrder').value = n.sort_order || 0;
+            document.getElementById('nodeLabelAr').value = n.label_ar;
+            document.getElementById('nodeLabelEn').value = n.label_en;
+            document.getElementById('nodeVar').value = n.var_name || '';
+            document.getElementById('nodeInputType').value = n.input_type || 'none';
+            document.getElementById('nodeOptions').value = n.options || '';
+            document.getElementById('nodeCondition').value = n.show_if_value || '';
+            document.getElementById('nodeAction').value = n.action_id || '';
+            hasAction = n.has_action || false;
+            document.getElementById('hasActionSwitch').classList.toggle('on', hasAction);
+            document.getElementById('nodeActionGroup').style.display = hasAction ? '' : 'none';
+            updateParentSelect(n.parent_id, id);
+            updateActionSelect();
+            toggleNodeOptions();
+            checkShowCondition(n.parent_id);
+            openModal('nodeModal');
         };
+        window.saveNode = async (e) => { e.preventDefault(); const id = document.getElementById('nodeId').value; const data = { parent_id: document.getElementById('nodeParent').value || null, icon: document.getElementById('nodeIcon').value, sort_order: parseInt(document.getElementById('nodeOrder').value) || 0, label_ar: document.getElementById('nodeLabelAr').value, label_en: document.getElementById('nodeLabelEn').value, var_name: document.getElementById('nodeVar').value || null, input_type: document.getElementById('nodeInputType').value, options: document.getElementById('nodeOptions').value || null, show_if_value: document.getElementById('nodeCondition').value || null, has_action: hasAction, action_id: hasAction ? (document.getElementById('nodeAction').value || null) : null }; if (id) await db.from('tree').update(data).eq('id', id); else await db.from('tree').insert(data); toast('تم ✅'); closeModal('nodeModal'); loadData(); };
+        window.deleteNode = async (id) => { if (!confirm('حذف؟')) return; await db.from('tree').update({ is_active: false }).eq('id', id); toast('تم'); loadData(); };
+        window.toggleHasAction = () => { hasAction = !hasAction; document.getElementById('hasActionSwitch').classList.toggle('on', hasAction); document.getElementById('nodeActionGroup').style.display = hasAction ? '' : 'none'; };
+        window.toggleNodeOptions = () => { document.getElementById('nodeOptionsGroup').style.display = document.getElementById('nodeInputType').value === 'select' ? '' : 'none'; };
+        function checkShowCondition(parentId) { const parent = tree.find(n => n.id === parentId); document.getElementById('nodeConditionGroup').style.display = (parent?.input_type === 'select') ? '' : 'none'; }
+        function updateParentSelect(selectedId, excludeId) { let opts = '<option value="">🏠 الجذر</option>'; const add = (nodes, lvl = 0) => { nodes.forEach(n => { if (n.id !== excludeId) { opts += `<option value="${n.id}" ${n.id === selectedId ? 'selected' : ''}>${'—'.repeat(lvl)} ${n.icon} ${n.label_ar}</option>`; add(tree.filter(c => c.parent_id === n.id), lvl + 1); } }); }; add(tree.filter(n => !n.parent_id)); document.getElementById('nodeParent').innerHTML = opts; }
+        function updateActionSelect() { let opts = '<option value="">-- اختر --</option>'; folders.forEach(f => { const fa = actions.filter(a => a.folder_id === f.id); if (fa.length) { opts += `<optgroup label="${f.icon} ${f.name}">${fa.map(a => `<option value="${a.id}">${a.icon} ${a.name}</option>`).join('')}</optgroup>`; } }); const na = actions.filter(a => !a.folder_id); if (na.length) { opts += `<optgroup label="بدون فولدر">${na.map(a => `<option value="${a.id}">${a.icon} ${a.name}</option>`).join('')}</optgroup>`; } document.getElementById('nodeAction').innerHTML = opts; }
+        function updateSelects() { updateFolderSelect(); updateActionSelect(); }
 
-        window.editSection = (id) => {
-            const sec = sections.find(s => s.id === id);
-            if (!sec) return;
-            document.getElementById('sectionModalTitle').textContent = 'تعديل القسم';
-            document.getElementById('sectionId').value = id;
-            document.getElementById('sectionIcon').value = sec.icon;
-            document.getElementById('sectionOrder').value = sec.sort_order;
-            document.getElementById('sectionNameAr').value = sec.name_ar;
-            document.getElementById('sectionNameEn').value = sec.name_en;
-            document.getElementById('sectionPrompt').value = sec.action_prompt || '';
-            document.getElementById('sectionRespAr').value = sec.action_response_ar || '';
-            document.getElementById('sectionRespEn').value = sec.action_response_en || '';
-            document.getElementById('sectionPhone').value = sec.action_phone || '';
-            selectedFiles = sec.action_files || [];
-            renderSelectedFiles();
-            setActionType(sec.action_type || 'ai');
-            openModal('sectionModal');
-        };
+        window.saveSettings = async () => { const data = { gemini_key: document.getElementById('geminiKey').value, webhook_url: document.getElementById('webhookUrl').value }; if (settings.id) await db.from('settings').update(data).eq('id', settings.id); else await db.from('settings').insert(data); settings = { ...settings, ...data }; toast('تم ✅'); };
 
-        window.saveSection = async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('sectionId').value;
-            const data = {
-                icon: document.getElementById('sectionIcon').value,
-                sort_order: parseInt(document.getElementById('sectionOrder').value) || 0,
-                name_ar: document.getElementById('sectionNameAr').value,
-                name_en: document.getElementById('sectionNameEn').value,
-                action_type: actionType,
-                action_files: selectedFiles.length ? selectedFiles : null,
-                action_prompt: document.getElementById('sectionPrompt').value || null,
-                action_response_ar: document.getElementById('sectionRespAr').value || null,
-                action_response_en: document.getElementById('sectionRespEn').value || null,
-                action_phone: document.getElementById('sectionPhone').value || null
-            };
-            
-            try {
-                if (id) await db.from('sections').update(data).eq('id', id);
-                else await db.from('sections').insert(data);
-                toast('تم الحفظ ✅');
-                closeModal('sectionModal');
-                loadData();
-            } catch (err) { toast('خطأ: ' + err.message, true); }
-        };
-
-        window.deleteSection = async (id) => {
-            if (!confirm('حذف القسم وكل أسئلته؟')) return;
-            await db.from('sections').update({ is_active: false }).eq('id', id);
-            toast('تم الحذف');
-            loadData();
-        };
-
-        window.setActionType = (type) => {
-            actionType = type;
-            document.querySelectorAll('.action-type-btn').forEach(b => b.classList.toggle('active', b.dataset.type === type));
-            document.getElementById('aiSection').style.display = type === 'ai' ? '' : 'none';
-            document.getElementById('staticSection').style.display = type === 'static' ? '' : 'none';
-            document.getElementById('phoneSection').style.display = (type === 'phone' || type === 'whatsapp') ? '' : 'none';
-        };
-
-        window.addFileToSection = () => {
-            const select = document.getElementById('fileSelectSection');
-            if (select.value && !selectedFiles.includes(select.value)) {
-                selectedFiles.push(select.value);
-                renderSelectedFiles();
-            }
-            select.value = '';
-        };
-
-        window.removeFileFromSection = (file) => {
-            selectedFiles = selectedFiles.filter(f => f !== file);
-            renderSelectedFiles();
-        };
-
-        function renderSelectedFiles() {
-            const container = document.getElementById('selectedSectionFiles');
-            container.innerHTML = selectedFiles.length 
-                ? selectedFiles.map(f => `<div class="file-tag">${f}<button onclick="removeFileFromSection('${f}')">×</button></div>`).join('')
-                : '<span style="color:var(--text-light);font-size:12px;">لم يتم اختيار ملفات</span>';
-        }
-
-        // Question Modal
-        window.openQuestionModal = (sectionId) => {
-            const secQuestions = questions.filter(q => q.section_id === sectionId);
-            document.getElementById('questionModalTitle').textContent = 'إضافة سؤال';
-            document.getElementById('questionId').value = '';
-            document.getElementById('questionSectionId').value = sectionId;
-            document.getElementById('questionIcon').value = '❓';
-            document.getElementById('questionOrder').value = secQuestions.length + 1;
-            document.getElementById('questionLabelAr').value = '';
-            document.getElementById('questionLabelEn').value = '';
-            document.getElementById('questionVar').value = '';
-            document.getElementById('questionType').value = 'text';
-            document.getElementById('questionOptions').value = '';
-            document.getElementById('optionsField').style.display = 'none';
-            openModal('questionModal');
-        };
-
-        window.editQuestion = (id) => {
-            const q = questions.find(x => x.id === id);
-            if (!q) return;
-            document.getElementById('questionModalTitle').textContent = 'تعديل السؤال';
-            document.getElementById('questionId').value = id;
-            document.getElementById('questionSectionId').value = q.section_id;
-            document.getElementById('questionIcon').value = q.icon;
-            document.getElementById('questionOrder').value = q.sort_order;
-            document.getElementById('questionLabelAr').value = q.label_ar;
-            document.getElementById('questionLabelEn').value = q.label_en;
-            document.getElementById('questionVar').value = q.var_name;
-            document.getElementById('questionType').value = q.input_type;
-            document.getElementById('questionOptions').value = q.options || '';
-            document.getElementById('optionsField').style.display = q.input_type === 'select' ? '' : 'none';
-            openModal('questionModal');
-        };
-
-        window.saveQuestion = async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('questionId').value;
-            const data = {
-                section_id: document.getElementById('questionSectionId').value,
-                icon: document.getElementById('questionIcon').value,
-                sort_order: parseInt(document.getElementById('questionOrder').value) || 1,
-                label_ar: document.getElementById('questionLabelAr').value,
-                label_en: document.getElementById('questionLabelEn').value,
-                var_name: document.getElementById('questionVar').value,
-                input_type: document.getElementById('questionType').value,
-                options: document.getElementById('questionOptions').value || null
-            };
-            
-            try {
-                if (id) await db.from('questions').update(data).eq('id', id);
-                else await db.from('questions').insert(data);
-                toast('تم الحفظ ✅');
-                closeModal('questionModal');
-                loadData();
-            } catch (err) { toast('خطأ: ' + err.message, true); }
-        };
-
-        window.deleteQuestion = async (id) => {
-            if (!confirm('حذف السؤال؟')) return;
-            await db.from('questions').update({ is_active: false }).eq('id', id);
-            toast('تم الحذف');
-            loadData();
-        };
-
-        window.toggleOptionsField = () => {
-            document.getElementById('optionsField').style.display = document.getElementById('questionType').value === 'select' ? '' : 'none';
-        };
-
-        // Files
-        document.getElementById('fileInput').addEventListener('change', async (e) => {
-            for (const f of e.target.files) {
-                toast('جاري رفع ' + f.name + '...');
-                try {
-                    const fileName = Date.now() + '_' + f.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-                    const { error } = await db.storage.from('files').upload(fileName, f, { upsert: true });
-                    if (error) toast('خطأ: ' + error.message, true);
-                    else toast('تم ✅');
-                } catch (err) { toast('خطأ', true); }
-            }
-            e.target.value = '';
-            loadFiles();
-        });
-
-        window.deleteFile = async (name) => {
-            if (!confirm('حذف الملف؟')) return;
-            await db.storage.from('files').remove([name]);
-            toast('تم الحذف');
-            loadFiles();
-        };
-
-        // Settings
-        window.saveSettings = async () => {
-            const data = { gemini_key: document.getElementById('geminiKey').value, webhook_url: document.getElementById('webhookUrl').value };
-            try {
-                if (settings.id) await db.from('settings').update(data).eq('id', settings.id);
-                else await db.from('settings').insert(data);
-                settings = { ...settings, ...data };
-                toast('تم الحفظ ✅');
-            } catch (e) { toast('خطأ', true); }
-        };
-
-        // Helpers
+        window.showPage = (page, el) => { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); document.getElementById('page-' + page).classList.add('active'); el.classList.add('active'); };
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         window.closeModal = (id) => document.getElementById(id).classList.remove('active');
-        
-        function toast(msg, isError = false) {
-            const t = document.getElementById('toast');
-            t.textContent = msg;
-            t.className = 'toast show' + (isError ? ' error' : '');
-            setTimeout(() => t.classList.remove('show'), 2500);
-        }
-
-        document.querySelectorAll('.modal').forEach(m => {
-            m.addEventListener('click', e => { if (e.target === m) m.classList.remove('active'); });
-        });
-
+        function toast(msg, isError = false) { const t = document.getElementById('toast'); t.textContent = msg; t.className = 'toast show' + (isError ? ' error' : ''); setTimeout(() => t.classList.remove('show'), 2500); }
+        document.querySelectorAll('.modal').forEach(m => { m.addEventListener('click', e => { if (e.target === m) m.classList.remove('active'); }); });
         loadData();
     </script>
 </body>

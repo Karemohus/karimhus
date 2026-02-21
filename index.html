@@ -6,19 +6,11 @@
     <title>مركز دعم الموظفين</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #6366F1; --primary-light: #EEF2FF;
-            --success: #10B981; --success-light: #D1FAE5;
-            --bg: #F8FAFC; --card: #FFFFFF;
-            --text: #1E293B; --text-light: #64748B; --border: #E2E8F0;
-            --gradient: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
-        }
+        :root { --primary: #6366F1; --primary-light: #EEF2FF; --success: #10B981; --success-light: #D1FAE5; --bg: #F8FAFC; --card: #FFFFFF; --text: #1E293B; --text-light: #64748B; --border: #E2E8F0; --gradient: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Tajawal', sans-serif; background: var(--bg); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 16px; }
         body.en { direction: ltr; font-family: 'Inter', sans-serif; }
-        
         .container { width: 100%; max-width: 440px; height: 92vh; max-height: 800px; background: var(--card); border-radius: 28px; box-shadow: 0 25px 80px rgba(99,102,241,0.15); display: flex; flex-direction: column; overflow: hidden; }
-        
         .header { background: var(--gradient); padding: 18px 20px; color: white; }
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         .lang-switch { display: flex; background: rgba(255,255,255,0.15); border-radius: 8px; overflow: hidden; }
@@ -28,9 +20,7 @@
         .avatar { width: 46px; height: 46px; background: rgba(255,255,255,0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
         .header-info h1 { font-size: 17px; font-weight: 700; }
         .header-info p { font-size: 11px; opacity: 0.9; }
-        
         .chat { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
-        
         .msg { display: flex; gap: 10px; animation: fadeIn 0.3s; }
         .msg.user { flex-direction: row-reverse; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
@@ -39,420 +29,92 @@
         .msg.user .msg-avatar { background: var(--gradient); color: white; }
         .msg-content { max-width: 85%; }
         .msg-bubble { padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.6; }
-        .msg.bot .msg-bubble { background: var(--bg); color: var(--text); border-bottom-right-radius: 4px; }
+        .msg.bot .msg-bubble { background: var(--bg); border-bottom-right-radius: 4px; }
         body.en .msg.bot .msg-bubble { border-bottom-right-radius: 18px; border-bottom-left-radius: 4px; }
         .msg.user .msg-bubble { background: var(--gradient); color: white; border-bottom-left-radius: 4px; }
         .msg-time { font-size: 9px; color: var(--text-light); margin-top: 4px; }
-        
         .btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
         .menu-btn { padding: 18px 12px; background: white; border: 2px solid var(--border); border-radius: 16px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 8px; font-family: inherit; }
         .menu-btn:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
         .menu-btn .icon { font-size: 28px; }
         .menu-btn .label { font-size: 13px; font-weight: 600; color: var(--text); }
-        
         .quick-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
         .quick-btn { padding: 10px 18px; background: white; border: 2px solid var(--primary); border-radius: 25px; color: var(--primary); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
         .quick-btn:hover { background: var(--primary); color: white; }
         .quick-btn.green { border-color: var(--success); color: var(--success); }
         .quick-btn.green:hover { background: var(--success); color: white; }
-        
         .info-card { background: linear-gradient(135deg, var(--primary-light), #F3E8FF); border-radius: 16px; padding: 16px; margin-top: 12px; font-size: 14px; line-height: 1.7; white-space: pre-line; }
-        
         .contact-card { background: var(--success-light); border-radius: 16px; padding: 20px; margin-top: 12px; text-align: center; }
         .contact-card a { display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; background: var(--success); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 16px; }
         .contact-card.whatsapp a { background: #25D366; }
-        
         .ai-badge { display: inline-flex; align-items: center; gap: 5px; background: #DBEAFE; color: #1D4ED8; padding: 5px 12px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-bottom: 8px; }
-        
         .file-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-        .file-link { display: inline-flex; align-items: center; gap: 5px; padding: 8px 14px; background: white; border: 1px solid var(--border); border-radius: 10px; color: var(--text); text-decoration: none; font-size: 12px; font-weight: 600; }
+        .file-link { display: inline-flex; align-items: center; gap: 5px; padding: 8px 14px; background: white; border: 1px solid var(--border); border-radius: 10px; text-decoration: none; font-size: 12px; font-weight: 600; color: var(--text); }
         .file-link:hover { border-color: var(--primary); background: var(--primary-light); }
-        
-        .data-summary { background: var(--bg); border-radius: 12px; padding: 12px; margin-top: 10px; font-size: 12px; }
+        .data-summary { background: var(--bg); border-radius: 12px; padding: 12px; margin: 10px 0; font-size: 12px; }
         .data-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); }
         .data-row:last-child { border: none; }
-        .data-row .key { color: var(--text-light); }
-        .data-row .value { font-weight: 600; }
-        
         .back-btn { display: inline-flex; align-items: center; gap: 5px; padding: 8px 16px; background: white; border: 1px solid var(--border); border-radius: 20px; color: var(--text-light); font-family: inherit; font-size: 12px; cursor: pointer; margin-top: 12px; }
         .back-btn:hover { border-color: var(--primary); color: var(--primary); }
-        
         .typing { display: flex; gap: 5px; padding: 14px 18px; background: var(--bg); border-radius: 18px; width: fit-content; }
         .typing span { width: 8px; height: 8px; background: var(--text-light); border-radius: 50%; animation: bounce 1.4s infinite; }
         .typing span:nth-child(2) { animation-delay: 0.2s; }
         .typing span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
-        
         .input-area { padding: 14px 16px; background: white; border-top: 1px solid var(--border); }
         .input-wrap { display: flex; gap: 10px; }
         .input-field { flex: 1; padding: 12px 18px; border: 2px solid var(--border); border-radius: 25px; font-family: inherit; font-size: 14px; outline: none; }
         .input-field:focus { border-color: var(--primary); }
         .send-btn { width: 48px; height: 48px; background: var(--gradient); border: none; border-radius: 50%; color: white; font-size: 18px; cursor: pointer; }
-        
         .loading { text-align: center; padding: 40px; color: var(--text-light); }
         .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 12px; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        
         @media (max-width: 480px) { body { padding: 0; } .container { height: 100vh; max-height: none; border-radius: 0; } }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div class="header-top">
-                <div></div>
-                <div class="lang-switch">
-                    <button class="lang-btn active" id="btnAr" onclick="switchLang('ar')">عربي</button>
-                    <button class="lang-btn" id="btnEn" onclick="switchLang('en')">EN</button>
-                </div>
-            </div>
-            <div class="header-main">
-                <div class="avatar">🤖</div>
-                <div class="header-info">
-                    <h1 id="title">مركز دعم الموظفين</h1>
-                    <p id="subtitle">مدعوم بالذكاء الاصطناعي</p>
-                </div>
-            </div>
+            <div class="header-top"><div></div><div class="lang-switch"><button class="lang-btn active" id="btnAr" onclick="switchLang('ar')">عربي</button><button class="lang-btn" id="btnEn" onclick="switchLang('en')">EN</button></div></div>
+            <div class="header-main"><div class="avatar">🤖</div><div class="header-info"><h1 id="title">مركز دعم الموظفين</h1><p id="subtitle">مدعوم بالذكاء الاصطناعي</p></div></div>
         </div>
-        <div class="chat" id="chat">
-            <div class="loading"><div class="spinner"></div><p>جاري التحميل...</p></div>
-        </div>
-        <div class="input-area">
-            <div class="input-wrap">
-                <input type="text" class="input-field" id="input" placeholder="اكتب هنا..." autocomplete="off">
-                <button class="send-btn" onclick="handleInput()">➤</button>
-            </div>
-        </div>
+        <div class="chat" id="chat"><div class="loading"><div class="spinner"></div><p>جاري التحميل...</p></div></div>
+        <div class="input-area"><div class="input-wrap"><input type="text" class="input-field" id="input" placeholder="اكتب هنا..." autocomplete="off"><button class="send-btn" onclick="handleInput()">➤</button></div></div>
     </div>
-
     <script type="module">
         import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-        
         const SUPABASE_URL = 'https://nrsnsysjmhboovutirdn.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5yc25zeXNqbWhib292dXRpcmRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MDYxNjYsImV4cCI6MjA4NzE4MjE2Nn0.A6XRe0wUA267hogwWnNpXe08B-MrL1HSjBVbURyLdsU';
         const GEMINI_API = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
-        
         const db = createClient(SUPABASE_URL, SUPABASE_KEY);
-        
-        let sections = [], questions = [], settings = {};
-        let lang = localStorage.getItem('lang') || 'ar';
-        
-        // State
-        let currentSection = null;
-        let currentQuestionIndex = 0;
-        let collectedData = {};
-        let awaitingInput = false;
-        
-        const L = {
-            ar: { title: 'مركز دعم الموظفين', subtitle: 'مدعوم بالذكاء الاصطناعي', welcome: 'أهلاً بك! 👋<br>كيف يمكنني مساعدتك؟', placeholder: 'اكتب هنا...', back: '→ رجوع', home: '🏠 الرئيسية', thinking: '🔍 جاري البحث...', aiAnswer: '🤖 إجابة AI', call: '📞 اتصل الآن', whatsapp: '💬 تواصل واتساب', download: '📥 تحميل', yourData: 'بياناتك:' },
-            en: { title: 'Employee Support', subtitle: 'AI Powered', welcome: 'Welcome! 👋<br>How can I help?', placeholder: 'Type here...', back: '← Back', home: '🏠 Home', thinking: '🔍 Searching...', aiAnswer: '🤖 AI Answer', call: '📞 Call Now', whatsapp: '💬 WhatsApp', download: '📥 Download', yourData: 'Your data:' }
-        };
-
-        async function loadData() {
-            try {
-                const { data: s } = await db.from('settings').select('*').limit(1).single();
-                if (s) settings = s;
-                
-                const { data: sec } = await db.from('sections').select('*').eq('is_active', true).order('sort_order');
-                sections = sec || [];
-                
-                const { data: q } = await db.from('questions').select('*').eq('is_active', true).order('sort_order');
-                questions = q || [];
-                
-                showMain();
-            } catch (e) {
-                console.error(e);
-                document.getElementById('chat').innerHTML = '<div class="loading">❌ خطأ في الاتصال</div>';
-            }
-        }
-
-        window.switchLang = (l) => {
-            lang = l;
-            localStorage.setItem('lang', l);
-            document.body.className = l === 'en' ? 'en' : '';
-            document.documentElement.lang = l;
-            document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
-            document.getElementById('btnAr').className = 'lang-btn' + (l === 'ar' ? ' active' : '');
-            document.getElementById('btnEn').className = 'lang-btn' + (l === 'en' ? ' active' : '');
-            document.getElementById('title').textContent = L[l].title;
-            document.getElementById('subtitle').textContent = L[l].subtitle;
-            document.getElementById('input').placeholder = L[l].placeholder;
-            showMain();
-        };
-
+        let tree = [], actions = [], settings = {}, lang = localStorage.getItem('lang') || 'ar', currentNode = null, collectedData = {}, awaitingInput = false, history = [];
+        const L = { ar: { title: 'مركز دعم الموظفين', subtitle: 'مدعوم بالذكاء الاصطناعي', welcome: 'أهلاً بك! 👋<br>كيف يمكنني مساعدتك؟', placeholder: 'اكتب هنا...', back: '→ رجوع', home: '🏠 الرئيسية', thinking: '🔍 جاري البحث...', aiAnswer: '🤖 إجابة AI', call: '📞 اتصل', whatsapp: '💬 واتساب', yourData: 'بياناتك:' }, en: { title: 'Employee Support', subtitle: 'AI Powered', welcome: 'Welcome! 👋<br>How can I help?', placeholder: 'Type here...', back: '← Back', home: '🏠 Home', thinking: '🔍 Searching...', aiAnswer: '🤖 AI Answer', call: '📞 Call', whatsapp: '💬 WhatsApp', yourData: 'Your data:' } };
+        async function loadData() { try { const { data: s } = await db.from('settings').select('*').limit(1).single(); if (s) settings = s; const { data: t } = await db.from('tree').select('*').eq('is_active', true).order('sort_order'); tree = t || []; const { data: a } = await db.from('actions').select('*').eq('is_active', true); actions = a || []; showMain(); } catch (e) { document.getElementById('chat').innerHTML = '<div class="loading">❌ خطأ</div>'; } }
+        window.switchLang = (l) => { lang = l; localStorage.setItem('lang', l); document.body.className = l === 'en' ? 'en' : ''; document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr'; document.getElementById('btnAr').className = 'lang-btn' + (l === 'ar' ? ' active' : ''); document.getElementById('btnEn').className = 'lang-btn' + (l === 'en' ? ' active' : ''); document.getElementById('title').textContent = L[l].title; document.getElementById('subtitle').textContent = L[l].subtitle; document.getElementById('input').placeholder = L[l].placeholder; showMain(); };
         function T(k) { return L[lang][k]; }
-        function getName(obj, field) { return obj[field + '_' + lang] || obj[field + '_ar'] || obj['name_' + lang] || obj['name_ar'] || ''; }
+        function getName(obj) { return obj['label_' + lang] || obj.label_ar || ''; }
         function time() { return new Date().toLocaleTimeString(lang === 'ar' ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' }); }
-        function scroll() { const c = document.getElementById('chat'); c.scrollTop = c.scrollHeight; }
-
-        function typing() {
-            const d = document.createElement('div');
-            d.className = 'msg bot'; d.id = 'typing';
-            d.innerHTML = `<div class="msg-avatar">🤖</div><div class="msg-content"><div class="typing"><span></span><span></span><span></span></div></div>`;
-            document.getElementById('chat').appendChild(d);
-            scroll();
-        }
-
+        function scroll() { document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight; }
+        function typing() { const d = document.createElement('div'); d.className = 'msg bot'; d.id = 'typing'; d.innerHTML = '<div class="msg-avatar">🤖</div><div class="msg-content"><div class="typing"><span></span><span></span><span></span></div></div>'; document.getElementById('chat').appendChild(d); scroll(); }
         function untype() { document.getElementById('typing')?.remove(); }
-
-        function bot(txt, extra = '') {
-            untype();
-            const d = document.createElement('div');
-            d.className = 'msg bot';
-            d.innerHTML = `<div class="msg-avatar">🤖</div><div class="msg-content">${txt ? `<div class="msg-bubble">${txt}</div>` : ''}${extra}<div class="msg-time">${time()}</div></div>`;
-            document.getElementById('chat').appendChild(d);
-            scroll();
-        }
-
-        function user(txt) {
-            const d = document.createElement('div');
-            d.className = 'msg user';
-            d.innerHTML = `<div class="msg-avatar">👤</div><div class="msg-content"><div class="msg-bubble">${txt}</div><div class="msg-time">${time()}</div></div>`;
-            document.getElementById('chat').appendChild(d);
-            scroll();
-        }
-
-        function showMain() {
-            document.getElementById('chat').innerHTML = '';
-            currentSection = null;
-            currentQuestionIndex = 0;
-            collectedData = {};
-            awaitingInput = false;
-            
-            if (!sections.length) { bot('لا توجد بيانات'); return; }
-
-            typing();
-            setTimeout(() => {
-                let btns = sections.map(s => 
-                    `<button class="menu-btn" onclick="selectSection('${s.id}')"><span class="icon">${s.icon}</span><span class="label">${getName(s, 'name')}</span></button>`
-                ).join('');
-                bot(T('welcome'), `<div class="btn-grid">${btns}</div>`);
-            }, 300);
-        }
-
-        window.selectSection = (sectionId) => {
-            const sec = sections.find(s => s.id === sectionId);
-            if (!sec) return;
-            
-            currentSection = sec;
-            currentQuestionIndex = 0;
-            collectedData = {};
-            
-            user(getName(sec, 'name'));
-            
-            // Get questions for this section
-            const secQuestions = questions.filter(q => q.section_id === sectionId).sort((a,b) => a.sort_order - b.sort_order);
-            
-            if (secQuestions.length > 0) {
-                // Start asking questions
-                setTimeout(() => askQuestion(secQuestions, 0), 400);
-            } else {
-                // No questions, execute action directly
-                setTimeout(() => executeAction(), 400);
-            }
-        };
-
-        function askQuestion(secQuestions, index) {
-            if (index >= secQuestions.length) {
-                // All questions answered, execute action
-                executeAction();
-                return;
-            }
-            
-            currentQuestionIndex = index;
-            const q = secQuestions[index];
-            awaitingInput = true;
-            
-            typing();
-            setTimeout(() => {
-                if (q.input_type === 'select' && q.options) {
-                    const opts = q.options.split('\n').filter(o => o.trim());
-                    let btns = opts.map(o => `<button class="quick-btn" onclick="answerQuestion('${o.trim()}')">${o.trim()}</button>`).join('');
-                    bot(`${q.icon} ${getName(q, 'label')}`, `<div class="quick-btns">${btns}</div><button class="back-btn" onclick="goHome()">${T('home')}</button>`);
-                } else {
-                    bot(`${q.icon} ${getName(q, 'label')}`, `<button class="back-btn" onclick="goHome()">${T('home')}</button>`);
-                    document.getElementById('input').focus();
-                    document.getElementById('input').placeholder = q.input_type === 'number' ? '123...' : q.input_type === 'date' ? 'YYYY-MM-DD' : T('placeholder');
-                }
-            }, 400);
-        }
-
-        window.answerQuestion = (answer) => {
-            if (!awaitingInput || !currentSection) return;
-            
-            const secQuestions = questions.filter(q => q.section_id === currentSection.id).sort((a,b) => a.sort_order - b.sort_order);
-            const currentQ = secQuestions[currentQuestionIndex];
-            
-            if (currentQ) {
-                collectedData[currentQ.var_name] = answer;
-            }
-            
-            user(answer);
-            awaitingInput = false;
-            
-            // Next question
-            setTimeout(() => askQuestion(secQuestions, currentQuestionIndex + 1), 400);
-        };
-
-        async function executeAction() {
-            if (!currentSection) return;
-            
-            const sec = currentSection;
-            const actionType = sec.action_type || 'ai';
-            
-            typing();
-            
-            // Show collected data summary
-            let dataSummary = '';
-            if (Object.keys(collectedData).length) {
-                dataSummary = `<div class="data-summary"><strong>${T('yourData')}</strong>${Object.entries(collectedData).map(([k,v]) => `<div class="data-row"><span class="key">${k}</span><span class="value">${v}</span></div>`).join('')}</div>`;
-            }
-            
-            setTimeout(async () => {
-                if (actionType === 'ai') {
-                    bot(T('thinking'), dataSummary);
-                    const answer = await callGemini(sec);
-                    untype();
-                    
-                    let filesHtml = '';
-                    if (sec.action_files?.length) {
-                        filesHtml = `<div class="file-links">${sec.action_files.map(f => {
-                            const url = `${SUPABASE_URL}/storage/v1/object/public/files/${f}`;
-                            return `<a class="file-link" href="${url}" target="_blank">📎 ${f.split('_').slice(1).join('_') || f}</a>`;
-                        }).join('')}</div>`;
-                    }
-                    
-                    bot('', `<div class="ai-badge">${T('aiAnswer')}</div><div class="info-card">${answer}</div>${filesHtml}${navButtons()}`);
-                }
-                else if (actionType === 'static') {
-                    const resp = getName(sec, 'action_response') || 'لا توجد إجابة';
-                    bot('', `${dataSummary}<div class="info-card">${resp}</div>${navButtons()}`);
-                }
-                else if (actionType === 'phone') {
-                    const phone = sec.action_phone || '';
-                    bot('', `${dataSummary}<div class="contact-card"><a href="tel:${phone}">${T('call')}<br><span style="font-size:20px;margin-top:5px;display:block;">${phone}</span></a></div>${navButtons()}`);
-                }
-                else if (actionType === 'whatsapp') {
-                    const phone = sec.action_phone || '';
-                    const waLink = `https://wa.me/${phone.replace(/[^0-9]/g, '')}`;
-                    bot('', `${dataSummary}<div class="contact-card whatsapp"><a href="${waLink}" target="_blank">${T('whatsapp')}<br><span style="font-size:20px;margin-top:5px;display:block;">${phone}</span></a></div>${navButtons()}`);
-                }
-                else if (actionType === 'webhook') {
-                    sendWebhook(sec);
-                    bot('', `${dataSummary}<div class="info-card">📩 تم إرسال طلبك وسيتم التواصل معك قريباً</div>${navButtons()}`);
-                }
-            }, 500);
-        }
-
-        function navButtons() {
-            return `<div class="quick-btns" style="margin-top:12px;"><button class="quick-btn green" onclick="goHome()">${T('home')}</button></div>`;
-        }
-
-        async function callGemini(sec) {
-            if (!settings.gemini_key) return 'عذراً، لم يتم إعداد AI';
-            
-            try {
-                // Load file contents
-                let filesContent = '';
-                if (sec.action_files?.length) {
-                    for (const fileName of sec.action_files) {
-                        try {
-                            const { data } = await db.storage.from('files').download(fileName);
-                            if (data) {
-                                const text = await data.text();
-                                filesContent += `\n\n=== ${fileName} ===\n${text}`;
-                            }
-                        } catch (e) { console.error('File load error:', e); }
-                    }
-                }
-                
-                const userData = Object.entries(collectedData).map(([k,v]) => `${k}: ${v}`).join('\n');
-                const basePrompt = sec.action_prompt || 'أنت مساعد ذكي. ابحث في الملفات وأجب على استفسار المستخدم بناءً على بياناته. أجب باللغة العربية بشكل مختصر ومفيد.';
-                
-                const fullPrompt = `${basePrompt}
-
-بيانات المستخدم:
-${userData || 'لا توجد بيانات'}
-
-الملفات:
-${filesContent || 'لا توجد ملفات'}
-
-المطلوب: بناءً على بيانات المستخدم، ابحث في الملفات وأعطه إجابة مفيدة ومختصرة.`;
-
-                const res = await fetch(`${GEMINI_API}?key=${settings.gemini_key}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: fullPrompt }] }] })
-                });
-                
-                const data = await res.json();
-                return data.candidates?.[0]?.content?.parts?.[0]?.text || 'عذراً، لم أتمكن من الإجابة';
-            } catch (e) {
-                console.error('Gemini error:', e);
-                return 'حدث خطأ في الاتصال';
-            }
-        }
-
-        function sendWebhook(sec) {
-            if (!settings.webhook_url) return;
-            fetch(settings.webhook_url, {
-                method: 'POST',
-                body: JSON.stringify({
-                    section: getName(sec, 'name'),
-                    section_id: sec.id,
-                    collected_data: collectedData,
-                    timestamp: new Date().toISOString()
-                }),
-                mode: 'no-cors'
-            }).catch(() => {});
-        }
-
-        window.handleInput = () => {
-            const inp = document.getElementById('input');
-            const txt = inp.value.trim();
-            if (!txt) return;
-            inp.value = '';
-            
-            if (awaitingInput) {
-                answerQuestion(txt);
-            } else {
-                // Free question - direct AI
-                user(txt);
-                typing();
-                setTimeout(async () => {
-                    const answer = await freeAI(txt);
-                    bot('', `<div class="ai-badge">${T('aiAnswer')}</div><div class="info-card">${answer}</div><div class="quick-btns" style="margin-top:12px;"><button class="quick-btn green" onclick="goHome()">${T('home')}</button></div>`);
-                }, 300);
-            }
-        };
-
-        async function freeAI(question) {
-            if (!settings.gemini_key) return 'عذراً، لم يتم إعداد AI';
-            try {
-                const res = await fetch(`${GEMINI_API}?key=${settings.gemini_key}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: `أنت مساعد موارد بشرية ذكي. أجب بشكل مختصر ومفيد باللغة العربية.\n\nالسؤال: ${question}` }] }] })
-                });
-                const data = await res.json();
-                return data.candidates?.[0]?.content?.parts?.[0]?.text || 'عذراً';
-            } catch (e) { return 'خطأ في الاتصال'; }
-        }
-
-        window.goHome = () => {
-            user(T('home'));
-            showMain();
-        };
-
+        function bot(txt, extra = '') { untype(); const d = document.createElement('div'); d.className = 'msg bot'; d.innerHTML = '<div class="msg-avatar">🤖</div><div class="msg-content">' + (txt ? '<div class="msg-bubble">' + txt + '</div>' : '') + extra + '<div class="msg-time">' + time() + '</div></div>'; document.getElementById('chat').appendChild(d); scroll(); }
+        function user(txt) { const d = document.createElement('div'); d.className = 'msg user'; d.innerHTML = '<div class="msg-avatar">👤</div><div class="msg-content"><div class="msg-bubble">' + txt + '</div><div class="msg-time">' + time() + '</div></div>'; document.getElementById('chat').appendChild(d); scroll(); }
+        function showMain() { document.getElementById('chat').innerHTML = ''; currentNode = null; collectedData = {}; awaitingInput = false; history = []; const roots = tree.filter(n => !n.parent_id); if (!roots.length) { bot('لا توجد بيانات'); return; } typing(); setTimeout(() => { bot(T('welcome'), '<div class="btn-grid">' + roots.map(n => '<button class="menu-btn" onclick="selectNode(\'' + n.id + '\')"><span class="icon">' + n.icon + '</span><span class="label">' + getName(n) + '</span></button>').join('') + '</div>'); }, 300); }
+        window.selectNode = (nodeId) => { const node = tree.find(n => n.id === nodeId); if (!node) return; history.push(currentNode?.id || null); currentNode = node; user(getName(node)); if (node.has_action && node.action_id) { executeAction(node.action_id); return; } const children = getValidChildren(node.id); if (node.input_type && node.input_type !== 'none') { askQuestion(node, children); return; } if (children.length) { showChildren(node, children); } else { bot('لا توجد خيارات', navButtons()); } };
+        function getValidChildren(parentId) { return tree.filter(n => { if (n.parent_id !== parentId) return false; if (n.show_if_value) { const parent = tree.find(p => p.id === parentId); if (parent?.var_name && collectedData[parent.var_name] !== n.show_if_value) return false; } return true; }); }
+        function askQuestion(node, children) { awaitingInput = true; typing(); setTimeout(() => { if (node.input_type === 'select' && node.options) { const opts = node.options.split('\n').filter(o => o.trim()); bot(node.icon + ' ' + getName(node), '<div class="quick-btns">' + opts.map(o => '<button class="quick-btn" onclick="answerQuestion(\'' + o.trim() + '\')">' + o.trim() + '</button>').join('') + '</div><button class="back-btn" onclick="goBack()">' + T('back') + '</button>'); } else { bot(node.icon + ' ' + getName(node), '<button class="back-btn" onclick="goBack()">' + T('back') + '</button>'); document.getElementById('input').focus(); } }, 300); }
+        function showChildren(node, children) { typing(); setTimeout(() => { if (children.length === 1 && children[0].input_type === 'none') { selectNode(children[0].id); } else { bot(node.icon + ' ' + getName(node), '<div class="quick-btns">' + children.map(c => '<button class="quick-btn" onclick="selectNode(\'' + c.id + '\')">' + c.icon + ' ' + getName(c) + '</button>').join('') + '</div><button class="back-btn" onclick="goBack()">' + T('back') + '</button>'); } }, 300); }
+        window.answerQuestion = (answer) => { if (!awaitingInput || !currentNode) return; if (currentNode.var_name) collectedData[currentNode.var_name] = answer; user(answer); awaitingInput = false; if (currentNode.has_action && currentNode.action_id) { executeAction(currentNode.action_id); return; } const children = getValidChildren(currentNode.id); if (children.length) { if (children.length === 1) { setTimeout(() => selectNode(children[0].id), 300); } else { showChildren(currentNode, children); } } else { bot('شكراً لك!', navButtons()); } };
+        async function executeAction(actionId) { const action = actions.find(a => a.id === actionId); if (!action) { bot('الأكشن غير موجود', navButtons()); return; } typing(); let dataSummary = ''; if (Object.keys(collectedData).length) { dataSummary = '<div class="data-summary"><strong>' + T('yourData') + '</strong>' + Object.entries(collectedData).map(([k,v]) => '<div class="data-row"><span>' + k + '</span><span>' + v + '</span></div>').join('') + '</div>'; } setTimeout(async () => { if (action.action_type === 'file_ai') { bot(T('thinking'), dataSummary); const answer = await callGemini(action); let fileLink = ''; if (action.file_name) { const url = SUPABASE_URL + '/storage/v1/object/public/files/' + action.file_name; const displayName = action.file_name.split('_').slice(1).join('_') || action.file_name; fileLink = '<div class="file-links"><a class="file-link" href="' + url + '" target="_blank">📎 ' + displayName + '</a></div>'; } bot('', '<div class="ai-badge">' + T('aiAnswer') + '</div><div class="info-card">' + answer + '</div>' + fileLink + navButtons()); } else if (action.action_type === 'static') { bot('', dataSummary + '<div class="info-card">' + (action.response_ar || 'لا توجد إجابة') + '</div>' + navButtons()); } else if (action.action_type === 'phone') { bot('', dataSummary + '<div class="contact-card"><a href="tel:' + action.phone_number + '">' + T('call') + '<br><span style="font-size:20px;">' + action.phone_number + '</span></a></div>' + navButtons()); } else if (action.action_type === 'whatsapp') { const waLink = 'https://wa.me/' + action.phone_number?.replace(/[^0-9]/g, ''); bot('', dataSummary + '<div class="contact-card whatsapp"><a href="' + waLink + '" target="_blank">' + T('whatsapp') + '<br><span style="font-size:20px;">' + action.phone_number + '</span></a></div>' + navButtons()); } else if (action.action_type === 'webhook') { sendWebhook(action); bot('', dataSummary + '<div class="info-card">📩 تم إرسال طلبك</div>' + navButtons()); } }, 500); }
+        async function callGemini(action) { if (!settings.gemini_key) return 'لم يتم إعداد AI'; try { let fileContent = ''; if (action.file_name) { try { const { data } = await db.storage.from('files').download(action.file_name); if (data) fileContent = await data.text(); } catch (e) { } } const userData = Object.entries(collectedData).map(([k,v]) => k + ': ' + v).join('\n'); const prompt = (action.ai_prompt || 'أنت مساعد ذكي. ابحث في الملف وأجب.') + '\n\nبيانات المستخدم:\n' + (userData || 'لا توجد') + '\n\nالملف:\n' + (fileContent || 'لا يوجد') + '\n\nأجب باللغة العربية بشكل مختصر.'; const res = await fetch(GEMINI_API + '?key=' + settings.gemini_key, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) }); const data = await res.json(); return data.candidates?.[0]?.content?.parts?.[0]?.text || 'عذراً'; } catch (e) { return 'خطأ'; } }
+        function sendWebhook(action) { const url = action.webhook_url || settings.webhook_url; if (!url) return; fetch(url, { method: 'POST', body: JSON.stringify({ action: action.name, data: collectedData, timestamp: new Date().toISOString() }), mode: 'no-cors' }).catch(() => {}); }
+        function navButtons() { return '<div class="quick-btns" style="margin-top:12px;"><button class="quick-btn green" onclick="goHome()">' + T('home') + '</button></div>'; }
+        window.goBack = () => { if (!history.length) { goHome(); return; } user(T('back')); awaitingInput = false; const prevId = history.pop(); if (!prevId) { showMain(); } else { currentNode = tree.find(n => n.id === prevId); const children = getValidChildren(prevId); if (children.length) { showChildren(currentNode, children); } else { showMain(); } } };
+        window.goHome = () => { user(T('home')); showMain(); };
+        window.handleInput = () => { const inp = document.getElementById('input'); const txt = inp.value.trim(); if (!txt) return; inp.value = ''; if (awaitingInput) { answerQuestion(txt); } else { user(txt); typing(); setTimeout(async () => { const answer = await freeAI(txt); bot('', '<div class="ai-badge">' + T('aiAnswer') + '</div><div class="info-card">' + answer + '</div>' + navButtons()); }, 300); } };
+        async function freeAI(question) { if (!settings.gemini_key) return 'لم يتم إعداد AI'; try { const res = await fetch(GEMINI_API + '?key=' + settings.gemini_key, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: 'أنت مساعد موارد بشرية ذكي. أجب بشكل مختصر باللغة العربية.\n\nالسؤال: ' + question }] }] }) }); const data = await res.json(); return data.candidates?.[0]?.content?.parts?.[0]?.text || 'عذراً'; } catch (e) { return 'خطأ'; } }
         document.getElementById('input').addEventListener('keypress', e => { if (e.key === 'Enter') window.handleInput(); });
-        
-        // Init
-        document.getElementById('btnAr').className = 'lang-btn' + (lang === 'ar' ? ' active' : '');
-        document.getElementById('btnEn').className = 'lang-btn' + (lang === 'en' ? ' active' : '');
-        document.body.className = lang === 'en' ? 'en' : '';
-        document.getElementById('title').textContent = L[lang].title;
-        document.getElementById('input').placeholder = L[lang].placeholder;
-        
+        document.getElementById('btnAr').className = 'lang-btn' + (lang === 'ar' ? ' active' : ''); document.getElementById('btnEn').className = 'lang-btn' + (lang === 'en' ? ' active' : ''); document.body.className = lang === 'en' ? 'en' : ''; document.getElementById('title').textContent = L[lang].title; document.getElementById('input').placeholder = L[lang].placeholder;
         loadData();
     </script>
 </body>
