@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم المتطورة</title>
+    <title>لوحة التحكم الذكية</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,181 +13,162 @@
             --danger: #EF4444; --danger-light: #FEE2E2;
             --purple: #8B5CF6; --purple-light: #EDE9FE;
             --blue: #3B82F6; --blue-light: #DBEAFE;
+            --cyan: #06B6D4; --cyan-light: #CFFAFE;
             --bg: #F1F5F9; --card: #FFFFFF;
             --text: #1E293B; --text-light: #64748B; --border: #E2E8F0;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Tajawal', sans-serif; background: var(--bg); min-height: 100vh; }
         
-        .sidebar { position: fixed; top: 0; right: 0; width: 250px; height: 100vh; background: var(--card); border-left: 1px solid var(--border); padding: 20px; }
-        .logo { font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
-        .nav-item { padding: 12px 15px; border-radius: 10px; margin-bottom: 5px; cursor: pointer; display: flex; align-items: center; gap: 10px; color: var(--text-light); font-weight: 500; transition: 0.2s; }
+        .sidebar { position: fixed; top: 0; right: 0; width: 220px; height: 100vh; background: var(--card); border-left: 1px solid var(--border); padding: 15px; overflow-y: auto; }
+        .logo { font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+        .nav-item { padding: 10px 12px; border-radius: 8px; margin-bottom: 4px; cursor: pointer; display: flex; align-items: center; gap: 8px; color: var(--text-light); font-weight: 500; transition: 0.2s; font-size: 13px; }
         .nav-item:hover, .nav-item.active { background: var(--primary-light); color: var(--primary); }
-        .nav-item span { font-size: 18px; }
         
-        .main { margin-right: 250px; padding: 20px; }
+        .main { margin-right: 220px; padding: 15px; }
         
-        .header { background: linear-gradient(135deg, var(--primary), #7C3AED); color: white; padding: 25px; border-radius: 16px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
-        .header h1 { font-size: 22px; }
-        .header-actions { display: flex; gap: 10px; }
-        .status { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; font-size: 13px; }
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; }
-        .status-dot.online { background: #34D399; }
+        .header { background: linear-gradient(135deg, var(--primary), #7C3AED); color: white; padding: 18px 20px; border-radius: 14px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 18px; }
+        .status { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 15px; font-size: 11px; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #34D399; }
         
-        .btn { padding: 10px 20px; border: none; border-radius: 10px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s; }
-        .btn:hover { transform: translateY(-1px); }
-        .btn-white { background: white; color: var(--primary); }
-        .btn-success { background: var(--success); color: white; }
+        .btn { padding: 8px 16px; border: none; border-radius: 8px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; transition: 0.2s; }
+        .btn:hover { opacity: 0.9; }
         .btn-primary { background: var(--primary); color: white; }
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-sm { padding: 8px 14px; font-size: 13px; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-sm { padding: 5px 10px; font-size: 11px; }
         
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-        .tab { padding: 12px 24px; background: var(--card); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; font-weight: 600; transition: 0.2s; }
-        .tab:hover { border-color: var(--primary); }
-        .tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        .card { background: var(--card); border-radius: 14px; padding: 15px; margin-bottom: 15px; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 2px solid var(--border); }
+        .card-header h2 { font-size: 15px; display: flex; align-items: center; gap: 8px; }
         
-        .card { background: var(--card); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid var(--border); }
-        .card-header h2 { font-size: 18px; display: flex; align-items: center; gap: 10px; }
+        /* Tree */
+        .tree-node { margin-bottom: 6px; }
+        .node-row { display: flex; align-items: center; gap: 6px; padding: 10px 12px; background: var(--bg); border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 13px; }
+        .node-row:hover { background: var(--primary-light); }
+        .node-icon { font-size: 18px; }
+        .node-label { flex: 1; font-weight: 600; }
+        .node-badge { padding: 2px 6px; border-radius: 10px; font-size: 9px; font-weight: 600; }
+        .node-badge.branch { background: var(--purple-light); color: var(--purple); }
+        .node-badge.question { background: var(--cyan-light); color: var(--cyan); }
+        .node-badge.endpoint { background: var(--success-light); color: var(--success); }
+        .node-actions button { width: 24px; height: 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 11px; margin-left: 3px; }
+        .node-actions .add { background: var(--success-light); color: var(--success); }
+        .node-actions .edit { background: var(--warning-light); color: var(--warning); }
+        .node-actions .delete { background: var(--danger-light); color: var(--danger); }
+        .node-children { margin-right: 20px; padding-right: 12px; border-right: 2px solid var(--border); margin-top: 6px; }
         
-        .settings-row { display: flex; gap: 15px; align-items: center; margin-bottom: 15px; flex-wrap: wrap; }
-        .settings-row label { font-weight: 600; min-width: 120px; }
-        .settings-row input { flex: 1; min-width: 200px; padding: 10px 14px; border: 2px solid var(--border); border-radius: 8px; font-family: inherit; }
-        .settings-row input:focus { outline: none; border-color: var(--primary); }
+        .add-root-btn { width: 100%; padding: 12px; border: 2px dashed var(--border); border-radius: 10px; background: transparent; color: var(--text-light); font-family: inherit; font-size: 13px; cursor: pointer; margin-top: 10px; }
+        .add-root-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
         
-        /* Files Section */
-        .upload-zone { border: 2px dashed var(--border); border-radius: 12px; padding: 40px; text-align: center; cursor: pointer; transition: 0.2s; }
+        /* Settings */
+        .settings-row { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+        .settings-row label { font-weight: 600; min-width: 110px; font-size: 13px; }
+        .settings-row input { flex: 1; min-width: 180px; padding: 8px 10px; border: 2px solid var(--border); border-radius: 6px; font-family: inherit; font-size: 12px; }
+        
+        /* Files */
+        .upload-zone { border: 2px dashed var(--border); border-radius: 10px; padding: 25px; text-align: center; cursor: pointer; }
         .upload-zone:hover { border-color: var(--primary); background: var(--primary-light); }
-        .upload-zone.dragover { border-color: var(--success); background: var(--success-light); }
-        .upload-zone span { font-size: 48px; display: block; margin-bottom: 10px; }
-        .upload-zone p { color: var(--text-light); }
+        .upload-zone span { font-size: 32px; }
         .upload-zone input { display: none; }
-        
-        .files-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
-        .file-card { background: var(--bg); border-radius: 12px; padding: 15px; text-align: center; position: relative; }
-        .file-card .icon { font-size: 40px; margin-bottom: 10px; }
-        .file-card .name { font-weight: 600; font-size: 13px; word-break: break-all; }
-        .file-card .size { font-size: 11px; color: var(--text-light); margin-top: 5px; }
-        .file-card .delete { position: absolute; top: 10px; left: 10px; width: 28px; height: 28px; border-radius: 50%; background: var(--danger); color: white; border: none; cursor: pointer; font-size: 14px; }
-        
-        /* Categories */
-        .category { background: var(--bg); border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
-        .cat-header { padding: 15px; background: var(--primary-light); display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .cat-header:hover { background: #E0E7FF; }
-        .cat-title { display: flex; align-items: center; gap: 10px; font-weight: 700; }
-        .cat-title .icon { width: 40px; height: 40px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-        .cat-actions { display: flex; gap: 6px; }
-        
-        .icon-btn { width: 32px; height: 32px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; }
-        .icon-btn.edit { background: var(--warning-light); color: var(--warning); }
-        .icon-btn.delete { background: var(--danger-light); color: var(--danger); }
-        .icon-btn.add { background: var(--success-light); color: var(--success); }
-        
-        .cat-content { padding: 15px; display: none; }
-        .category.open .cat-content { display: block; }
-        .category.open .cat-header { background: var(--primary); color: white; }
-        
-        .item { background: white; border-radius: 10px; margin-bottom: 10px; border: 2px solid var(--border); }
-        .item-header { padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; }
-        .item-title { display: flex; align-items: center; gap: 8px; font-weight: 600; }
-        
-        .badge { padding: 3px 8px; border-radius: 15px; font-size: 10px; font-weight: 600; margin-left: 5px; }
-        .badge.ai { background: var(--blue-light); color: var(--blue); }
-        .badge.webhook { background: var(--success-light); color: var(--success); }
-        .badge.static { background: var(--warning-light); color: var(--warning); }
-        
-        .add-btn { width: 100%; padding: 12px; border: 2px dashed var(--border); border-radius: 10px; background: transparent; color: var(--text-light); font-family: inherit; font-size: 13px; cursor: pointer; }
-        .add-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+        .files-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; margin-top: 12px; }
+        .file-card { background: var(--bg); border-radius: 8px; padding: 10px; text-align: center; position: relative; }
+        .file-card .icon { font-size: 28px; }
+        .file-card .name { font-size: 10px; font-weight: 600; word-break: break-all; margin-top: 5px; }
+        .file-card .delete { position: absolute; top: 5px; left: 5px; width: 20px; height: 20px; border-radius: 50%; background: var(--danger); color: white; border: none; cursor: pointer; font-size: 10px; }
         
         /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 15px; }
         .modal.active { display: flex; }
-        .modal-box { background: white; border-radius: 16px; padding: 25px; width: 100%; max-width: 550px; max-height: 90vh; overflow-y: auto; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .modal-header h2 { font-size: 20px; }
-        .close-btn { width: 36px; height: 36px; border: none; border-radius: 8px; background: var(--bg); font-size: 18px; cursor: pointer; }
+        .modal-box { background: white; border-radius: 14px; padding: 20px; width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .modal-header h2 { font-size: 16px; }
+        .close-btn { width: 30px; height: 30px; border: none; border-radius: 6px; background: var(--bg); font-size: 14px; cursor: pointer; }
         
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 14px; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 14px; }
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 12px; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 9px 11px; border: 2px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 12px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
         
-        .type-select { display: flex; gap: 10px; margin-bottom: 15px; }
-        .type-option { flex: 1; padding: 15px 10px; border: 2px solid var(--border); border-radius: 10px; text-align: center; cursor: pointer; transition: 0.2s; }
-        .type-option:hover { border-color: var(--primary); }
-        .type-option.active { border-color: var(--primary); background: var(--primary-light); }
-        .type-option span { font-size: 24px; display: block; margin-bottom: 5px; }
-        .type-option small { font-size: 11px; color: var(--text-light); }
+        .type-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
+        .type-card { padding: 12px 8px; border: 2px solid var(--border); border-radius: 8px; text-align: center; cursor: pointer; font-size: 11px; }
+        .type-card:hover { border-color: var(--primary); }
+        .type-card.active { border-color: var(--primary); background: var(--primary-light); }
+        .type-card span { font-size: 20px; display: block; margin-bottom: 3px; }
         
-        .modal-btns { display: flex; gap: 10px; margin-top: 20px; }
-        .modal-btns button { flex: 1; padding: 12px; border-radius: 10px; font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; border: none; }
+        .endpoint-types { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 12px; }
+        .ep-type { padding: 8px 4px; border: 2px solid var(--border); border-radius: 6px; text-align: center; cursor: pointer; font-size: 10px; }
+        .ep-type:hover { border-color: var(--primary); }
+        .ep-type.active { border-color: var(--primary); background: var(--primary-light); }
+        .ep-type span { font-size: 16px; display: block; margin-bottom: 2px; }
+        
+        .question-types { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
+        .q-type { padding: 8px; border: 2px solid var(--border); border-radius: 6px; text-align: center; cursor: pointer; font-size: 10px; }
+        .q-type:hover { border-color: var(--cyan); }
+        .q-type.active { border-color: var(--cyan); background: var(--cyan-light); }
+        
+        .files-select { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; background: var(--bg); border-radius: 8px; min-height: 50px; }
+        .file-tag { display: flex; align-items: center; gap: 4px; padding: 4px 8px; background: var(--primary-light); color: var(--primary); border-radius: 15px; font-size: 11px; font-weight: 600; }
+        .file-tag button { background: none; border: none; color: var(--danger); cursor: pointer; font-size: 12px; }
+        
+        .modal-btns { display: flex; gap: 10px; margin-top: 15px; }
+        .modal-btns button { flex: 1; padding: 10px; border-radius: 8px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
         .btn-cancel { background: var(--bg); color: var(--text); }
         .btn-save { background: var(--success); color: white; }
         
-        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--success); color: white; padding: 12px 25px; border-radius: 10px; font-weight: 600; opacity: 0; transition: 0.3s; z-index: 2000; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--success); color: white; padding: 10px 20px; border-radius: 8px; font-weight: 600; opacity: 0; transition: 0.3s; z-index: 2000; font-size: 13px; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         .toast.error { background: var(--danger); }
         
         .page { display: none; }
         .page.active { display: block; }
+        .empty { text-align: center; padding: 30px; color: var(--text-light); }
+        .empty span { font-size: 40px; display: block; margin-bottom: 8px; }
         
-        .loading { text-align: center; padding: 40px; color: var(--text-light); }
-        .empty { text-align: center; padding: 40px; color: var(--text-light); }
-        .empty span { font-size: 48px; display: block; margin-bottom: 10px; }
+        .section-title { font-size: 12px; font-weight: 600; color: var(--text-light); margin: 15px 0 8px; padding-top: 10px; border-top: 1px solid var(--border); }
         
-        @media (max-width: 900px) {
-            .sidebar { display: none; }
-            .main { margin-right: 0; }
-        }
+        @media (max-width: 768px) { .sidebar { display: none; } .main { margin-right: 0; } }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
     <div class="sidebar">
-        <div class="logo">🎛️ لوحة التحكم</div>
-        <div class="nav-item active" onclick="showPage('questions')"><span>📂</span> الأقسام والأسئلة</div>
-        <div class="nav-item" onclick="showPage('files')"><span>📁</span> إدارة الملفات</div>
-        <div class="nav-item" onclick="showPage('settings')"><span>⚙️</span> الإعدادات</div>
-        <div class="nav-item" onclick="window.open('index.html','_blank')"><span>👁️</span> معاينة الفورم</div>
+        <div class="logo">🧠 النظام الذكي</div>
+        <div class="nav-item active" onclick="showPage('tree', this)">📂 الشجرة</div>
+        <div class="nav-item" onclick="showPage('files', this)">📁 الملفات</div>
+        <div class="nav-item" onclick="showPage('settings', this)">⚙️ الإعدادات</div>
+        <div class="nav-item" onclick="window.open('index.html','_blank')">👁️ معاينة</div>
     </div>
 
-    <!-- Main Content -->
     <div class="main">
         <div class="header">
             <div>
-                <h1>مركز دعم الموظفين</h1>
-                <p style="opacity:0.8;font-size:14px;">لوحة التحكم المتطورة مع Gemini AI</p>
+                <h1>🧠 نظام دعم الموظفين الذكي</h1>
+                <p style="opacity:0.8;font-size:11px;">أسئلة + فلترة + AI + ملفات</p>
             </div>
-            <div class="status">
-                <span class="status-dot" id="statusDot"></span>
-                <span id="statusText">جاري الاتصال...</span>
-            </div>
+            <div class="status"><span class="status-dot" id="statusDot"></span><span id="statusText">متصل</span></div>
         </div>
 
-        <!-- Questions Page -->
-        <div class="page active" id="page-questions">
+        <!-- Tree Page -->
+        <div class="page active" id="page-tree">
             <div class="card">
                 <div class="card-header">
-                    <h2>📂 الأقسام والأسئلة</h2>
-                    <button class="btn btn-success" onclick="addCategory()">➕ قسم جديد</button>
+                    <h2>📂 هيكل الشجرة</h2>
+                    <div style="font-size:10px;color:var(--text-light);">📂 فرع | ❓ سؤال | 🏁 نهاية</div>
                 </div>
-                <div id="categoriesContent"></div>
+                <div id="treeContainer"></div>
+                <button class="add-root-btn" onclick="addNode(null)">➕ قسم رئيسي جديد</button>
             </div>
         </div>
 
         <!-- Files Page -->
         <div class="page" id="page-files">
             <div class="card">
-                <div class="card-header">
-                    <h2>📁 إدارة الملفات</h2>
-                </div>
-                <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+                <div class="card-header"><h2>📁 الملفات</h2></div>
+                <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
                     <span>📤</span>
-                    <p>اسحب الملفات هنا أو اضغط للاختيار</p>
-                    <p style="font-size:12px;margin-top:5px;">PDF, Word, Excel, صور</p>
-                    <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg">
+                    <p style="font-size:12px;color:var(--text-light);">اسحب أو اضغط لرفع ملفات</p>
+                    <input type="file" id="fileInput" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.png,.jpg,.jpeg">
                 </div>
                 <div class="files-grid" id="filesGrid"></div>
             </div>
@@ -196,127 +177,130 @@
         <!-- Settings Page -->
         <div class="page" id="page-settings">
             <div class="card">
-                <div class="card-header">
-                    <h2>⚙️ الإعدادات</h2>
-                </div>
+                <div class="card-header"><h2>⚙️ الإعدادات</h2></div>
                 <div class="settings-row">
-                    <label>🔑 Gemini API Key:</label>
+                    <label>🔑 Gemini API:</label>
                     <input type="password" id="geminiKey" placeholder="AIzaSy...">
                     <button class="btn btn-primary btn-sm" onclick="saveSettings()">حفظ</button>
                 </div>
                 <div class="settings-row">
-                    <label>🔗 Webhook URL:</label>
-                    <input type="text" id="webhookUrl" placeholder="https://hook.eu2.make.com/...">
+                    <label>🔗 Webhook:</label>
+                    <input type="text" id="webhookUrl" placeholder="https://...">
                     <button class="btn btn-primary btn-sm" onclick="saveSettings()">حفظ</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Category Modal -->
-    <div class="modal" id="catModal">
+    <!-- Node Modal -->
+    <div class="modal" id="nodeModal">
         <div class="modal-box">
             <div class="modal-header">
-                <h2 id="catModalTitle">إضافة قسم</h2>
-                <button class="close-btn" onclick="closeModal('catModal')">×</button>
+                <h2 id="nodeModalTitle">إضافة عنصر</h2>
+                <button class="close-btn" onclick="closeModal()">×</button>
             </div>
-            <form onsubmit="saveCat(event)">
-                <input type="hidden" id="catId">
-                <div class="form-group">
-                    <label>الأيقونة</label>
-                    <input type="text" id="catIcon" placeholder="💰" maxlength="2" required>
-                </div>
-                <div class="form-row">
+            <form onsubmit="saveNode(event)">
+                <input type="hidden" id="nodeId">
+                <input type="hidden" id="nodeParentId">
+                
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label>الأيقونة</label>
+                        <input type="text" id="nodeIcon" placeholder="📁" maxlength="2" required>
+                    </div>
                     <div class="form-group">
                         <label>الاسم عربي</label>
-                        <input type="text" id="catNameAr" required>
+                        <input type="text" id="nodeLabelAr" required>
                     </div>
                     <div class="form-group">
                         <label>الاسم إنجليزي</label>
-                        <input type="text" id="catNameEn" required>
+                        <input type="text" id="nodeLabelEn" required>
                     </div>
                 </div>
+                
+                <label style="font-weight:600;font-size:12px;margin-bottom:6px;display:block;">نوع العنصر:</label>
+                <div class="type-cards">
+                    <div class="type-card active" id="typeBranch" onclick="setNodeType('branch')">
+                        <span>📂</span>فرع
+                    </div>
+                    <div class="type-card" id="typeQuestion" onclick="setNodeType('question')">
+                        <span>❓</span>سؤال
+                    </div>
+                    <div class="type-card" id="typeEndpoint" onclick="setNodeType('endpoint')">
+                        <span>🏁</span>نهاية
+                    </div>
+                </div>
+                
+                <!-- Question Section -->
+                <div id="questionSection" style="display:none;">
+                    <div class="section-title">⚙️ إعدادات السؤال</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>اسم المتغير (بالإنجليزي)</label>
+                            <input type="text" id="questionKey" placeholder="name, emp_id, month">
+                        </div>
+                        <div class="form-group">
+                            <label>نوع الإدخال</label>
+                            <select id="questionType">
+                                <option value="text">نص</option>
+                                <option value="number">رقم</option>
+                                <option value="select">اختيارات</option>
+                                <option value="date">تاريخ</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" id="optionsGroup" style="display:none;">
+                        <label>الاختيارات (سطر لكل اختيار)</label>
+                        <textarea id="questionOptions" rows="3" placeholder="الراتب الحالي&#10;راتب شهر سابق&#10;كشف حساب"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Endpoint Section -->
+                <div id="endpointSection" style="display:none;">
+                    <div class="section-title">⚙️ إعدادات النهاية</div>
+                    <div class="endpoint-types">
+                        <div class="ep-type active" data-type="ai" onclick="setEndpointType('ai')"><span>🤖</span>AI</div>
+                        <div class="ep-type" data-type="static" onclick="setEndpointType('static')"><span>📝</span>ثابتة</div>
+                        <div class="ep-type" data-type="phone" onclick="setEndpointType('phone')"><span>📞</span>اتصال</div>
+                        <div class="ep-type" data-type="whatsapp" onclick="setEndpointType('whatsapp')"><span>💬</span>واتساب</div>
+                        <div class="ep-type" data-type="webhook" onclick="setEndpointType('webhook')"><span>🔗</span>Webhook</div>
+                    </div>
+                    
+                    <div id="aiFields">
+                        <div class="form-group">
+                            <label>📎 الملفات المرتبطة (AI يبحث فيها)</label>
+                            <select id="fileSelect" onchange="addFileToNode()">
+                                <option value="">-- اختر ملف --</option>
+                            </select>
+                            <div class="files-select" id="selectedFiles"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>تعليمات للـ AI</label>
+                            <textarea id="nodePrompt" rows="2" placeholder="ابحث عن بيانات الموظف باستخدام الاسم والرقم الوظيفي"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div id="staticFields" style="display:none;">
+                        <div class="form-group">
+                            <label>الإجابة عربي</label>
+                            <textarea id="nodeRespAr" rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>الإجابة إنجليزي</label>
+                            <textarea id="nodeRespEn" rows="2"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div id="phoneFields" style="display:none;">
+                        <div class="form-group">
+                            <label>رقم الهاتف (مع كود الدولة)</label>
+                            <input type="text" id="nodePhone" placeholder="966501234567">
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="modal-btns">
-                    <button type="button" class="btn-cancel" onclick="closeModal('catModal')">إلغاء</button>
-                    <button type="submit" class="btn-save">💾 حفظ</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Item Modal -->
-    <div class="modal" id="itemModal">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h2 id="itemModalTitle">إضافة سؤال</h2>
-                <button class="close-btn" onclick="closeModal('itemModal')">×</button>
-            </div>
-            <form onsubmit="saveItem(event)">
-                <input type="hidden" id="itemId">
-                <input type="hidden" id="itemCatId">
-                
-                <div class="form-group">
-                    <label>الأيقونة</label>
-                    <input type="text" id="itemIcon" placeholder="📆" maxlength="2" required>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>السؤال عربي</label>
-                        <input type="text" id="itemLabelAr" required>
-                    </div>
-                    <div class="form-group">
-                        <label>السؤال إنجليزي</label>
-                        <input type="text" id="itemLabelEn" required>
-                    </div>
-                </div>
-                
-                <label style="font-weight:600;margin-bottom:10px;display:block;">نوع الإجابة:</label>
-                <div class="type-select">
-                    <div class="type-option active" id="typeStatic" onclick="setAnswerType('static')">
-                        <span>📝</span>
-                        ثابتة
-                        <small>تكتبها أنت</small>
-                    </div>
-                    <div class="type-option" id="typeAI" onclick="setAnswerType('ai')">
-                        <span>🤖</span>
-                        AI ذكي
-                        <small>Gemini يجيب</small>
-                    </div>
-                    <div class="type-option" id="typeWebhook" onclick="setAnswerType('webhook')">
-                        <span>🔗</span>
-                        Webhook
-                        <small>إرسال خارجي</small>
-                    </div>
-                </div>
-                
-                <!-- Static Answer -->
-                <div id="staticSection">
-                    <div class="form-group">
-                        <label>الإجابة عربي</label>
-                        <textarea id="itemRespAr" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>الإجابة إنجليزي</label>
-                        <textarea id="itemRespEn" rows="3"></textarea>
-                    </div>
-                </div>
-                
-                <!-- AI Section -->
-                <div id="aiSection" style="display:none;">
-                    <div class="form-group">
-                        <label>اختر الملف للبحث فيه</label>
-                        <select id="itemFile">
-                            <option value="">-- اختر ملف --</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>تعليمات إضافية للـ AI (اختياري)</label>
-                        <textarea id="itemPrompt" rows="2" placeholder="مثال: أجب بشكل مختصر ومباشر"></textarea>
-                    </div>
-                </div>
-                
-                <div class="modal-btns">
-                    <button type="button" class="btn-cancel" onclick="closeModal('itemModal')">إلغاء</button>
+                    <button type="button" class="btn-cancel" onclick="closeModal()">إلغاء</button>
                     <button type="submit" class="btn-save">💾 حفظ</button>
                 </div>
             </form>
@@ -333,10 +317,10 @@
         
         const db = createClient(SUPABASE_URL, SUPABASE_KEY);
         
-        let categories = [], items = [], files = [], settings = {};
-        let answerType = 'static';
+        let nodes = [], files = [], settings = {};
+        let nodeType = 'branch', endpointType = 'ai';
+        let selectedNodeFiles = [];
 
-        // Load Data
         async function loadData() {
             try {
                 const { data: s } = await db.from('settings').select('*').limit(1).single();
@@ -346,322 +330,270 @@
                     document.getElementById('webhookUrl').value = s.webhook_url || '';
                 }
                 
-                const { data: c } = await db.from('categories').select('*').eq('is_active', true).order('sort_order');
-                categories = c || [];
-                
-                const { data: i } = await db.from('items').select('*').eq('is_active', true).order('sort_order');
-                items = i || [];
+                const { data: n } = await db.from('nodes').select('*').eq('is_active', true).order('sort_order');
+                nodes = n || [];
                 
                 await loadFiles();
-                
-                setStatus(true);
-                renderCategories();
+                renderTree();
+                document.getElementById('statusDot').style.background = '#34D399';
             } catch (e) {
                 console.error(e);
-                setStatus(false);
+                document.getElementById('statusDot').style.background = '#F87171';
             }
         }
 
         async function loadFiles() {
-            try {
-                const { data } = await db.storage.from('files').list();
-                files = data || [];
-                renderFiles();
-                updateFileSelect();
-            } catch (e) {
-                console.error(e);
-            }
+            const { data } = await db.storage.from('files').list();
+            files = data || [];
+            renderFiles();
+            updateFileSelect();
         }
 
-        function setStatus(online) {
-            document.getElementById('statusDot').className = 'status-dot ' + (online ? 'online' : 'offline');
-            document.getElementById('statusText').textContent = online ? 'متصل ✓' : 'غير متصل';
-        }
-
-        // Pages
-        window.showPage = (page) => {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('page-' + page).classList.add('active');
-            event.target.closest('.nav-item').classList.add('active');
-        };
-
-        // Render Categories
-        function renderCategories() {
-            const el = document.getElementById('categoriesContent');
-            if (!categories.length) {
-                el.innerHTML = '<div class="empty"><span>📭</span><p>لا توجد أقسام</p></div>';
+        function renderTree() {
+            const container = document.getElementById('treeContainer');
+            const rootNodes = nodes.filter(n => !n.parent_id);
+            if (!rootNodes.length) {
+                container.innerHTML = '<div class="empty"><span>📭</span><p>لا توجد عناصر</p></div>';
                 return;
             }
-            el.innerHTML = categories.map(c => {
-                const catItems = items.filter(i => i.category_id === c.id);
-                return `
-                    <div class="category" id="cat_${c.id}">
-                        <div class="cat-header" onclick="toggleCat('${c.id}')">
-                            <div class="cat-title">
-                                <div class="icon">${c.icon}</div>
-                                <div>${c.name_ar}</div>
-                            </div>
-                            <div class="cat-actions" onclick="event.stopPropagation()">
-                                <button class="icon-btn add" onclick="addItem('${c.id}')">➕</button>
-                                <button class="icon-btn edit" onclick="editCat('${c.id}')">✏️</button>
-                                <button class="icon-btn delete" onclick="delCat('${c.id}')">🗑️</button>
-                            </div>
-                        </div>
-                        <div class="cat-content">
-                            ${catItems.map(i => renderItem(i)).join('') || '<p style="color:var(--text-light);text-align:center;">لا توجد أسئلة</p>'}
-                            <button class="add-btn" onclick="addItem('${c.id}')">➕ إضافة سؤال</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
+            container.innerHTML = rootNodes.map(n => renderNode(n)).join('');
         }
 
-        function renderItem(i) {
-            let badge = '';
-            if (i.answer_type === 'ai') badge = '<span class="badge ai">🤖 AI</span>';
-            else if (i.answer_type === 'webhook') badge = '<span class="badge webhook">🔗 Webhook</span>';
-            else badge = '<span class="badge static">📝 ثابتة</span>';
+        function renderNode(node) {
+            const children = nodes.filter(n => n.parent_id === node.id);
+            let badgeClass = 'branch', badgeText = '📂 فرع';
+            
+            if (node.is_question) {
+                badgeClass = 'question';
+                badgeText = '❓ سؤال';
+            } else if (node.node_type === 'endpoint') {
+                badgeClass = 'endpoint';
+                badgeText = getEndpointLabel(node.endpoint_type);
+            }
             
             return `
-                <div class="item">
-                    <div class="item-header">
-                        <div class="item-title">
-                            <span>${i.icon}</span>
-                            <span>${i.label_ar}</span>
-                            ${badge}
-                        </div>
-                        <div>
-                            <button class="icon-btn edit" onclick="editItem('${i.id}')">✏️</button>
-                            <button class="icon-btn delete" onclick="delItem('${i.id}')">🗑️</button>
+                <div class="tree-node">
+                    <div class="node-row">
+                        <span class="node-icon">${node.icon}</span>
+                        <span class="node-label">${node.label_ar}</span>
+                        <span class="node-badge ${badgeClass}">${badgeText}</span>
+                        <div class="node-actions">
+                            ${node.node_type !== 'endpoint' ? `<button class="add" onclick="addNode('${node.id}')">➕</button>` : ''}
+                            <button class="edit" onclick="editNode('${node.id}')">✏️</button>
+                            <button class="delete" onclick="deleteNode('${node.id}')">🗑️</button>
                         </div>
                     </div>
+                    ${children.length ? `<div class="node-children">${children.map(c => renderNode(c)).join('')}</div>` : ''}
                 </div>
             `;
         }
 
-        // Render Files
-        function renderFiles() {
-            const el = document.getElementById('filesGrid');
-            if (!files.length) {
-                el.innerHTML = '<div class="empty"><span>📭</span><p>لا توجد ملفات</p></div>';
+        function getEndpointLabel(type) {
+            const labels = { ai: '🤖 AI', static: '📝 ثابتة', phone: '📞 اتصال', whatsapp: '💬 واتساب', webhook: '🔗 Webhook' };
+            return labels[type] || '🤖 AI';
+        }
+
+        window.showPage = (page, el) => {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('page-' + page).classList.add('active');
+            el.classList.add('active');
+        };
+
+        window.addNode = (parentId) => {
+            document.getElementById('nodeModalTitle').textContent = parentId ? 'إضافة عنصر فرعي' : 'إضافة قسم رئيسي';
+            document.getElementById('nodeId').value = '';
+            document.getElementById('nodeParentId').value = parentId || '';
+            document.getElementById('nodeIcon').value = '';
+            document.getElementById('nodeLabelAr').value = '';
+            document.getElementById('nodeLabelEn').value = '';
+            document.getElementById('questionKey').value = '';
+            document.getElementById('questionType').value = 'text';
+            document.getElementById('questionOptions').value = '';
+            document.getElementById('nodeRespAr').value = '';
+            document.getElementById('nodeRespEn').value = '';
+            document.getElementById('nodePhone').value = '';
+            document.getElementById('nodePrompt').value = '';
+            selectedNodeFiles = [];
+            renderSelectedFiles();
+            setNodeType('branch');
+            setEndpointType('ai');
+            openModal();
+        };
+
+        window.editNode = (id) => {
+            const node = nodes.find(n => n.id === id);
+            if (!node) return;
+            
+            document.getElementById('nodeModalTitle').textContent = 'تعديل العنصر';
+            document.getElementById('nodeId').value = id;
+            document.getElementById('nodeParentId').value = node.parent_id || '';
+            document.getElementById('nodeIcon').value = node.icon;
+            document.getElementById('nodeLabelAr').value = node.label_ar;
+            document.getElementById('nodeLabelEn').value = node.label_en;
+            document.getElementById('questionKey').value = node.question_key || '';
+            document.getElementById('questionType').value = node.question_type || 'text';
+            document.getElementById('questionOptions').value = node.question_options || '';
+            document.getElementById('nodeRespAr').value = node.response_ar || '';
+            document.getElementById('nodeRespEn').value = node.response_en || '';
+            document.getElementById('nodePhone').value = node.phone_number || '';
+            document.getElementById('nodePrompt').value = node.ai_prompt || '';
+            selectedNodeFiles = node.files || [];
+            renderSelectedFiles();
+            
+            if (node.is_question) setNodeType('question');
+            else if (node.node_type === 'endpoint') setNodeType('endpoint');
+            else setNodeType('branch');
+            
+            setEndpointType(node.endpoint_type || 'ai');
+            openModal();
+        };
+
+        window.saveNode = async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('nodeId').value;
+            const parentId = document.getElementById('nodeParentId').value;
+            
+            const data = {
+                parent_id: parentId || null,
+                icon: document.getElementById('nodeIcon').value,
+                label_ar: document.getElementById('nodeLabelAr').value,
+                label_en: document.getElementById('nodeLabelEn').value,
+                node_type: nodeType === 'endpoint' ? 'endpoint' : 'branch',
+                is_question: nodeType === 'question',
+                question_key: nodeType === 'question' ? document.getElementById('questionKey').value : null,
+                question_type: nodeType === 'question' ? document.getElementById('questionType').value : null,
+                question_options: nodeType === 'question' ? document.getElementById('questionOptions').value : null,
+                endpoint_type: nodeType === 'endpoint' ? endpointType : null,
+                response_ar: document.getElementById('nodeRespAr').value || null,
+                response_en: document.getElementById('nodeRespEn').value || null,
+                phone_number: document.getElementById('nodePhone').value || null,
+                ai_prompt: document.getElementById('nodePrompt').value || null,
+                files: selectedNodeFiles.length ? selectedNodeFiles : null
+            };
+            
+            try {
+                if (id) await db.from('nodes').update(data).eq('id', id);
+                else await db.from('nodes').insert(data);
+                toast('تم الحفظ ✅');
+                closeModal();
+                loadData();
+            } catch (e) { toast('خطأ: ' + e.message, true); }
+        };
+
+        window.deleteNode = async (id) => {
+            if (!confirm('حذف هذا العنصر؟')) return;
+            await db.from('nodes').update({ is_active: false }).eq('id', id);
+            toast('تم الحذف');
+            loadData();
+        };
+
+        window.setNodeType = (type) => {
+            nodeType = type;
+            document.querySelectorAll('.type-card').forEach(c => c.classList.remove('active'));
+            document.getElementById('type' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('active');
+            document.getElementById('questionSection').style.display = type === 'question' ? '' : 'none';
+            document.getElementById('endpointSection').style.display = type === 'endpoint' ? '' : 'none';
+        };
+
+        window.setEndpointType = (type) => {
+            endpointType = type;
+            document.querySelectorAll('.ep-type').forEach(el => el.classList.toggle('active', el.dataset.type === type));
+            document.getElementById('aiFields').style.display = type === 'ai' ? '' : 'none';
+            document.getElementById('staticFields').style.display = type === 'static' ? '' : 'none';
+            document.getElementById('phoneFields').style.display = (type === 'phone' || type === 'whatsapp') ? '' : 'none';
+        };
+
+        document.getElementById('questionType').addEventListener('change', (e) => {
+            document.getElementById('optionsGroup').style.display = e.target.value === 'select' ? '' : 'none';
+        });
+
+        window.addFileToNode = () => {
+            const select = document.getElementById('fileSelect');
+            const file = select.value;
+            if (file && !selectedNodeFiles.includes(file)) {
+                selectedNodeFiles.push(file);
+                renderSelectedFiles();
+            }
+            select.value = '';
+        };
+
+        window.removeFileFromNode = (file) => {
+            selectedNodeFiles = selectedNodeFiles.filter(f => f !== file);
+            renderSelectedFiles();
+        };
+
+        function renderSelectedFiles() {
+            const container = document.getElementById('selectedFiles');
+            if (!selectedNodeFiles.length) {
+                container.innerHTML = '<span style="color:var(--text-light);font-size:11px;">لا توجد ملفات مرتبطة</span>';
                 return;
             }
+            container.innerHTML = selectedNodeFiles.map(f => `
+                <div class="file-tag">${f}<button onclick="removeFileFromNode('${f}')">×</button></div>
+            `).join('');
+        }
+
+        function openModal() { document.getElementById('nodeModal').classList.add('active'); }
+        window.closeModal = () => document.getElementById('nodeModal').classList.remove('active');
+
+        // Files
+        function renderFiles() {
+            const el = document.getElementById('filesGrid');
+            if (!files.length) { el.innerHTML = '<div class="empty"><span>📭</span></div>'; return; }
             el.innerHTML = files.map(f => {
                 const ext = f.name.split('.').pop().toLowerCase();
                 let icon = '📄';
-                if (['pdf'].includes(ext)) icon = '📕';
-                else if (['doc', 'docx'].includes(ext)) icon = '📘';
-                else if (['xls', 'xlsx'].includes(ext)) icon = '📗';
-                else if (['png', 'jpg', 'jpeg'].includes(ext)) icon = '🖼️';
-                
-                const size = f.metadata?.size ? (f.metadata.size / 1024).toFixed(1) + ' KB' : '';
-                
-                return `
-                    <div class="file-card">
-                        <button class="delete" onclick="deleteFile('${f.name}')">×</button>
-                        <div class="icon">${icon}</div>
-                        <div class="name">${f.name}</div>
-                        <div class="size">${size}</div>
-                    </div>
-                `;
+                if (ext === 'pdf') icon = '📕';
+                else if (['doc','docx'].includes(ext)) icon = '📘';
+                else if (['xls','xlsx','csv'].includes(ext)) icon = '📗';
+                else if (['png','jpg','jpeg'].includes(ext)) icon = '🖼️';
+                return `<div class="file-card"><button class="delete" onclick="deleteFile('${f.name}')">×</button><div class="icon">${icon}</div><div class="name">${f.name}</div></div>`;
             }).join('');
         }
 
         function updateFileSelect() {
-            const select = document.getElementById('itemFile');
-            select.innerHTML = '<option value="">-- اختر ملف --</option>' + 
-                files.map(f => `<option value="${f.name}">${f.name}</option>`).join('');
+            const select = document.getElementById('fileSelect');
+            select.innerHTML = '<option value="">-- اختر ملف --</option>' + files.map(f => `<option value="${f.name}">${f.name}</option>`).join('');
         }
 
-        // File Upload
-        const uploadZone = document.getElementById('uploadZone');
-        const fileInput = document.getElementById('fileInput');
-
-        uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
-        uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
-        uploadZone.addEventListener('drop', async (e) => {
-            e.preventDefault();
-            uploadZone.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            for (let f of files) await uploadFile(f);
-        });
-
-        fileInput.addEventListener('change', async (e) => {
-            for (let f of e.target.files) await uploadFile(f);
-            fileInput.value = '';
-        });
-
-        async function uploadFile(file) {
-            try {
-                toast('جاري رفع ' + file.name + '...');
-                const { error } = await db.storage.from('files').upload(file.name, file, { upsert: true });
-                if (error) throw error;
-                toast('تم رفع ' + file.name + ' ✅');
-                loadFiles();
-            } catch (e) {
-                toast('خطأ: ' + e.message, true);
+        document.getElementById('fileInput').addEventListener('change', async (e) => {
+            for (const f of e.target.files) {
+                toast('جاري رفع ' + f.name);
+                try {
+                    await db.storage.from('files').upload(f.name, f, { upsert: true });
+                    toast('تم ✅');
+                } catch (err) { toast('خطأ', true); }
             }
-        }
+            e.target.value = '';
+            loadFiles();
+        });
 
         window.deleteFile = async (name) => {
-            if (!confirm('حذف الملف؟')) return;
-            try {
-                await db.storage.from('files').remove([name]);
-                toast('تم الحذف');
-                loadFiles();
-            } catch (e) {
-                toast('خطأ: ' + e.message, true);
-            }
+            if (!confirm('حذف؟')) return;
+            await db.storage.from('files').remove([name]);
+            toast('تم');
+            loadFiles();
         };
 
-        // Toggle & Modals
-        window.toggleCat = (id) => document.getElementById('cat_' + id)?.classList.toggle('open');
-        window.openModal = (id) => document.getElementById(id).classList.add('active');
-        window.closeModal = (id) => document.getElementById(id).classList.remove('active');
-
-        // Category CRUD
-        window.addCategory = () => {
-            document.getElementById('catModalTitle').textContent = 'إضافة قسم';
-            document.getElementById('catId').value = '';
-            document.getElementById('catIcon').value = '';
-            document.getElementById('catNameAr').value = '';
-            document.getElementById('catNameEn').value = '';
-            openModal('catModal');
-        };
-
-        window.editCat = (id) => {
-            const c = categories.find(x => x.id === id);
-            document.getElementById('catModalTitle').textContent = 'تعديل القسم';
-            document.getElementById('catId').value = id;
-            document.getElementById('catIcon').value = c.icon;
-            document.getElementById('catNameAr').value = c.name_ar;
-            document.getElementById('catNameEn').value = c.name_en;
-            openModal('catModal');
-        };
-
-        window.saveCat = async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('catId').value;
-            const data = {
-                icon: document.getElementById('catIcon').value,
-                name_ar: document.getElementById('catNameAr').value,
-                name_en: document.getElementById('catNameEn').value
-            };
-            try {
-                if (id) await db.from('categories').update(data).eq('id', id);
-                else await db.from('categories').insert({ ...data, sort_order: categories.length });
-                toast('تم الحفظ ✅');
-                closeModal('catModal');
-                loadData();
-            } catch (e) { toast('خطأ: ' + e.message, true); }
-        };
-
-        window.delCat = async (id) => {
-            if (!confirm('حذف القسم وأسئلته؟')) return;
-            await db.from('categories').update({ is_active: false }).eq('id', id);
-            toast('تم الحذف');
-            loadData();
-        };
-
-        // Item CRUD
-        window.setAnswerType = (type) => {
-            answerType = type;
-            document.querySelectorAll('.type-option').forEach(t => t.classList.remove('active'));
-            document.getElementById('type' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('active');
-            document.getElementById('staticSection').style.display = type === 'static' ? '' : 'none';
-            document.getElementById('aiSection').style.display = type === 'ai' ? '' : 'none';
-        };
-
-        window.addItem = (catId) => {
-            document.getElementById('itemModalTitle').textContent = 'إضافة سؤال';
-            document.getElementById('itemId').value = '';
-            document.getElementById('itemCatId').value = catId;
-            document.getElementById('itemIcon').value = '';
-            document.getElementById('itemLabelAr').value = '';
-            document.getElementById('itemLabelEn').value = '';
-            document.getElementById('itemRespAr').value = '';
-            document.getElementById('itemRespEn').value = '';
-            document.getElementById('itemFile').value = '';
-            document.getElementById('itemPrompt').value = '';
-            setAnswerType('static');
-            openModal('itemModal');
-        };
-
-        window.editItem = (id) => {
-            const i = items.find(x => x.id === id);
-            document.getElementById('itemModalTitle').textContent = 'تعديل السؤال';
-            document.getElementById('itemId').value = id;
-            document.getElementById('itemCatId').value = i.category_id;
-            document.getElementById('itemIcon').value = i.icon;
-            document.getElementById('itemLabelAr').value = i.label_ar;
-            document.getElementById('itemLabelEn').value = i.label_en;
-            document.getElementById('itemRespAr').value = i.response_ar || '';
-            document.getElementById('itemRespEn').value = i.response_en || '';
-            document.getElementById('itemFile').value = i.file_name || '';
-            document.getElementById('itemPrompt').value = i.ai_prompt || '';
-            setAnswerType(i.answer_type || 'static');
-            openModal('itemModal');
-        };
-
-        window.saveItem = async (e) => {
-            e.preventDefault();
-            const id = document.getElementById('itemId').value;
-            const data = {
-                category_id: document.getElementById('itemCatId').value,
-                icon: document.getElementById('itemIcon').value,
-                label_ar: document.getElementById('itemLabelAr').value,
-                label_en: document.getElementById('itemLabelEn').value,
-                response_ar: document.getElementById('itemRespAr').value || null,
-                response_en: document.getElementById('itemRespEn').value || null,
-                answer_type: answerType,
-                file_name: document.getElementById('itemFile').value || null,
-                ai_prompt: document.getElementById('itemPrompt').value || null
-            };
-            try {
-                if (id) await db.from('items').update(data).eq('id', id);
-                else await db.from('items').insert({ ...data, sort_order: items.length });
-                toast('تم الحفظ ✅');
-                closeModal('itemModal');
-                loadData();
-            } catch (e) { toast('خطأ: ' + e.message, true); }
-        };
-
-        window.delItem = async (id) => {
-            if (!confirm('حذف السؤال؟')) return;
-            await db.from('items').update({ is_active: false }).eq('id', id);
-            toast('تم الحذف');
-            loadData();
-        };
-
-        // Settings
         window.saveSettings = async () => {
-            const data = {
-                gemini_key: document.getElementById('geminiKey').value,
-                webhook_url: document.getElementById('webhookUrl').value
-            };
+            const data = { gemini_key: document.getElementById('geminiKey').value, webhook_url: document.getElementById('webhookUrl').value };
             try {
                 if (settings.id) await db.from('settings').update(data).eq('id', settings.id);
                 else await db.from('settings').insert(data);
                 settings = { ...settings, ...data };
                 toast('تم الحفظ ✅');
-            } catch (e) { toast('خطأ: ' + e.message, true); }
+            } catch (e) { toast('خطأ', true); }
         };
 
-        // Toast
         function toast(msg, isError = false) {
             const t = document.getElementById('toast');
             t.textContent = msg;
             t.className = 'toast show' + (isError ? ' error' : '');
-            setTimeout(() => t.classList.remove('show'), 2500);
+            setTimeout(() => t.classList.remove('show'), 2000);
         }
 
-        // Close modals
-        document.querySelectorAll('.modal').forEach(m => {
-            m.addEventListener('click', e => { if (e.target === m) m.classList.remove('active'); });
-        });
-
-        // Init
+        document.getElementById('nodeModal').addEventListener('click', e => { if (e.target.id === 'nodeModal') closeModal(); });
         loadData();
     </script>
 </body>
