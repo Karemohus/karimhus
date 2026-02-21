@@ -22,7 +22,7 @@
         .header { background: var(--gradient); padding: 20px; color: white; }
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .lang-switch { display: flex; background: rgba(255,255,255,0.15); border-radius: 10px; overflow: hidden; }
-        .lang-btn { padding: 8px 14px; background: transparent; border: none; color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; transition: 0.2s; }
+        .lang-btn { padding: 8px 14px; background: transparent; border: none; color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
         .lang-btn.active { background: rgba(255,255,255,0.25); color: white; }
         .header-main { display: flex; align-items: center; gap: 14px; }
         .avatar { width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
@@ -30,8 +30,6 @@
         .header-info p { font-size: 13px; opacity: 0.9; }
         
         .chat { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
-        .chat::-webkit-scrollbar { width: 4px; }
-        .chat::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
         
         .msg { display: flex; gap: 10px; animation: fadeIn 0.3s; }
         .msg.user { flex-direction: row-reverse; }
@@ -44,11 +42,11 @@
         .msg.bot .msg-bubble { background: var(--bg); color: var(--text); border-bottom-right-radius: 5px; }
         body.en .msg.bot .msg-bubble { border-bottom-right-radius: 18px; border-bottom-left-radius: 5px; }
         .msg.user .msg-bubble { background: var(--gradient); color: white; border-bottom-left-radius: 5px; }
-        .msg-time { font-size: 10px; color: var(--text-light); margin-top: 4px; padding: 0 4px; }
+        .msg-time { font-size: 10px; color: var(--text-light); margin-top: 4px; }
         
         .btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 12px; }
         .menu-btn { padding: 16px 12px; background: white; border: 2px solid var(--border); border-radius: 14px; cursor: pointer; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 8px; font-family: inherit; }
-        .menu-btn:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
+        .menu-btn:hover { border-color: var(--primary); background: var(--primary-light); }
         .menu-btn .icon { font-size: 28px; }
         .menu-btn .label { font-size: 13px; font-weight: 600; color: var(--text); }
         
@@ -59,6 +57,8 @@
         .quick-btn.green:hover { background: var(--success); color: white; }
         
         .info-card { background: linear-gradient(135deg, var(--primary-light), #F3E8FF); border-radius: 14px; padding: 14px; margin-top: 12px; white-space: pre-line; font-size: 14px; line-height: 1.7; }
+        
+        .ai-badge { display: inline-flex; align-items: center; gap: 4px; background: #DBEAFE; color: #1D4ED8; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-bottom: 8px; }
         
         .back-btn { display: inline-flex; align-items: center; gap: 5px; padding: 8px 16px; background: white; border: 1px solid var(--border); border-radius: 20px; color: var(--text-light); font-family: inherit; font-size: 12px; cursor: pointer; margin-top: 12px; }
         .back-btn:hover { border-color: var(--primary); color: var(--primary); }
@@ -75,14 +75,9 @@
         .input-field:focus { border-color: var(--primary); }
         .send-btn { width: 48px; height: 48px; background: var(--gradient); border: none; border-radius: 50%; color: white; font-size: 18px; cursor: pointer; }
         
-        .sent-badge { display: inline-block; background: #D1FAE5; color: #065F46; padding: 3px 10px; border-radius: 10px; font-size: 11px; margin-top: 6px; }
-        
-        .loading { text-align: center; padding: 60px 20px; color: var(--text-light); }
+        .loading { text-align: center; padding: 40px; color: var(--text-light); }
         .loading-spinner { width: 40px; height: 40px; border: 4px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        
-        .error { text-align: center; padding: 50px 20px; color: var(--text-light); }
-        .error span { font-size: 50px; display: block; margin-bottom: 10px; }
         
         @media (max-width: 500px) { body { padding: 0; } .container { height: 100vh; max-height: none; border-radius: 0; } }
     </style>
@@ -101,7 +96,7 @@
                 <div class="avatar">🤖</div>
                 <div class="header-info">
                     <h1 id="title">مركز دعم الموظفين</h1>
-                    <p id="subtitle">جاري التحميل...</p>
+                    <p id="subtitle">مدعوم بالذكاء الاصطناعي</p>
                 </div>
             </div>
         </div>
@@ -120,57 +115,43 @@
     </div>
 
     <script type="module">
-        // ============ Supabase Config ============
         import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
         
         const SUPABASE_URL = 'https://nrsnsysjmhboovutirdn.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5yc25zeXNqbWhib292dXRpcmRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MDYxNjYsImV4cCI6MjA4NzE4MjE2Nn0.A6XRe0wUA267hogwWnNpXe08B-MrL1HSjBVbURyLdsU';
+        const GEMINI_API = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
         
         const db = createClient(SUPABASE_URL, SUPABASE_KEY);
         
-        let categories = [];
-        let items = [];
-        let subItems = [];
-        let settings = {};
+        let categories = [], items = [], settings = {};
         let lang = localStorage.getItem('appLang') || 'ar';
         let history = [];
-        let userId = localStorage.getItem('appUserId');
-        
-        if (!userId) {
-            userId = 'user_' + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem('appUserId', userId);
-        }
+        let currentItem = null;
         
         const L = {
-            ar: { title: 'مركز دعم الموظفين', subtitle: 'جاهز لمساعدتك', welcome: 'أهلاً بك! 👋<br>كيف يمكنني مساعدتك؟', placeholder: 'اكتب سؤالك...', back: '→ رجوع', home: '🏠 الرئيسية', sent: '✓ تم الإرسال', free: 'سؤال حر', freePrompt: 'اكتب سؤالك وسأساعدك 😊', received: '📩 تم استلام سؤالك وسيتم الرد قريباً', error: 'خطأ في الاتصال', noData: 'لا توجد بيانات' },
-            en: { title: 'Employee Support', subtitle: 'Ready to help', welcome: 'Welcome! 👋<br>How can I help?', placeholder: 'Type question...', back: '← Back', home: '🏠 Home', sent: '✓ Sent', free: 'Free Question', freePrompt: 'Type your question 😊', received: '📩 Question received, we\'ll respond soon', error: 'Connection error', noData: 'No data available' }
+            ar: { title: 'مركز دعم الموظفين', subtitle: 'مدعوم بالذكاء الاصطناعي', welcome: 'أهلاً بك! 👋<br>كيف يمكنني مساعدتك؟', placeholder: 'اكتب سؤالك...', back: '→ رجوع', home: '🏠 الرئيسية', thinking: '🤖 جاري التفكير...', askQuestion: 'اكتب سؤالك عن هذا الموضوع:', aiAnswer: '🤖 إجابة AI' },
+            en: { title: 'Employee Support', subtitle: 'AI Powered', welcome: 'Welcome! 👋<br>How can I help?', placeholder: 'Type question...', back: '← Back', home: '🏠 Home', thinking: '🤖 Thinking...', askQuestion: 'Ask your question about this topic:', aiAnswer: '🤖 AI Answer' }
         };
 
-        // ============ Load Data ============
         async function loadData() {
             try {
-                const { data: settingsData } = await db.from('settings').select('*').limit(1).single();
-                if (settingsData) settings = settingsData;
+                const { data: s } = await db.from('settings').select('*').limit(1).single();
+                if (s) settings = s;
                 
-                const { data: catData } = await db.from('categories').select('*').eq('is_active', true).order('sort_order');
-                categories = catData || [];
+                const { data: c } = await db.from('categories').select('*').eq('is_active', true).order('sort_order');
+                categories = c || [];
                 
-                const { data: itemsData } = await db.from('items').select('*').eq('is_active', true).order('sort_order');
-                items = itemsData || [];
-                
-                const { data: subData } = await db.from('sub_items').select('*').eq('is_active', true).order('sort_order');
-                subItems = subData || [];
+                const { data: i } = await db.from('items').select('*').eq('is_active', true).order('sort_order');
+                items = i || [];
                 
                 document.getElementById('subtitle').textContent = L[lang].subtitle;
                 showMain();
-                
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('chat').innerHTML = `<div class="error"><span>❌</span><p>${L[lang].error}</p></div>`;
+            } catch (e) {
+                console.error(e);
+                document.getElementById('chat').innerHTML = '<div class="loading">❌ خطأ في الاتصال</div>';
             }
         }
 
-        // ============ Language ============
         window.switchLang = (l) => {
             lang = l;
             localStorage.setItem('appLang', l);
@@ -187,10 +168,8 @@
 
         function T(k) { return L[lang][k]; }
         function getName(obj, field) { return obj[field + '_' + lang] || obj[field + '_ar'] || ''; }
-
-        // ============ Chat Functions ============
         function time() { return new Date().toLocaleTimeString(lang === 'ar' ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' }); }
-        function scroll() { const c = document.getElementById('chat'); c.scrollTop = c.scrollHeight; }
+        function scroll() { document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight; }
 
         function typing() {
             const d = document.createElement('div');
@@ -200,7 +179,7 @@
             scroll();
         }
 
-        function untype() { const t = document.getElementById('typing'); if (t) t.remove(); }
+        function untype() { document.getElementById('typing')?.remove(); }
 
         function bot(txt, extra = '') {
             untype();
@@ -219,40 +198,13 @@
             scroll();
         }
 
-        // ============ Webhook ============
-        async function webhook(type, data) {
-            if (!settings.webhook_url) return;
-            
-            const payload = { type, ...data, lang, timestamp: new Date().toISOString(), userId };
-
-            try {
-                if (navigator.sendBeacon) {
-                    navigator.sendBeacon(settings.webhook_url, JSON.stringify(payload));
-                } else {
-                    fetch(settings.webhook_url, { method: 'POST', body: JSON.stringify(payload), mode: 'no-cors' });
-                }
-            } catch (e) {}
-
-            try {
-                await db.from('chat_logs').insert({
-                    user_id: userId,
-                    action_type: type,
-                    category_id: data.category_id || null,
-                    item_id: data.item_id || null,
-                    sub_item_id: data.sub_item_id || null,
-                    message: data.message || null,
-                    lang
-                });
-            } catch (e) {}
-        }
-
-        // ============ Navigation ============
         function showMain() {
             document.getElementById('chat').innerHTML = '';
             history = [];
+            currentItem = null;
             
             if (!categories.length) {
-                bot(T('noData'));
+                bot('لا توجد بيانات');
                 return;
             }
 
@@ -264,7 +216,6 @@
                         <span class="label">${getName(c, 'name')}</span>
                     </button>`
                 ).join('');
-                btns += `<button class="menu-btn" onclick="freeQ()"><span class="icon">💬</span><span class="label">${T('free')}</span></button>`;
                 bot(T('welcome'), `<div class="btn-grid">${btns}</div>`);
             }, 400);
         }
@@ -281,7 +232,7 @@
             typing();
             setTimeout(() => {
                 if (!catItems.length) {
-                    bot(T('noData'), `<button class="back-btn" onclick="goBack()">${T('back')}</button>`);
+                    bot('لا توجد أسئلة', `<button class="back-btn" onclick="goBack()">${T('back')}</button>`);
                     return;
                 }
                 let btns = catItems.map(i => 
@@ -297,74 +248,140 @@
             
             history.push({ type: 'cat', catId: item.category_id });
             user(getName(item, 'label'));
+            currentItem = item;
 
-            const itemSubs = subItems.filter(s => s.item_id === itemId);
+            const answerType = item.answer_type || 'static';
 
-            if (item.has_children && itemSubs.length) {
+            if (answerType === 'static') {
+                // Static answer
                 typing();
                 setTimeout(() => {
-                    let btns = itemSubs.map(s => 
-                        `<button class="quick-btn" onclick="openSub('${s.id}')">${s.icon} ${getName(s, 'label')}</button>`
-                    ).join('');
-                    bot(`${item.icon} ${getName(item, 'label')}`, `<div class="quick-btns">${btns}</div><button class="back-btn" onclick="goBack()">${T('back')}</button>`);
+                    const resp = getName(item, 'response') || 'لا توجد إجابة';
+                    bot('', `<div class="info-card">${resp}</div><div class="quick-btns" style="margin-top:10px;"><button class="quick-btn green" onclick="goHome()">${T('home')}</button></div><button class="back-btn" onclick="goBack()">${T('back')}</button>`);
+                }, 500);
+            } else if (answerType === 'ai') {
+                // AI answer - ask for question
+                typing();
+                setTimeout(() => {
+                    bot(T('askQuestion'), `<button class="back-btn" onclick="goBack()">${T('back')}</button>`);
+                    document.getElementById('input').focus();
                 }, 400);
-            } else {
-                if (item.send_webhook) {
-                    webhook('item_click', { category_id: item.category_id, item_id: item.id, label: getName(item, 'label') });
-                }
-                
+            } else if (answerType === 'webhook') {
+                // Webhook
+                sendWebhook(item);
                 typing();
                 setTimeout(() => {
-                    const resp = getName(item, 'response') || T('received');
-                    const badge = item.send_webhook ? `<span class="sent-badge">${T('sent')}</span>` : '';
-                    bot('', `<div class="info-card">${resp}</div>${badge}<div class="quick-btns" style="margin-top:10px;"><button class="quick-btn green" onclick="goHome()">${T('home')}</button></div><button class="back-btn" onclick="goBack()">${T('back')}</button>`);
+                    bot('', `<div class="info-card">📩 تم إرسال طلبك وسيتم الرد قريباً</div><div class="quick-btns" style="margin-top:10px;"><button class="quick-btn green" onclick="goHome()">${T('home')}</button></div>`);
                 }, 500);
             }
         };
 
-        window.openSub = (subId) => {
-            const sub = subItems.find(s => s.id === subId);
-            if (!sub) return;
-            
-            const item = items.find(i => i.id === sub.item_id);
-            history.push({ type: 'item', itemId: sub.item_id });
-            user(getName(sub, 'label'));
-
-            if (sub.send_webhook) {
-                webhook('sub_item_click', { 
-                    category_id: item?.category_id, 
-                    item_id: sub.item_id, 
-                    sub_item_id: sub.id, 
-                    label: getName(sub, 'label') 
-                });
+        async function askGemini(question, fileName, prompt) {
+            if (!settings.gemini_key) {
+                return 'عذراً، لم يتم إعداد AI بعد';
             }
 
-            typing();
-            setTimeout(() => {
-                const resp = getName(sub, 'response') || T('received');
-                const badge = sub.send_webhook ? `<span class="sent-badge">${T('sent')}</span>` : '';
-                bot('', `<div class="info-card">${resp}</div>${badge}<div class="quick-btns" style="margin-top:10px;"><button class="quick-btn green" onclick="goHome()">${T('home')}</button></div><button class="back-btn" onclick="goBack()">${T('back')}</button>`);
-            }, 500);
-        };
+            try {
+                // Get file content if exists
+                let fileContent = '';
+                if (fileName) {
+                    const { data } = await db.storage.from('files').download(fileName);
+                    if (data) {
+                        fileContent = await data.text();
+                    }
+                }
 
-        window.freeQ = () => {
-            history.push({ type: 'main' });
-            user(T('free'));
-            typing();
-            setTimeout(() => {
-                bot(T('freePrompt'), `<button class="back-btn" onclick="goBack()">${T('back')}</button>`);
-                document.getElementById('input').focus();
-            }, 400);
+                const systemPrompt = prompt || 'أنت مساعد ذكي تجيب على أسئلة الموظفين. أجب بشكل مختصر ومفيد.';
+                const fullPrompt = fileContent 
+                    ? `${systemPrompt}\n\nالمستند:\n${fileContent}\n\nالسؤال: ${question}`
+                    : `${systemPrompt}\n\nالسؤال: ${question}`;
+
+                const response = await fetch(`${GEMINI_API}?key=${settings.gemini_key}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: fullPrompt }] }]
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.candidates && data.candidates[0]) {
+                    return data.candidates[0].content.parts[0].text;
+                } else {
+                    return 'عذراً، لم أتمكن من الإجابة';
+                }
+            } catch (e) {
+                console.error('Gemini Error:', e);
+                return 'حدث خطأ أثناء الاتصال بـ AI';
+            }
+        }
+
+        function sendWebhook(item) {
+            if (!settings.webhook_url) return;
+            fetch(settings.webhook_url, {
+                method: 'POST',
+                body: JSON.stringify({
+                    type: 'item_click',
+                    item_id: item.id,
+                    label: getName(item, 'label'),
+                    timestamp: new Date().toISOString()
+                }),
+                mode: 'no-cors'
+            }).catch(() => {});
+        }
+
+        window.sendMsg = async () => {
+            const inp = document.getElementById('input');
+            const txt = inp.value.trim();
+            if (!txt) return;
+            
+            user(txt);
+            inp.value = '';
+
+            if (currentItem && currentItem.answer_type === 'ai') {
+                // AI mode
+                typing();
+                const answer = await askGemini(txt, currentItem.file_name, currentItem.ai_prompt);
+                bot('', `
+                    <div class="ai-badge">🤖 ${T('aiAnswer')}</div>
+                    <div class="info-card">${answer}</div>
+                    <div class="quick-btns" style="margin-top:10px;">
+                        <button class="quick-btn green" onclick="goHome()">${T('home')}</button>
+                    </div>
+                    <button class="back-btn" onclick="goBack()">${T('back')}</button>
+                `);
+            } else {
+                // Free question - send to AI without file
+                typing();
+                const answer = await askGemini(txt, null, 'أنت مساعد موارد بشرية ذكي. أجب على أسئلة الموظفين بشكل مفيد ومختصر.');
+                bot('', `
+                    <div class="ai-badge">🤖 ${T('aiAnswer')}</div>
+                    <div class="info-card">${answer}</div>
+                    <div class="quick-btns" style="margin-top:10px;">
+                        <button class="quick-btn green" onclick="goHome()">${T('home')}</button>
+                    </div>
+                `);
+            }
         };
 
         window.goBack = () => {
             if (!history.length) return;
             user(T('back'));
             const h = history.pop();
-            
+            currentItem = null;
             if (h.type === 'main') showMain();
-            else if (h.type === 'cat') openCatDirect(h.catId);
-            else if (h.type === 'item') openItemDirect(h.itemId);
+            else if (h.type === 'cat') {
+                const cat = categories.find(c => c.id === h.catId);
+                const catItems = items.filter(i => i.category_id === h.catId);
+                typing();
+                setTimeout(() => {
+                    let btns = catItems.map(i => 
+                        `<button class="quick-btn" onclick="openItem('${i.id}')">${i.icon} ${getName(i, 'label')}</button>`
+                    ).join('');
+                    bot(`${cat?.icon || ''} ${getName(cat, 'name')}`, `<div class="quick-btns">${btns}</div><button class="back-btn" onclick="goBack()">${T('back')}</button>`);
+                }, 300);
+            }
             else showMain();
         };
 
@@ -373,59 +390,11 @@
             showMain();
         };
 
-        function openCatDirect(catId) {
-            const cat = categories.find(c => c.id === catId);
-            const catItems = items.filter(i => i.category_id === catId);
-            if (!catItems.length) { showMain(); return; }
-            
-            typing();
-            setTimeout(() => {
-                let btns = catItems.map(i => 
-                    `<button class="quick-btn" onclick="openItem('${i.id}')">${i.icon} ${getName(i, 'label')}</button>`
-                ).join('');
-                bot(`${cat?.icon || ''} ${getName(cat, 'name')}`, `<div class="quick-btns">${btns}</div><button class="back-btn" onclick="goBack()">${T('back')}</button>`);
-            }, 300);
-        }
-
-        function openItemDirect(itemId) {
-            const item = items.find(i => i.id === itemId);
-            const itemSubs = subItems.filter(s => s.item_id === itemId);
-            if (!itemSubs.length) { openCatDirect(item?.category_id); return; }
-            
-            typing();
-            setTimeout(() => {
-                let btns = itemSubs.map(s => 
-                    `<button class="quick-btn" onclick="openSub('${s.id}')">${s.icon} ${getName(s, 'label')}</button>`
-                ).join('');
-                bot(`${item?.icon || ''} ${getName(item, 'label')}`, `<div class="quick-btns">${btns}</div><button class="back-btn" onclick="goBack()">${T('back')}</button>`);
-            }, 300);
-        }
-
-        // ============ Free Question ============
-        window.sendMsg = () => {
-            const inp = document.getElementById('input');
-            const txt = inp.value.trim();
-            if (!txt) return;
-            
-            user(txt);
-            inp.value = '';
-            
-            webhook('free_question', { message: txt });
-            
-            typing();
-            setTimeout(() => {
-                bot('', `<div class="info-card">${T('received')}</div><span class="sent-badge">${T('sent')}</span><div class="quick-btns" style="margin-top:10px;"><button class="quick-btn green" onclick="goHome()">${T('home')}</button></div>`);
-            }, 700);
-        };
-
-        // ============ Init ============
         document.getElementById('input').addEventListener('keypress', e => { if (e.key === 'Enter') window.sendMsg(); });
         
         document.getElementById('btnAr').className = 'lang-btn' + (lang === 'ar' ? ' active' : '');
         document.getElementById('btnEn').className = 'lang-btn' + (lang === 'en' ? ' active' : '');
         document.body.className = lang === 'en' ? 'en' : '';
-        document.documentElement.lang = lang;
-        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
         document.getElementById('title').textContent = L[lang].title;
         document.getElementById('input').placeholder = L[lang].placeholder;
         
