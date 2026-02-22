@@ -5,117 +5,742 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مركز دعم الموظفين</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-        :root { --primary: #6366F1; --primary-light: #EEF2FF; --success: #10B981; --success-light: #D1FAE5; --bg: #F8FAFC; --card: #FFFFFF; --text: #1E293B; --text-light: #64748B; --border: #E2E8F0; --gradient: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%); }
+        :root {
+            --primary: #6366F1; --primary-light: #E0E7FF;
+            --success: #10B981; --success-light: #D1FAE5;
+            --warning: #F59E0B; --warning-light: #FEF3C7;
+            --bg: #F8FAFC; --card: #FFFFFF;
+            --text: #1E293B; --text-light: #64748B;
+            --border: #E2E8F0;
+            --gradient: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Tajawal', sans-serif; background: var(--bg); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 16px; }
         body.en { direction: ltr; font-family: 'Inter', sans-serif; }
+        
         .container { width: 100%; max-width: 440px; height: 92vh; max-height: 800px; background: var(--card); border-radius: 28px; box-shadow: 0 25px 80px rgba(99,102,241,0.15); display: flex; flex-direction: column; overflow: hidden; }
-        .header { background: var(--gradient); padding: 18px 20px; color: white; }
-        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        
+        .header { background: var(--gradient); padding: 20px; color: white; }
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
         .lang-switch { display: flex; background: rgba(255,255,255,0.15); border-radius: 8px; overflow: hidden; }
-        .lang-btn { padding: 6px 14px; background: transparent; border: none; color: rgba(255,255,255,0.7); font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; }
+        .lang-btn { padding: 6px 14px; background: transparent; border: none; color: rgba(255,255,255,0.7); font-size: 12px; font-weight: 600; cursor: pointer; font-family: inherit; transition: 0.2s; }
         .lang-btn.active { background: rgba(255,255,255,0.25); color: white; }
-        .header-main { display: flex; align-items: center; gap: 12px; }
-        .avatar { width: 46px; height: 46px; background: rgba(255,255,255,0.2); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
-        .header-info h1 { font-size: 17px; font-weight: 700; }
-        .header-info p { font-size: 11px; opacity: 0.9; }
-        .chat { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
-        .msg { display: flex; gap: 10px; animation: fadeIn 0.3s; }
+        .header-main { display: flex; align-items: center; gap: 14px; }
+        .avatar { width: 50px; height: 50px; background: rgba(255,255,255,0.2); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .header-info h1 { font-size: 18px; font-weight: 700; }
+        .header-info p { font-size: 12px; opacity: 0.9; }
+        
+        .chat { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+        
+        .msg { display: flex; gap: 12px; animation: fadeIn 0.3s ease; }
         .msg.user { flex-direction: row-reverse; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; } }
-        .msg-avatar { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .msg-avatar { width: 36px; height: 36px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
         .msg.bot .msg-avatar { background: var(--primary-light); }
         .msg.user .msg-avatar { background: var(--gradient); color: white; }
+        
         .msg-content { max-width: 85%; }
-        .msg-bubble { padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.6; }
-        .msg.bot .msg-bubble { background: var(--bg); border-bottom-right-radius: 4px; }
-        body.en .msg.bot .msg-bubble { border-bottom-right-radius: 18px; border-bottom-left-radius: 4px; }
-        .msg.user .msg-bubble { background: var(--gradient); color: white; border-bottom-left-radius: 4px; }
-        .msg-time { font-size: 9px; color: var(--text-light); margin-top: 4px; }
-        .btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
-        .menu-btn { padding: 18px 12px; background: white; border: 2px solid var(--border); border-radius: 16px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 8px; font-family: inherit; }
+        .msg-bubble { padding: 14px 18px; border-radius: 20px; font-size: 14px; line-height: 1.7; }
+        .msg.bot .msg-bubble { background: var(--bg); color: var(--text); border-bottom-right-radius: 6px; }
+        body.en .msg.bot .msg-bubble { border-bottom-right-radius: 20px; border-bottom-left-radius: 6px; }
+        .msg.user .msg-bubble { background: var(--gradient); color: white; border-bottom-left-radius: 6px; }
+        .msg-time { font-size: 10px; color: var(--text-light); margin-top: 6px; padding: 0 4px; }
+        
+        /* Buttons Grid */
+        .btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 14px; }
+        .menu-btn { padding: 20px 14px; background: white; border: 2px solid var(--border); border-radius: 16px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 10px; font-family: inherit; }
         .menu-btn:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
-        .menu-btn .icon { font-size: 28px; }
-        .menu-btn .label { font-size: 13px; font-weight: 600; color: var(--text); }
-        .quick-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-        .quick-btn { padding: 10px 18px; background: white; border: 2px solid var(--primary); border-radius: 25px; color: var(--primary); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .menu-btn .icon { font-size: 32px; }
+        .menu-btn .label { font-size: 14px; font-weight: 600; color: var(--text); }
+        
+        /* Quick Buttons */
+        .quick-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+        .quick-btn { padding: 12px 20px; background: white; border: 2px solid var(--primary); border-radius: 25px; color: var(--primary); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
         .quick-btn:hover { background: var(--primary); color: white; }
         .quick-btn.green { border-color: var(--success); color: var(--success); }
         .quick-btn.green:hover { background: var(--success); color: white; }
-        .info-card { background: linear-gradient(135deg, var(--primary-light), #F3E8FF); border-radius: 16px; padding: 16px; margin-top: 12px; font-size: 14px; line-height: 1.7; white-space: pre-line; }
-        .contact-card { background: var(--success-light); border-radius: 16px; padding: 20px; margin-top: 12px; text-align: center; }
-        .contact-card a { display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; background: var(--success); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 16px; }
+        
+        /* Info Card */
+        .info-card { background: linear-gradient(135deg, var(--primary-light), #F3E8FF); border-radius: 16px; padding: 18px; margin-top: 14px; font-size: 14px; line-height: 1.8; white-space: pre-wrap; }
+        
+        /* Contact Card */
+        .contact-card { background: var(--success-light); border-radius: 16px; padding: 24px; margin-top: 14px; text-align: center; }
+        .contact-card a { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 32px; background: var(--success); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 16px; }
         .contact-card.whatsapp a { background: #25D366; }
-        .ai-badge { display: inline-flex; align-items: center; gap: 5px; background: #DBEAFE; color: #1D4ED8; padding: 5px 12px; border-radius: 12px; font-size: 11px; font-weight: 600; margin-bottom: 8px; }
-        .file-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-        .file-link { display: inline-flex; align-items: center; gap: 5px; padding: 8px 14px; background: white; border: 1px solid var(--border); border-radius: 10px; text-decoration: none; font-size: 12px; font-weight: 600; color: var(--text); }
-        .file-link:hover { border-color: var(--primary); background: var(--primary-light); }
-        .data-summary { background: var(--bg); border-radius: 12px; padding: 12px; margin: 10px 0; font-size: 12px; }
-        .data-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); }
+        
+        /* AI Badge */
+        .ai-badge { display: inline-flex; align-items: center; gap: 6px; background: #DBEAFE; color: #1D4ED8; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+        
+        /* Data Summary */
+        .data-summary { background: white; border-radius: 12px; padding: 14px; margin: 12px 0; border: 1px solid var(--border); }
+        .data-summary-title { font-size: 12px; font-weight: 700; color: var(--text-light); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .data-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
         .data-row:last-child { border: none; }
-        .back-btn { display: inline-flex; align-items: center; gap: 5px; padding: 8px 16px; background: white; border: 1px solid var(--border); border-radius: 20px; color: var(--text-light); font-family: inherit; font-size: 12px; cursor: pointer; margin-top: 12px; }
-        .back-btn:hover { border-color: var(--primary); color: var(--primary); }
-        .typing { display: flex; gap: 5px; padding: 14px 18px; background: var(--bg); border-radius: 18px; width: fit-content; }
-        .typing span { width: 8px; height: 8px; background: var(--text-light); border-radius: 50%; animation: bounce 1.4s infinite; }
+        .data-row .key { color: var(--text-light); }
+        .data-row .value { font-weight: 600; color: var(--text); }
+        
+        /* Back Button */
+        .back-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; background: white; border: 1px solid var(--border); border-radius: 25px; color: var(--text-light); font-family: inherit; font-size: 13px; cursor: pointer; margin-top: 14px; transition: 0.2s; }
+        .back-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+        
+        /* Typing Indicator */
+        .typing { display: flex; gap: 6px; padding: 16px 20px; background: var(--bg); border-radius: 20px; width: fit-content; }
+        .typing span { width: 8px; height: 8px; background: var(--text-light); border-radius: 50%; animation: bounce 1.4s infinite ease-in-out; }
         .typing span:nth-child(2) { animation-delay: 0.2s; }
         .typing span:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-6px); } }
-        .input-area { padding: 14px 16px; background: white; border-top: 1px solid var(--border); }
-        .input-wrap { display: flex; gap: 10px; }
-        .input-field { flex: 1; padding: 12px 18px; border: 2px solid var(--border); border-radius: 25px; font-family: inherit; font-size: 14px; outline: none; }
+        @keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-8px); } }
+        
+        /* Input Area */
+        .input-area { padding: 16px 20px; background: white; border-top: 1px solid var(--border); }
+        .input-wrap { display: flex; gap: 12px; }
+        .input-field { flex: 1; padding: 14px 20px; border: 2px solid var(--border); border-radius: 25px; font-family: inherit; font-size: 14px; outline: none; transition: 0.2s; }
         .input-field:focus { border-color: var(--primary); }
-        .send-btn { width: 48px; height: 48px; background: var(--gradient); border: none; border-radius: 50%; color: white; font-size: 18px; cursor: pointer; }
+        .send-btn { width: 52px; height: 52px; background: var(--gradient); border: none; border-radius: 50%; color: white; font-size: 20px; cursor: pointer; transition: 0.2s; }
+        .send-btn:hover { transform: scale(1.05); }
+        
+        /* Loading */
         .loading { text-align: center; padding: 40px; color: var(--text-light); }
-        .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 12px; }
+        .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 14px; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        @media (max-width: 480px) { body { padding: 0; } .container { height: 100vh; max-height: none; border-radius: 0; } }
+        
+        /* Error Card */
+        .error-card { background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 12px; padding: 14px; margin-top: 12px; color: #B91C1C; font-size: 13px; }
+        
+        @media (max-width: 480px) {
+            body { padding: 0; }
+            .container { height: 100vh; max-height: none; border-radius: 0; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div class="header-top"><div></div><div class="lang-switch"><button class="lang-btn active" id="btnAr" onclick="switchLang('ar')">عربي</button><button class="lang-btn" id="btnEn" onclick="switchLang('en')">EN</button></div></div>
-            <div class="header-main"><div class="avatar">🤖</div><div class="header-info"><h1 id="title">مركز دعم الموظفين</h1><p id="subtitle">مدعوم بالذكاء الاصطناعي</p></div></div>
+            <div class="header-top">
+                <div></div>
+                <div class="lang-switch">
+                    <button class="lang-btn active" id="btnAr" onclick="switchLang('ar')">عربي</button>
+                    <button class="lang-btn" id="btnEn" onclick="switchLang('en')">EN</button>
+                </div>
+            </div>
+            <div class="header-main">
+                <div class="avatar">🤖</div>
+                <div class="header-info">
+                    <h1 id="headerTitle">مركز دعم الموظفين</h1>
+                    <p id="headerSubtitle">مدعوم بالذكاء الاصطناعي</p>
+                </div>
+            </div>
         </div>
-        <div class="chat" id="chat"><div class="loading"><div class="spinner"></div><p>جاري التحميل...</p></div></div>
-        <div class="input-area"><div class="input-wrap"><input type="text" class="input-field" id="input" placeholder="اكتب هنا..." autocomplete="off"><button class="send-btn" onclick="handleInput()">➤</button></div></div>
+        
+        <div class="chat" id="chat">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>جاري التحميل...</p>
+            </div>
+        </div>
+        
+        <div class="input-area">
+            <div class="input-wrap">
+                <input type="text" class="input-field" id="userInput" placeholder="اكتب رسالتك هنا..." autocomplete="off">
+                <button class="send-btn" onclick="handleUserInput()">➤</button>
+            </div>
+        </div>
     </div>
+
     <script type="module">
         import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+        
         const SUPABASE_URL = 'https://nrsnsysjmhboovutirdn.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5yc25zeXNqbWhib292dXRpcmRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MDYxNjYsImV4cCI6MjA4NzE4MjE2Nn0.A6XRe0wUA267hogwWnNpXe08B-MrL1HSjBVbURyLdsU';
         const GEMINI_API = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+        
         const db = createClient(SUPABASE_URL, SUPABASE_KEY);
-        let tree = [], actions = [], settings = {}, lang = localStorage.getItem('lang') || 'ar', currentNode = null, collectedData = {}, awaitingInput = false, history = [];
-        const L = { ar: { title: 'مركز دعم الموظفين', subtitle: 'مدعوم بالذكاء الاصطناعي', welcome: 'أهلاً بك! 👋<br>كيف يمكنني مساعدتك؟', placeholder: 'اكتب هنا...', back: '→ رجوع', home: '🏠 الرئيسية', thinking: '🔍 جاري البحث...', aiAnswer: '🤖 إجابة AI', call: '📞 اتصل', whatsapp: '💬 واتساب', yourData: 'بياناتك:' }, en: { title: 'Employee Support', subtitle: 'AI Powered', welcome: 'Welcome! 👋<br>How can I help?', placeholder: 'Type here...', back: '← Back', home: '🏠 Home', thinking: '🔍 Searching...', aiAnswer: '🤖 AI Answer', call: '📞 Call', whatsapp: '💬 WhatsApp', yourData: 'Your data:' } };
-        async function loadData() { try { const { data: s } = await db.from('settings').select('*').limit(1).single(); if (s) settings = s; const { data: t } = await db.from('tree').select('*').eq('is_active', true).order('sort_order'); tree = t || []; const { data: a } = await db.from('actions').select('*').eq('is_active', true); actions = a || []; showMain(); } catch (e) { document.getElementById('chat').innerHTML = '<div class="loading">❌ خطأ</div>'; } }
-        window.switchLang = (l) => { lang = l; localStorage.setItem('lang', l); document.body.className = l === 'en' ? 'en' : ''; document.documentElement.lang = l; document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr'; document.getElementById('btnAr').className = 'lang-btn' + (l === 'ar' ? ' active' : ''); document.getElementById('btnEn').className = 'lang-btn' + (l === 'en' ? ' active' : ''); document.getElementById('title').textContent = L[l].title; document.getElementById('subtitle').textContent = L[l].subtitle; document.getElementById('input').placeholder = L[l].placeholder; showMain(); };
-        function T(k) { return L[lang][k]; }
-        function getName(obj) { return obj['label_' + lang] || obj.label_ar || ''; }
-        function time() { return new Date().toLocaleTimeString(lang === 'ar' ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' }); }
-        function scroll() { document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight; }
-        function typing() { const d = document.createElement('div'); d.className = 'msg bot'; d.id = 'typing'; d.innerHTML = '<div class="msg-avatar">🤖</div><div class="msg-content"><div class="typing"><span></span><span></span><span></span></div></div>'; document.getElementById('chat').appendChild(d); scroll(); }
-        function untype() { document.getElementById('typing')?.remove(); }
-        function bot(txt, extra = '') { untype(); const d = document.createElement('div'); d.className = 'msg bot'; d.innerHTML = '<div class="msg-avatar">🤖</div><div class="msg-content">' + (txt ? '<div class="msg-bubble">' + txt + '</div>' : '') + extra + '<div class="msg-time">' + time() + '</div></div>'; document.getElementById('chat').appendChild(d); scroll(); }
-        function user(txt) { const d = document.createElement('div'); d.className = 'msg user'; d.innerHTML = '<div class="msg-avatar">👤</div><div class="msg-content"><div class="msg-bubble">' + txt + '</div><div class="msg-time">' + time() + '</div></div>'; document.getElementById('chat').appendChild(d); scroll(); }
-        function showMain() { document.getElementById('chat').innerHTML = ''; currentNode = null; collectedData = {}; awaitingInput = false; history = []; const roots = tree.filter(n => !n.parent_id); if (!roots.length) { bot('لا توجد بيانات'); return; } typing(); setTimeout(() => { bot(T('welcome'), '<div class="btn-grid">' + roots.map(n => '<button class="menu-btn" onclick="selectNode(\'' + n.id + '\')"><span class="icon">' + n.icon + '</span><span class="label">' + getName(n) + '</span></button>').join('') + '</div>'); }, 300); }
-        window.selectNode = (nodeId) => { const node = tree.find(n => n.id === nodeId); if (!node) return; history.push(currentNode?.id || null); currentNode = node; user(getName(node)); if (node.has_action && node.action_id) { executeAction(node.action_id); return; } const children = getValidChildren(node.id); if (node.input_type && node.input_type !== 'none') { askQuestion(node, children); return; } if (children.length) { showChildren(node, children); } else { bot('لا توجد خيارات', navButtons()); } };
-        function getValidChildren(parentId) { return tree.filter(n => { if (n.parent_id !== parentId) return false; if (n.show_if_value) { const parent = tree.find(p => p.id === parentId); if (parent?.var_name && collectedData[parent.var_name] !== n.show_if_value) return false; } return true; }); }
-        function askQuestion(node, children) { awaitingInput = true; typing(); setTimeout(() => { if (node.input_type === 'select' && node.options) { const opts = node.options.split('\n').filter(o => o.trim()); bot(node.icon + ' ' + getName(node), '<div class="quick-btns">' + opts.map(o => '<button class="quick-btn" onclick="answerQuestion(\'' + o.trim() + '\')">' + o.trim() + '</button>').join('') + '</div><button class="back-btn" onclick="goBack()">' + T('back') + '</button>'); } else { bot(node.icon + ' ' + getName(node), '<button class="back-btn" onclick="goBack()">' + T('back') + '</button>'); document.getElementById('input').focus(); } }, 300); }
-        function showChildren(node, children) { typing(); setTimeout(() => { if (children.length === 1 && children[0].input_type === 'none') { selectNode(children[0].id); } else { bot(node.icon + ' ' + getName(node), '<div class="quick-btns">' + children.map(c => '<button class="quick-btn" onclick="selectNode(\'' + c.id + '\')">' + c.icon + ' ' + getName(c) + '</button>').join('') + '</div><button class="back-btn" onclick="goBack()">' + T('back') + '</button>'); } }, 300); }
-        window.answerQuestion = (answer) => { if (!awaitingInput || !currentNode) return; if (currentNode.var_name) collectedData[currentNode.var_name] = answer; user(answer); awaitingInput = false; if (currentNode.has_action && currentNode.action_id) { executeAction(currentNode.action_id); return; } const children = getValidChildren(currentNode.id); if (children.length) { if (children.length === 1) { setTimeout(() => selectNode(children[0].id), 300); } else { showChildren(currentNode, children); } } else { bot('شكراً لك!', navButtons()); } };
-        async function executeAction(actionId) { const action = actions.find(a => a.id === actionId); if (!action) { bot('الأكشن غير موجود', navButtons()); return; } typing(); let dataSummary = ''; if (Object.keys(collectedData).length) { dataSummary = '<div class="data-summary"><strong>' + T('yourData') + '</strong>' + Object.entries(collectedData).map(([k,v]) => '<div class="data-row"><span>' + k + '</span><span>' + v + '</span></div>').join('') + '</div>'; } setTimeout(async () => { if (action.action_type === 'file_ai') { bot(T('thinking'), dataSummary); const answer = await callGemini(action); let fileLink = ''; if (action.file_name) { const url = SUPABASE_URL + '/storage/v1/object/public/files/' + action.file_name; const displayName = action.file_name.split('_').slice(1).join('_') || action.file_name; fileLink = '<div class="file-links"><a class="file-link" href="' + url + '" target="_blank">📎 ' + displayName + '</a></div>'; } bot('', '<div class="ai-badge">' + T('aiAnswer') + '</div><div class="info-card">' + answer + '</div>' + fileLink + navButtons()); } else if (action.action_type === 'static') { bot('', dataSummary + '<div class="info-card">' + (action.response_ar || 'لا توجد إجابة') + '</div>' + navButtons()); } else if (action.action_type === 'phone') { bot('', dataSummary + '<div class="contact-card"><a href="tel:' + action.phone_number + '">' + T('call') + '<br><span style="font-size:20px;">' + action.phone_number + '</span></a></div>' + navButtons()); } else if (action.action_type === 'whatsapp') { const waLink = 'https://wa.me/' + action.phone_number?.replace(/[^0-9]/g, ''); bot('', dataSummary + '<div class="contact-card whatsapp"><a href="' + waLink + '" target="_blank">' + T('whatsapp') + '<br><span style="font-size:20px;">' + action.phone_number + '</span></a></div>' + navButtons()); } else if (action.action_type === 'webhook') { sendWebhook(action); bot('', dataSummary + '<div class="info-card">📩 تم إرسال طلبك</div>' + navButtons()); } }, 500); }
-        async function callGemini(action) { if (!settings.gemini_key) return 'لم يتم إعداد AI'; try { let fileContent = ''; if (action.file_name) { try { const { data } = await db.storage.from('files').download(action.file_name); if (data) fileContent = await data.text(); } catch (e) { } } const userData = Object.entries(collectedData).map(([k,v]) => k + ': ' + v).join('\n'); const prompt = (action.ai_prompt || 'أنت مساعد ذكي. ابحث في الملف وأجب.') + '\n\nبيانات المستخدم:\n' + (userData || 'لا توجد') + '\n\nالملف:\n' + (fileContent || 'لا يوجد') + '\n\nأجب باللغة العربية بشكل مختصر.'; const res = await fetch(GEMINI_API + '?key=' + settings.gemini_key, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }) }); const data = await res.json(); return data.candidates?.[0]?.content?.parts?.[0]?.text || 'عذراً'; } catch (e) { return 'خطأ'; } }
-        function sendWebhook(action) { const url = action.webhook_url || settings.webhook_url; if (!url) return; fetch(url, { method: 'POST', body: JSON.stringify({ action: action.name, data: collectedData, timestamp: new Date().toISOString() }), mode: 'no-cors' }).catch(() => {}); }
-        function navButtons() { return '<div class="quick-btns" style="margin-top:12px;"><button class="quick-btn green" onclick="goHome()">' + T('home') + '</button></div>'; }
-        window.goBack = () => { if (!history.length) { goHome(); return; } user(T('back')); awaitingInput = false; const prevId = history.pop(); if (!prevId) { showMain(); } else { currentNode = tree.find(n => n.id === prevId); const children = getValidChildren(prevId); if (children.length) { showChildren(currentNode, children); } else { showMain(); } } };
-        window.goHome = () => { user(T('home')); showMain(); };
-        window.handleInput = () => { const inp = document.getElementById('input'); const txt = inp.value.trim(); if (!txt) return; inp.value = ''; if (awaitingInput) { answerQuestion(txt); } else { user(txt); typing(); setTimeout(async () => { const answer = await freeAI(txt); bot('', '<div class="ai-badge">' + T('aiAnswer') + '</div><div class="info-card">' + answer + '</div>' + navButtons()); }, 300); } };
-        async function freeAI(question) { if (!settings.gemini_key) return 'لم يتم إعداد AI'; try { const res = await fetch(GEMINI_API + '?key=' + settings.gemini_key, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts: [{ text: 'أنت مساعد موارد بشرية ذكي. أجب بشكل مختصر باللغة العربية.\n\nالسؤال: ' + question }] }] }) }); const data = await res.json(); return data.candidates?.[0]?.content?.parts?.[0]?.text || 'عذراً'; } catch (e) { return 'خطأ'; } }
-        document.getElementById('input').addEventListener('keypress', e => { if (e.key === 'Enter') window.handleInput(); });
-        document.getElementById('btnAr').className = 'lang-btn' + (lang === 'ar' ? ' active' : ''); document.getElementById('btnEn').className = 'lang-btn' + (lang === 'en' ? ' active' : ''); document.body.className = lang === 'en' ? 'en' : ''; document.getElementById('title').textContent = L[lang].title; document.getElementById('input').placeholder = L[lang].placeholder;
-        loadData();
+        
+        // State
+        let flowNodes = [], files = [], settings = {};
+        let lang = localStorage.getItem('chat_lang') || 'ar';
+        let currentNode = null;
+        let collectedData = {};
+        let awaitingInput = false;
+        let history = [];
+        
+        // Translations
+        const T = {
+            ar: {
+                title: 'مركز دعم الموظفين',
+                subtitle: 'مدعوم بالذكاء الاصطناعي',
+                welcome: 'أهلاً بك! 👋\nكيف يمكنني مساعدتك اليوم؟',
+                placeholder: 'اكتب رسالتك هنا...',
+                back: '← رجوع',
+                home: '🏠 الرئيسية',
+                searching: '🔍 جاري البحث...',
+                aiAnswer: '🤖 إجابة ذكية',
+                yourData: '📋 البيانات المُدخلة',
+                call: '📞 اتصل الآن',
+                whatsapp: '💬 تواصل واتساب',
+                noData: 'لا توجد بيانات',
+                error: 'حدث خطأ، يرجى المحاولة مرة أخرى',
+                notFound: 'لم يتم العثور على نتائج مطابقة'
+            },
+            en: {
+                title: 'Employee Support Center',
+                subtitle: 'AI Powered',
+                welcome: 'Welcome! 👋\nHow can I help you today?',
+                placeholder: 'Type your message...',
+                back: '← Back',
+                home: '🏠 Home',
+                searching: '🔍 Searching...',
+                aiAnswer: '🤖 AI Answer',
+                yourData: '📋 Your Data',
+                call: '📞 Call Now',
+                whatsapp: '💬 WhatsApp',
+                noData: 'No data available',
+                error: 'Error occurred, please try again',
+                notFound: 'No matching results found'
+            }
+        };
+        
+        function t(key) { return T[lang][key] || key; }
+        function getLabel(obj, field) { return obj[field + '_' + lang] || obj[field + '_ar'] || obj['title_' + lang] || obj['title_ar'] || ''; }
+        
+        // ==================== INIT ====================
+        async function init() {
+            try {
+                const { data: s } = await db.from('settings').select('*').limit(1).single();
+                if (s) settings = s;
+                
+                const { data: nodes } = await db.from('flow_nodes').select('*').eq('is_active', true).order('sort_order');
+                flowNodes = nodes || [];
+                
+                const { data: f } = await db.from('files').select('*').eq('is_active', true);
+                files = f || [];
+                
+                applyLang();
+                showMainMenu();
+            } catch (e) {
+                console.error('Init error:', e);
+                document.getElementById('chat').innerHTML = `<div class="loading">❌ ${t('error')}</div>`;
+            }
+        }
+        
+        // ==================== LANGUAGE ====================
+        window.switchLang = (newLang) => {
+            lang = newLang;
+            localStorage.setItem('chat_lang', lang);
+            applyLang();
+            showMainMenu();
+        };
+        
+        function applyLang() {
+            document.body.className = lang === 'en' ? 'en' : '';
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('btnAr').className = 'lang-btn' + (lang === 'ar' ? ' active' : '');
+            document.getElementById('btnEn').className = 'lang-btn' + (lang === 'en' ? ' active' : '');
+            document.getElementById('headerTitle').textContent = t('title');
+            document.getElementById('headerSubtitle').textContent = t('subtitle');
+            document.getElementById('userInput').placeholder = t('placeholder');
+        }
+        
+        // ==================== CHAT FUNCTIONS ====================
+        function getTime() {
+            return new Date().toLocaleTimeString(lang === 'ar' ? 'ar-SA' : 'en-US', { hour: '2-digit', minute: '2-digit' });
+        }
+        
+        function scrollToBottom() {
+            const chat = document.getElementById('chat');
+            chat.scrollTop = chat.scrollHeight;
+        }
+        
+        function showTyping() {
+            const div = document.createElement('div');
+            div.className = 'msg bot';
+            div.id = 'typingIndicator';
+            div.innerHTML = `
+                <div class="msg-avatar">🤖</div>
+                <div class="msg-content">
+                    <div class="typing"><span></span><span></span><span></span></div>
+                </div>
+            `;
+            document.getElementById('chat').appendChild(div);
+            scrollToBottom();
+        }
+        
+        function hideTyping() {
+            document.getElementById('typingIndicator')?.remove();
+        }
+        
+        function addBotMessage(text, extra = '') {
+            hideTyping();
+            const div = document.createElement('div');
+            div.className = 'msg bot';
+            div.innerHTML = `
+                <div class="msg-avatar">🤖</div>
+                <div class="msg-content">
+                    ${text ? `<div class="msg-bubble">${text}</div>` : ''}
+                    ${extra}
+                    <div class="msg-time">${getTime()}</div>
+                </div>
+            `;
+            document.getElementById('chat').appendChild(div);
+            scrollToBottom();
+        }
+        
+        function addUserMessage(text) {
+            const div = document.createElement('div');
+            div.className = 'msg user';
+            div.innerHTML = `
+                <div class="msg-avatar">👤</div>
+                <div class="msg-content">
+                    <div class="msg-bubble">${text}</div>
+                    <div class="msg-time">${getTime()}</div>
+                </div>
+            `;
+            document.getElementById('chat').appendChild(div);
+            scrollToBottom();
+        }
+        
+        // ==================== NAVIGATION ====================
+        function showMainMenu() {
+            document.getElementById('chat').innerHTML = '';
+            currentNode = null;
+            collectedData = {};
+            awaitingInput = false;
+            history = [];
+            
+            const roots = flowNodes.filter(n => !n.parent_id);
+            
+            if (!roots.length) {
+                addBotMessage(t('noData'));
+                return;
+            }
+            
+            showTyping();
+            setTimeout(() => {
+                const buttons = roots.map(n => `
+                    <button class="menu-btn" onclick="selectNode('${n.id}')">
+                        <span class="icon">${n.icon}</span>
+                        <span class="label">${getLabel(n, 'title')}</span>
+                    </button>
+                `).join('');
+                
+                addBotMessage(t('welcome'), `<div class="btn-grid">${buttons}</div>`);
+            }, 400);
+        }
+        
+        window.selectNode = (nodeId) => {
+            const node = flowNodes.find(n => n.id === nodeId);
+            if (!node) return;
+            
+            history.push(currentNode?.id || null);
+            currentNode = node;
+            addUserMessage(getLabel(node, 'title'));
+            
+            // If this is an action node, execute it
+            if (node.node_type === 'action') {
+                executeAction(node);
+                return;
+            }
+            
+            // Get valid children
+            const children = getValidChildren(node.id);
+            
+            // If this is a question node, ask it
+            if (node.node_type === 'question') {
+                askQuestion(node, children);
+                return;
+            }
+            
+            // If section node, show children
+            if (children.length) {
+                showChildren(children);
+            } else {
+                addBotMessage(t('noData'), getNavButtons());
+            }
+        };
+        
+        function getValidChildren(parentId) {
+            return flowNodes.filter(n => {
+                if (n.parent_id !== parentId) return false;
+                
+                // Check condition
+                if (n.show_condition) {
+                    try {
+                        const cond = typeof n.show_condition === 'string' ? JSON.parse(n.show_condition) : n.show_condition;
+                        if (cond.var && cond.equals) {
+                            if (collectedData[cond.var] !== cond.equals) return false;
+                        }
+                    } catch (e) {}
+                }
+                
+                return true;
+            }).sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+        }
+        
+        function showChildren(children) {
+            showTyping();
+            setTimeout(() => {
+                if (children.length === 1 && children[0].node_type !== 'question') {
+                    // Auto-navigate to single child
+                    hideTyping();
+                    selectNode(children[0].id);
+                } else {
+                    const buttons = children.map(c => `
+                        <button class="quick-btn" onclick="selectNode('${c.id}')">${c.icon} ${getLabel(c, 'title')}</button>
+                    `).join('');
+                    
+                    addBotMessage('', `<div class="quick-btns">${buttons}</div>${getBackButton()}`);
+                }
+            }, 400);
+        }
+        
+        function askQuestion(node, children) {
+            awaitingInput = true;
+            showTyping();
+            
+            setTimeout(() => {
+                if (node.input_type === 'select' && node.options) {
+                    const options = typeof node.options === 'string' ? JSON.parse(node.options) : node.options;
+                    const buttons = options.map(opt => {
+                        const label = opt.label_ar || opt.label || opt.value;
+                        return `<button class="quick-btn" onclick="answerQuestion('${opt.value}')">${label}</button>`;
+                    }).join('');
+                    
+                    addBotMessage(`${node.icon} ${getLabel(node, 'title')}`, `<div class="quick-btns">${buttons}</div>${getBackButton()}`);
+                } else {
+                    addBotMessage(`${node.icon} ${getLabel(node, 'title')}`, getBackButton());
+                    document.getElementById('userInput').focus();
+                }
+            }, 400);
+        }
+        
+        window.answerQuestion = (answer) => {
+            if (!awaitingInput || !currentNode) return;
+            
+            // Save answer
+            if (currentNode.var_name) {
+                collectedData[currentNode.var_name] = answer;
+            }
+            
+            addUserMessage(answer);
+            awaitingInput = false;
+            
+            // Get valid children after answer
+            const children = getValidChildren(currentNode.id);
+            
+            if (children.length) {
+                if (children.length === 1) {
+                    setTimeout(() => selectNode(children[0].id), 300);
+                } else {
+                    showChildren(children);
+                }
+            } else {
+                addBotMessage('شكراً لك! ✅', getNavButtons());
+            }
+        };
+        
+        // ==================== ACTIONS ====================
+        async function executeAction(node) {
+            showTyping();
+            
+            const actionType = node.action_type;
+            const actionData = node.action_data || {};
+            
+            // Build data summary
+            let dataSummaryHtml = '';
+            if (Object.keys(collectedData).length) {
+                dataSummaryHtml = `
+                    <div class="data-summary">
+                        <div class="data-summary-title">${t('yourData')}</div>
+                        ${Object.entries(collectedData).map(([k, v]) => `
+                            <div class="data-row">
+                                <span class="key">${k}</span>
+                                <span class="value">${v}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            setTimeout(async () => {
+                try {
+                    if (actionType === 'file_ai') {
+                        addBotMessage(t('searching'), dataSummaryHtml);
+                        const result = await searchInFile(node);
+                        hideTyping();
+                        addBotMessage('', `
+                            <div class="ai-badge">${t('aiAnswer')}</div>
+                            <div class="info-card">${result}</div>
+                            ${getNavButtons()}
+                        `);
+                    }
+                    else if (actionType === 'static') {
+                        const response = getLabel(actionData, 'response') || actionData.response_ar || '';
+                        addBotMessage('', `${dataSummaryHtml}<div class="info-card">${response}</div>${getNavButtons()}`);
+                    }
+                    else if (actionType === 'phone') {
+                        const phone = actionData.phone || '';
+                        addBotMessage('', `
+                            ${dataSummaryHtml}
+                            <div class="contact-card">
+                                <a href="tel:${phone}">${t('call')}<br><span style="font-size:22px;margin-top:8px;display:block;">${phone}</span></a>
+                            </div>
+                            ${getNavButtons()}
+                        `);
+                    }
+                    else if (actionType === 'whatsapp') {
+                        const phone = actionData.phone || '';
+                        const waLink = 'https://wa.me/' + phone.replace(/[^0-9]/g, '');
+                        addBotMessage('', `
+                            ${dataSummaryHtml}
+                            <div class="contact-card whatsapp">
+                                <a href="${waLink}" target="_blank">${t('whatsapp')}<br><span style="font-size:22px;margin-top:8px;display:block;">${phone}</span></a>
+                            </div>
+                            ${getNavButtons()}
+                        `);
+                    }
+                    else if (actionType === 'webhook') {
+                        await sendWebhook(node);
+                        addBotMessage('', `${dataSummaryHtml}<div class="info-card">📩 تم إرسال طلبك بنجاح!</div>${getNavButtons()}`);
+                    }
+                    else {
+                        addBotMessage(t('error'), getNavButtons());
+                    }
+                } catch (e) {
+                    console.error('Action error:', e);
+                    addBotMessage('', `<div class="error-card">${t('error')}</div>${getNavButtons()}`);
+                }
+            }, 500);
+        }
+        
+        // ==================== SMART FILE SEARCH ====================
+        async function searchInFile(node) {
+            const file = files.find(f => f.id === node.action_file_id);
+            if (!file) return t('notFound');
+            
+            try {
+                // Download file
+                const { data: fileBlob } = await db.storage.from('files').download(file.file_name);
+                if (!fileBlob) return t('notFound');
+                
+                const ext = file.file_name.split('.').pop().toLowerCase();
+                
+                // For Excel files - SMART SEARCH
+                if (['xlsx', 'xls', 'csv'].includes(ext)) {
+                    const arrayBuffer = await fileBlob.arrayBuffer();
+                    const workbook = XLSX.read(arrayBuffer);
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(sheet);
+                    
+                    // Get search columns
+                    const searchCols = file.search_columns || Object.keys(collectedData);
+                    
+                    // Search for matching row
+                    let foundRow = null;
+                    for (const row of jsonData) {
+                        let match = false;
+                        for (const [key, value] of Object.entries(collectedData)) {
+                            // Check if this column exists in row
+                            const rowValue = row[key] || row[key.toLowerCase()] || row[key.toUpperCase()];
+                            if (rowValue !== undefined) {
+                                // Compare values (case insensitive, trim spaces)
+                                const v1 = String(rowValue).trim().toLowerCase();
+                                const v2 = String(value).trim().toLowerCase();
+                                if (v1 === v2 || v1.includes(v2) || v2.includes(v1)) {
+                                    match = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (match) {
+                            foundRow = row;
+                            break;
+                        }
+                    }
+                    
+                    if (foundRow) {
+                        // Send found data to Gemini for formatting
+                        return await askGemini(file, foundRow);
+                    } else {
+                        // If no exact match, send all data with search context
+                        return await askGeminiWithContext(file, jsonData);
+                    }
+                }
+                // For PDF/other files - send text to Gemini
+                else {
+                    const text = await fileBlob.text();
+                    return await askGeminiWithText(file, text);
+                }
+            } catch (e) {
+                console.error('Search error:', e);
+                return t('error');
+            }
+        }
+        
+        async function askGemini(file, foundData) {
+            if (!settings.gemini_key) return JSON.stringify(foundData, null, 2);
+            
+            const prompt = `${file.ai_prompt || 'قم بتنسيق وعرض هذه البيانات بشكل واضح ومفهوم للمستخدم'}
+
+البيانات المطلوبة للمستخدم:
+${JSON.stringify(collectedData, null, 2)}
+
+البيانات الموجودة:
+${JSON.stringify(foundData, null, 2)}
+
+قدم الإجابة باللغة العربية بشكل مختصر وواضح.`;
+
+            return await callGeminiAPI(prompt);
+        }
+        
+        async function askGeminiWithContext(file, allData) {
+            if (!settings.gemini_key) return t('notFound');
+            
+            // Send only first 50 rows to avoid token limit
+            const limitedData = allData.slice(0, 50);
+            
+            const prompt = `${file.ai_prompt || 'ابحث في البيانات التالية وأجب على استفسار المستخدم'}
+
+بيانات البحث من المستخدم:
+${JSON.stringify(collectedData, null, 2)}
+
+البيانات المتاحة (${allData.length} صف):
+${JSON.stringify(limitedData, null, 2)}
+
+ابحث عن أفضل تطابق وقدم الإجابة باللغة العربية. إذا لم تجد تطابق، أخبر المستخدم.`;
+
+            return await callGeminiAPI(prompt);
+        }
+        
+        async function askGeminiWithText(file, text) {
+            if (!settings.gemini_key) return text.substring(0, 500);
+            
+            // Limit text length
+            const limitedText = text.substring(0, 10000);
+            
+            const prompt = `${file.ai_prompt || 'ابحث في المستند التالي وأجب على استفسار المستخدم'}
+
+بيانات البحث من المستخدم:
+${JSON.stringify(collectedData, null, 2)}
+
+محتوى المستند:
+${limitedText}
+
+ابحث وقدم الإجابة باللغة العربية بشكل مختصر ومفيد.`;
+
+            return await callGeminiAPI(prompt);
+        }
+        
+        async function callGeminiAPI(prompt) {
+            try {
+                const response = await fetch(`${GEMINI_API}?key=${settings.gemini_key}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: prompt }] }]
+                    })
+                });
+                
+                const data = await response.json();
+                return data.candidates?.[0]?.content?.parts?.[0]?.text || t('error');
+            } catch (e) {
+                console.error('Gemini error:', e);
+                return t('error');
+            }
+        }
+        
+        async function sendWebhook(node) {
+            const webhookUrl = node.action_data?.webhook || settings.webhook_url;
+            if (!webhookUrl) return;
+            
+            await fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    node: node.title_ar,
+                    data: collectedData,
+                    timestamp: new Date().toISOString()
+                }),
+                mode: 'no-cors'
+            }).catch(() => {});
+        }
+        
+        // ==================== NAVIGATION BUTTONS ====================
+        function getNavButtons() {
+            return `<div class="quick-btns" style="margin-top:14px;"><button class="quick-btn green" onclick="goHome()">${t('home')}</button></div>`;
+        }
+        
+        function getBackButton() {
+            return `<button class="back-btn" onclick="goBack()">${t('back')}</button>`;
+        }
+        
+        window.goBack = () => {
+            if (!history.length) {
+                goHome();
+                return;
+            }
+            
+            addUserMessage(t('back'));
+            awaitingInput = false;
+            
+            const prevId = history.pop();
+            if (!prevId) {
+                showMainMenu();
+            } else {
+                currentNode = flowNodes.find(n => n.id === prevId);
+                const children = getValidChildren(prevId);
+                if (children.length) {
+                    showChildren(children);
+                } else {
+                    showMainMenu();
+                }
+            }
+        };
+        
+        window.goHome = () => {
+            addUserMessage(t('home'));
+            showMainMenu();
+        };
+        
+        // ==================== USER INPUT ====================
+        window.handleUserInput = () => {
+            const input = document.getElementById('userInput');
+            const text = input.value.trim();
+            if (!text) return;
+            input.value = '';
+            
+            if (awaitingInput) {
+                answerQuestion(text);
+            } else {
+                // Free text - general AI
+                addUserMessage(text);
+                showTyping();
+                setTimeout(async () => {
+                    const response = await freeAI(text);
+                    addBotMessage('', `<div class="ai-badge">${t('aiAnswer')}</div><div class="info-card">${response}</div>${getNavButtons()}`);
+                }, 500);
+            }
+        };
+        
+        async function freeAI(question) {
+            if (!settings.gemini_key) return 'يرجى إعداد Gemini API من لوحة التحكم';
+            
+            const prompt = `أنت مساعد ذكي لدعم الموظفين. أجب على السؤال التالي بشكل مختصر ومفيد باللغة العربية:
+
+${question}`;
+            
+            return await callGeminiAPI(prompt);
+        }
+        
+        // Enter key handler
+        document.getElementById('userInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleUserInput();
+        });
+        
+        // Start
+        init();
     </script>
 </body>
 </html>

@@ -3,256 +3,429 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>لوحة التحكم - نظام دعم الموظفين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         :root {
-            --primary: #6366F1; --primary-light: #EEF2FF;
+            --primary: #6366F1; --primary-dark: #4F46E5; --primary-light: #E0E7FF;
             --success: #10B981; --success-light: #D1FAE5;
             --warning: #F59E0B; --warning-light: #FEF3C7;
             --danger: #EF4444; --danger-light: #FEE2E2;
             --purple: #8B5CF6; --purple-light: #EDE9FE;
             --cyan: #06B6D4; --cyan-light: #CFFAFE;
-            --bg: #F8FAFC; --card: #FFFFFF;
-            --text: #1E293B; --text-light: #64748B; --border: #E2E8F0;
+            --gray-50: #F9FAFB; --gray-100: #F3F4F6; --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB; --gray-600: #4B5563; --gray-800: #1F2937;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Tajawal', sans-serif; background: var(--bg); min-height: 100vh; }
+        body { font-family: 'Tajawal', sans-serif; background: var(--gray-100); min-height: 100vh; }
         
-        .header { background: linear-gradient(135deg, var(--primary), #8B5CF6); color: white; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-        .header h1 { font-size: 18px; display: flex; align-items: center; gap: 10px; }
-        .header-btn { padding: 8px 16px; background: rgba(255,255,255,0.2); border: none; border-radius: 8px; color: white; font-family: inherit; font-size: 13px; cursor: pointer; }
+        /* Header */
+        .header { background: linear-gradient(135deg, var(--primary) 0%, var(--purple) 100%); padding: 16px 24px; color: white; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(99,102,241,0.3); }
+        .header h1 { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .header-actions { display: flex; gap: 10px; }
+        .header-btn { padding: 10px 20px; background: rgba(255,255,255,0.2); border: none; border-radius: 10px; color: white; font-family: inherit; font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+        .header-btn:hover { background: rgba(255,255,255,0.3); }
+        .header-btn.primary { background: white; color: var(--primary); }
         
-        .container { max-width: 1300px; margin: 0 auto; padding: 20px; }
+        /* Tabs */
+        .tabs-container { background: white; border-bottom: 1px solid var(--gray-200); padding: 0 24px; }
+        .tabs { display: flex; gap: 0; }
+        .tab { padding: 16px 24px; font-weight: 600; font-size: 14px; color: var(--gray-600); cursor: pointer; border-bottom: 3px solid transparent; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+        .tab:hover { color: var(--primary); background: var(--primary-light); }
+        .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
         
-        .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-        .tab { padding: 10px 20px; background: var(--card); border: 2px solid var(--border); border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 6px; }
-        .tab:hover { border-color: var(--primary); }
-        .tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+        /* Main Container */
+        .main { padding: 24px; max-width: 1400px; margin: 0 auto; }
         
-        .card { background: var(--card); border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
-        .card-header h2 { font-size: 16px; display: flex; align-items: center; gap: 8px; }
-        .card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        /* Cards */
+        .card { background: white; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 20px; overflow: hidden; }
+        .card-header { padding: 20px 24px; border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center; }
+        .card-header h2 { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .card-body { padding: 24px; }
         
-        .btn { padding: 8px 16px; border: none; border-radius: 8px; font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+        /* Buttons */
+        .btn { padding: 10px 20px; border: none; border-radius: 10px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s; }
+        .btn:hover { transform: translateY(-1px); }
         .btn-primary { background: var(--primary); color: white; }
         .btn-success { background: var(--success); color: white; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+        .btn-icon { width: 32px; height: 32px; padding: 0; justify-content: center; border-radius: 8px; }
         
-        .folders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; }
-        .folder-card { background: var(--bg); border-radius: 12px; overflow: hidden; }
-        .folder-header { padding: 12px 15px; background: var(--primary-light); display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .folder-header:hover { background: #E0E7FF; }
-        .folder-header .icon { font-size: 20px; }
-        .folder-header .name { flex: 1; font-weight: 700; font-size: 14px; }
-        .folder-header .count { background: var(--primary); color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; }
-        .folder-actions button { width: 26px; height: 26px; border: none; border-radius: 6px; cursor: pointer; font-size: 11px; margin-left: 3px; }
-        .folder-actions .edit { background: var(--warning-light); color: var(--warning); }
-        .folder-actions .delete { background: var(--danger-light); color: var(--danger); }
-        .folder-content { padding: 10px; display: none; }
-        .folder-card.open .folder-content { display: block; }
+        /* ==================== FLOW BUILDER ==================== */
+        .flow-container { background: var(--gray-50); border-radius: 12px; min-height: 500px; position: relative; overflow: hidden; }
+        .flow-toolbar { padding: 12px 16px; background: white; border-bottom: 1px solid var(--gray-200); display: flex; gap: 10px; align-items: center; }
+        .flow-canvas { padding: 24px; min-height: 450px; }
         
-        .action-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: white; border-radius: 8px; margin-bottom: 6px; }
-        .action-item .icon { font-size: 18px; }
-        .action-item .info { flex: 1; }
-        .action-item .info .name { font-weight: 600; font-size: 13px; }
-        .action-item .info .type { font-size: 10px; color: var(--text-light); }
-        .action-item .actions button { width: 24px; height: 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 10px; margin-left: 3px; }
-        .action-item .actions .edit { background: var(--warning-light); color: var(--warning); }
-        .action-item .actions .delete { background: var(--danger-light); color: var(--danger); }
+        /* Flow Nodes */
+        .flow-node { background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-right: 4px solid var(--gray-300); position: relative; transition: 0.2s; }
+        .flow-node:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+        .flow-node.section { border-right-color: var(--primary); }
+        .flow-node.question { border-right-color: var(--cyan); }
+        .flow-node.action { border-right-color: var(--success); }
         
-        .add-btn { width: 100%; padding: 10px; border: 2px dashed var(--border); border-radius: 8px; background: transparent; color: var(--text-light); font-family: inherit; font-size: 12px; cursor: pointer; }
-        .add-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .flow-node-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+        .flow-node-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .flow-node.section .flow-node-icon { background: var(--primary-light); }
+        .flow-node.question .flow-node-icon { background: var(--cyan-light); }
+        .flow-node.action .flow-node-icon { background: var(--success-light); }
         
-        .tree-container { max-height: 600px; overflow-y: auto; }
-        .tree-node { margin-bottom: 4px; }
-        .node-row { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: var(--bg); border-radius: 8px; font-size: 13px; }
-        .node-row:hover { background: var(--primary-light); }
-        .node-row .icon { font-size: 18px; }
-        .node-row .label { flex: 1; font-weight: 600; }
-        .node-row .badges { display: flex; gap: 4px; flex-wrap: wrap; }
-        .badge { padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 600; }
-        .badge.var { background: var(--cyan-light); color: var(--cyan); }
-        .badge.action { background: var(--success-light); color: var(--success); }
-        .badge.condition { background: var(--warning-light); color: var(--warning); }
-        .node-actions button { width: 24px; height: 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 10px; margin-left: 3px; }
-        .node-actions .add { background: var(--success-light); color: var(--success); }
-        .node-actions .edit { background: var(--warning-light); color: var(--warning); }
-        .node-actions .delete { background: var(--danger-light); color: var(--danger); }
-        .node-children { margin-right: 25px; padding-right: 12px; border-right: 2px solid var(--border); }
+        .flow-node-info { flex: 1; }
+        .flow-node-title { font-weight: 700; font-size: 15px; margin-bottom: 2px; }
+        .flow-node-subtitle { font-size: 12px; color: var(--gray-600); }
+        .flow-node-number { background: var(--gray-100); color: var(--gray-600); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
         
-        .settings-group { margin-bottom: 20px; }
-        .settings-group label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 13px; }
-        .settings-group input { width: 100%; max-width: 450px; padding: 10px 14px; border: 2px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; }
-        .settings-group input:focus { outline: none; border-color: var(--primary); }
+        .flow-node-badges { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+        .flow-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .flow-badge.var { background: var(--cyan-light); color: var(--cyan); }
+        .flow-badge.type { background: var(--purple-light); color: var(--purple); }
+        .flow-badge.file { background: var(--success-light); color: var(--success); }
+        .flow-badge.condition { background: var(--warning-light); color: var(--warning); }
         
-        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 15px; }
-        .modal.active { display: flex; }
-        .modal-box { background: white; border-radius: 16px; padding: 20px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .modal-header h2 { font-size: 16px; }
-        .close-btn { width: 32px; height: 32px; border: none; border-radius: 8px; background: var(--bg); font-size: 16px; cursor: pointer; }
+        .flow-node-actions { position: absolute; top: 12px; left: 12px; display: flex; gap: 4px; opacity: 0; transition: 0.2s; }
+        .flow-node:hover .flow-node-actions { opacity: 1; }
+        .flow-node-actions button { width: 28px; height: 28px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; transition: 0.2s; }
+        .flow-node-actions .add { background: var(--success-light); color: var(--success); }
+        .flow-node-actions .edit { background: var(--warning-light); color: var(--warning); }
+        .flow-node-actions .delete { background: var(--danger-light); color: var(--danger); }
         
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 12px; }
-        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 10px 12px; border: 2px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13px; }
+        .flow-children { margin-right: 32px; padding-right: 16px; border-right: 2px dashed var(--gray-300); margin-top: 12px; }
+        
+        .flow-add-btn { width: 100%; padding: 16px; border: 2px dashed var(--gray-300); border-radius: 12px; background: transparent; color: var(--gray-600); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 16px; transition: 0.2s; }
+        .flow-add-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+        
+        /* ==================== FILES ==================== */
+        .files-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .file-card { background: var(--gray-50); border-radius: 12px; padding: 16px; position: relative; transition: 0.2s; }
+        .file-card:hover { background: var(--gray-100); }
+        .file-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .file-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .file-icon.excel { background: #D1FAE5; }
+        .file-icon.pdf { background: #FEE2E2; }
+        .file-icon.image { background: #DBEAFE; }
+        .file-icon.doc { background: #E0E7FF; }
+        .file-card-info h3 { font-size: 14px; font-weight: 600; margin-bottom: 2px; word-break: break-all; }
+        .file-card-info p { font-size: 12px; color: var(--gray-600); }
+        .file-card-meta { font-size: 11px; color: var(--gray-600); margin-bottom: 12px; }
+        .file-columns { background: white; border-radius: 8px; padding: 10px; margin-top: 10px; }
+        .file-columns-title { font-size: 11px; font-weight: 700; color: var(--gray-600); margin-bottom: 6px; }
+        .file-column-tag { display: inline-block; padding: 3px 8px; background: var(--cyan-light); color: var(--cyan); border-radius: 10px; font-size: 10px; font-weight: 600; margin: 2px; }
+        .file-card-actions { display: flex; gap: 6px; }
+        .file-delete { position: absolute; top: 12px; left: 12px; width: 28px; height: 28px; border: none; border-radius: 50%; background: var(--danger); color: white; cursor: pointer; font-size: 12px; opacity: 0; transition: 0.2s; }
+        .file-card:hover .file-delete { opacity: 1; }
+        
+        .upload-zone { border: 2px dashed var(--gray-300); border-radius: 12px; padding: 40px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .upload-zone:hover { border-color: var(--primary); background: var(--primary-light); }
+        .upload-zone-icon { font-size: 48px; margin-bottom: 12px; }
+        .upload-zone input { display: none; }
+        
+        /* ==================== SETTINGS ==================== */
+        .settings-form { max-width: 600px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px 16px; border: 2px solid var(--gray-200); border-radius: 10px; font-family: inherit; font-size: 14px; transition: 0.2s; }
         .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: var(--primary); }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         
-        .type-btns { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-        .type-btn { padding: 8px 12px; border: 2px solid var(--border); border-radius: 8px; background: white; cursor: pointer; font-size: 11px; display: flex; align-items: center; gap: 5px; font-family: inherit; }
-        .type-btn:hover { border-color: var(--primary); }
-        .type-btn.active { border-color: var(--primary); background: var(--primary-light); }
-        .type-btn span { font-size: 16px; }
+        /* ==================== MODAL ==================== */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-box { background: white; border-radius: 20px; width: 100%; max-width: 560px; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column; }
+        .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h2 { font-size: 18px; font-weight: 700; }
+        .modal-close { width: 36px; height: 36px; border: none; border-radius: 10px; background: var(--gray-100); font-size: 18px; cursor: pointer; }
+        .modal-body { padding: 24px; overflow-y: auto; flex: 1; }
+        .modal-footer { padding: 16px 24px; border-top: 1px solid var(--gray-200); display: flex; gap: 12px; justify-content: flex-end; }
         
-        .switch-row { display: flex; align-items: center; gap: 10px; padding: 12px; background: var(--bg); border-radius: 8px; margin-bottom: 14px; }
-        .switch { width: 44px; height: 24px; background: var(--border); border-radius: 12px; position: relative; cursor: pointer; transition: 0.2s; }
-        .switch.on { background: var(--success); }
-        .switch::after { content: ''; position: absolute; width: 20px; height: 20px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: 0.2s; }
-        .switch.on::after { left: 22px; }
+        /* Node Type Selector */
+        .node-types { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+        .node-type-btn { padding: 20px 16px; border: 2px solid var(--gray-200); border-radius: 12px; background: white; cursor: pointer; text-align: center; transition: 0.2s; }
+        .node-type-btn:hover { border-color: var(--primary); }
+        .node-type-btn.active { border-color: var(--primary); background: var(--primary-light); }
+        .node-type-btn span { font-size: 28px; display: block; margin-bottom: 8px; }
+        .node-type-btn strong { font-size: 14px; display: block; }
         
-        .upload-area { border: 2px dashed var(--border); border-radius: 10px; padding: 20px; text-align: center; cursor: pointer; }
-        .upload-area:hover { border-color: var(--primary); background: var(--primary-light); }
-        .upload-area input { display: none; }
+        /* Action Type Selector */
+        .action-types { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 16px; }
+        .action-type-btn { padding: 12px 8px; border: 2px solid var(--gray-200); border-radius: 10px; background: white; cursor: pointer; text-align: center; font-size: 11px; transition: 0.2s; }
+        .action-type-btn:hover { border-color: var(--primary); }
+        .action-type-btn.active { border-color: var(--primary); background: var(--primary-light); }
+        .action-type-btn span { font-size: 20px; display: block; margin-bottom: 4px; }
         
-        .modal-btns { display: flex; gap: 10px; margin-top: 18px; }
-        .modal-btns button { flex: 1; padding: 12px; border-radius: 10px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
-        .btn-cancel { background: var(--bg); color: var(--text); }
-        .btn-save { background: var(--success); color: white; }
-        
-        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--success); color: white; padding: 10px 25px; border-radius: 10px; font-weight: 600; opacity: 0; transition: 0.3s; z-index: 2000; font-size: 13px; }
+        /* Toast */
+        .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--gray-800); color: white; padding: 14px 28px; border-radius: 12px; font-weight: 600; opacity: 0; transition: 0.3s; z-index: 2000; }
         .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .toast.success { background: var(--success); }
         .toast.error { background: var(--danger); }
+        
+        /* Empty State */
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-600); }
+        .empty-state-icon { font-size: 64px; margin-bottom: 16px; opacity: 0.5; }
+        .empty-state h3 { font-size: 18px; margin-bottom: 8px; color: var(--gray-800); }
         
         .page { display: none; }
         .page.active { display: block; }
-        .empty { text-align: center; padding: 40px; color: var(--text-light); }
-        .empty span { font-size: 40px; display: block; margin-bottom: 8px; }
+        
+        .loading { display: flex; align-items: center; justify-content: center; padding: 40px; }
+        .spinner { width: 40px; height: 40px; border: 3px solid var(--gray-200); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🎛️ لوحة التحكم الذكية</h1>
-        <button class="header-btn" onclick="window.open('index.html','_blank')">👁️ معاينة</button>
+        <h1>🎛️ نظام دعم الموظفين الذكي</h1>
+        <div class="header-actions">
+            <button class="header-btn" onclick="window.open('index.html','_blank')">👁️ معاينة</button>
+            <button class="header-btn primary" onclick="testSystem()">🧪 اختبار</button>
+        </div>
     </div>
     
-    <div class="container">
+    <div class="tabs-container">
         <div class="tabs">
-            <div class="tab active" onclick="showPage('tree', this)">🌳 الشجرة</div>
-            <div class="tab" onclick="showPage('actions', this)">📁 الملفات والأكشنات</div>
+            <div class="tab active" onclick="showPage('flow', this)">🗺️ المسار</div>
+            <div class="tab" onclick="showPage('files', this)">📁 الملفات</div>
             <div class="tab" onclick="showPage('settings', this)">⚙️ الإعدادات</div>
         </div>
-        
-        <div class="page active" id="page-tree">
+    </div>
+    
+    <div class="main">
+        <!-- Flow Page -->
+        <div class="page active" id="page-flow">
             <div class="card">
                 <div class="card-header">
-                    <h2>🌳 شجرة الأقسام والأسئلة</h2>
-                    <button class="btn btn-success" onclick="openNodeModal(null)">➕ قسم رئيسي</button>
+                    <h2>🗺️ مسار المحادثة</h2>
+                    <button class="btn btn-success" onclick="openNodeModal(null)">➕ إضافة قسم رئيسي</button>
                 </div>
-                <div class="tree-container" id="treeContainer"></div>
-            </div>
-        </div>
-        
-        <div class="page" id="page-actions">
-            <div class="card">
-                <div class="card-header">
-                    <h2>📁 الملفات والأكشنات</h2>
-                    <div class="card-actions">
-                        <button class="btn btn-primary" onclick="openFolderModal()">➕ فولدر</button>
-                        <button class="btn btn-success" onclick="openActionModal()">➕ أكشن</button>
+                <div class="card-body">
+                    <div class="flow-container">
+                        <div class="flow-toolbar">
+                            <span style="font-size:13px;color:var(--gray-600);">📌 اضغط على العنصر لتعديله أو إضافة فرع</span>
+                        </div>
+                        <div class="flow-canvas" id="flowCanvas">
+                            <div class="loading"><div class="spinner"></div></div>
+                        </div>
                     </div>
                 </div>
-                <div class="folders-grid" id="foldersGrid"></div>
             </div>
         </div>
         
-        <div class="page" id="page-settings">
+        <!-- Files Page -->
+        <div class="page" id="page-files">
             <div class="card">
-                <div class="card-header"><h2>⚙️ الإعدادات</h2></div>
-                <div class="settings-group">
-                    <label>🔑 Gemini API Key</label>
-                    <input type="password" id="geminiKey" placeholder="AIzaSy...">
+                <div class="card-header">
+                    <h2>📁 إدارة الملفات</h2>
                 </div>
-                <div class="settings-group">
-                    <label>🔗 Webhook URL</label>
-                    <input type="text" id="webhookUrl" placeholder="https://...">
+                <div class="card-body">
+                    <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                        <div class="upload-zone-icon">📤</div>
+                        <p style="font-weight:600;margin-bottom:4px;">اسحب الملفات أو اضغط للرفع</p>
+                        <p style="font-size:13px;color:var(--gray-600);">Excel, PDF, Word, صور</p>
+                        <input type="file" id="fileInput" multiple accept=".xlsx,.xls,.csv,.pdf,.doc,.docx,.png,.jpg,.jpeg">
+                    </div>
+                    <div class="files-grid" id="filesGrid" style="margin-top:24px;"></div>
                 </div>
-                <button class="btn btn-success" onclick="saveSettings()">💾 حفظ</button>
             </div>
         </div>
-    </div>
-    
-    <!-- Folder Modal -->
-    <div class="modal" id="folderModal">
-        <div class="modal-box">
-            <div class="modal-header"><h2 id="folderModalTitle">فولدر جديد</h2><button class="close-btn" onclick="closeModal('folderModal')">×</button></div>
-            <form onsubmit="saveFolder(event)">
-                <input type="hidden" id="folderId">
-                <div class="form-row">
-                    <div class="form-group"><label>الأيقونة</label><input type="text" id="folderIcon" value="📂" maxlength="2"></div>
-                    <div class="form-group"><label>الاسم</label><input type="text" id="folderName" required></div>
+        
+        <!-- Settings Page -->
+        <div class="page" id="page-settings">
+            <div class="card">
+                <div class="card-header">
+                    <h2>⚙️ الإعدادات</h2>
                 </div>
-                <div class="modal-btns"><button type="button" class="btn-cancel" onclick="closeModal('folderModal')">إلغاء</button><button type="submit" class="btn-save">💾 حفظ</button></div>
-            </form>
-        </div>
-    </div>
-    
-    <!-- Action Modal -->
-    <div class="modal" id="actionModal">
-        <div class="modal-box">
-            <div class="modal-header"><h2 id="actionModalTitle">أكشن جديد</h2><button class="close-btn" onclick="closeModal('actionModal')">×</button></div>
-            <form onsubmit="saveAction(event)">
-                <input type="hidden" id="actionId">
-                <div class="form-group"><label>📂 الفولدر</label><select id="actionFolder"></select></div>
-                <label style="font-weight:600;font-size:12px;margin-bottom:8px;display:block;">نوع الأكشن:</label>
-                <div class="type-btns">
-                    <button type="button" class="type-btn active" data-type="file_ai" onclick="setActionType('file_ai')"><span>🤖</span> ملف + AI</button>
-                    <button type="button" class="type-btn" data-type="static" onclick="setActionType('static')"><span>📝</span> رد ثابت</button>
-                    <button type="button" class="type-btn" data-type="phone" onclick="setActionType('phone')"><span>📞</span> اتصال</button>
-                    <button type="button" class="type-btn" data-type="whatsapp" onclick="setActionType('whatsapp')"><span>💬</span> واتساب</button>
-                    <button type="button" class="type-btn" data-type="webhook" onclick="setActionType('webhook')"><span>🔗</span> Webhook</button>
+                <div class="card-body">
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label>🔑 Gemini API Key</label>
+                            <input type="password" id="geminiKey" placeholder="AIzaSy...">
+                            <p style="font-size:12px;color:var(--gray-600);margin-top:6px;">احصل على المفتاح من <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a></p>
+                        </div>
+                        <div class="form-group">
+                            <label>🔗 Webhook URL (اختياري)</label>
+                            <input type="text" id="webhookUrl" placeholder="https://hook.make.com/...">
+                        </div>
+                        <button class="btn btn-success" onclick="saveSettings()">💾 حفظ الإعدادات</button>
+                    </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group"><label>الأيقونة</label><input type="text" id="actionIcon" value="📄" maxlength="2"></div>
-                    <div class="form-group"><label>الاسم</label><input type="text" id="actionName" required></div>
-                </div>
-                <div id="fileAiFields">
-                    <div class="form-group"><label>📤 رفع ملف</label><div class="upload-area" onclick="document.getElementById('actionFile').click()"><span style="font-size:24px;">📤</span><p style="font-size:12px;color:var(--text-light);" id="uploadLabel">اضغط لاختيار ملف</p><input type="file" id="actionFile" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.png,.jpg,.jpeg"></div></div>
-                    <div class="form-group"><label>🤖 تعليمات AI</label><textarea id="actionPrompt" rows="2" placeholder="ابحث عن بيانات الموظف..."></textarea></div>
-                </div>
-                <div id="staticFields" style="display:none;"><div class="form-group"><label>الرد عربي</label><textarea id="actionRespAr" rows="2"></textarea></div><div class="form-group"><label>الرد إنجليزي</label><textarea id="actionRespEn" rows="2"></textarea></div></div>
-                <div id="phoneFields" style="display:none;"><div class="form-group"><label>📱 رقم الهاتف</label><input type="text" id="actionPhone" placeholder="966501234567"></div></div>
-                <div id="webhookFields" style="display:none;"><div class="form-group"><label>🔗 Webhook URL</label><input type="text" id="actionWebhook" placeholder="https://..."></div></div>
-                <div class="modal-btns"><button type="button" class="btn-cancel" onclick="closeModal('actionModal')">إلغاء</button><button type="submit" class="btn-save">💾 حفظ</button></div>
-            </form>
+            </div>
         </div>
     </div>
     
     <!-- Node Modal -->
     <div class="modal" id="nodeModal">
         <div class="modal-box">
-            <div class="modal-header"><h2 id="nodeModalTitle">إضافة عنصر</h2><button class="close-btn" onclick="closeModal('nodeModal')">×</button></div>
-            <form onsubmit="saveNode(event)">
-                <input type="hidden" id="nodeId">
-                <div class="form-group"><label>📍 يضاف تحت</label><select id="nodeParent"></select></div>
-                <div class="form-row">
-                    <div class="form-group"><label>الأيقونة</label><input type="text" id="nodeIcon" value="📁" maxlength="2"></div>
-                    <div class="form-group"><label>الترتيب</label><input type="number" id="nodeOrder" value="0" min="0"></div>
+            <div class="modal-header">
+                <h2 id="nodeModalTitle">إضافة عنصر</h2>
+                <button class="modal-close" onclick="closeModal('nodeModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <form id="nodeForm">
+                    <input type="hidden" id="nodeId">
+                    <input type="hidden" id="nodeParentId">
+                    
+                    <div class="form-group">
+                        <label>📍 يضاف تحت:</label>
+                        <select id="nodeParentSelect" onchange="document.getElementById('nodeParentId').value = this.value">
+                            <option value="">🏠 الجذر (قسم رئيسي)</option>
+                        </select>
+                    </div>
+                    
+                    <label style="font-weight:600;margin-bottom:10px;display:block;">نوع العنصر:</label>
+                    <div class="node-types">
+                        <button type="button" class="node-type-btn active" data-type="section" onclick="setNodeType('section')">
+                            <span>📂</span><strong>قسم</strong>
+                        </button>
+                        <button type="button" class="node-type-btn" data-type="question" onclick="setNodeType('question')">
+                            <span>❓</span><strong>سؤال</strong>
+                        </button>
+                        <button type="button" class="node-type-btn" data-type="action" onclick="setNodeType('action')">
+                            <span>⚡</span><strong>أكشن</strong>
+                        </button>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>🎨 الأيقونة</label>
+                            <input type="text" id="nodeIcon" value="📂" maxlength="2">
+                        </div>
+                        <div class="form-group">
+                            <label>📊 الترتيب</label>
+                            <input type="number" id="nodeOrder" value="0" min="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>العنوان (عربي) *</label>
+                            <input type="text" id="nodeTitleAr" required>
+                        </div>
+                        <div class="form-group">
+                            <label>العنوان (إنجليزي)</label>
+                            <input type="text" id="nodeTitleEn">
+                        </div>
+                    </div>
+                    
+                    <!-- Question Fields -->
+                    <div id="questionFields" style="display:none;">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>🔤 اسم المتغير *</label>
+                                <input type="text" id="nodeVarName" placeholder="مثال: emp_id, name">
+                            </div>
+                            <div class="form-group">
+                                <label>📋 نوع الإدخال</label>
+                                <select id="nodeInputType" onchange="toggleOptionsField()">
+                                    <option value="text">نص</option>
+                                    <option value="number">رقم</option>
+                                    <option value="select">اختيارات</option>
+                                    <option value="date">تاريخ</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" id="optionsField" style="display:none;">
+                            <label>الاختيارات (JSON)</label>
+                            <textarea id="nodeOptions" rows="3" placeholder='[{"value":"hr","label_ar":"الموارد البشرية"},{"value":"it","label_ar":"تقنية المعلومات"}]'></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Condition Field -->
+                    <div class="form-group" id="conditionField" style="display:none;">
+                        <label>🔗 شرط الظهور (اختياري)</label>
+                        <input type="text" id="nodeCondition" placeholder='مثال: {"var":"dept","equals":"hr"}'>
+                        <p style="font-size:11px;color:var(--gray-600);margin-top:4px;">يظهر فقط إذا تحقق الشرط</p>
+                    </div>
+                    
+                    <!-- Action Fields -->
+                    <div id="actionFields" style="display:none;">
+                        <label style="font-weight:600;margin-bottom:10px;display:block;">نوع الأكشن:</label>
+                        <div class="action-types">
+                            <button type="button" class="action-type-btn active" data-type="file_ai" onclick="setActionType('file_ai')">
+                                <span>🤖</span>ملف + AI
+                            </button>
+                            <button type="button" class="action-type-btn" data-type="static" onclick="setActionType('static')">
+                                <span>📝</span>رد ثابت
+                            </button>
+                            <button type="button" class="action-type-btn" data-type="phone" onclick="setActionType('phone')">
+                                <span>📞</span>اتصال
+                            </button>
+                            <button type="button" class="action-type-btn" data-type="whatsapp" onclick="setActionType('whatsapp')">
+                                <span>💬</span>واتساب
+                            </button>
+                            <button type="button" class="action-type-btn" data-type="webhook" onclick="setActionType('webhook')">
+                                <span>🔗</span>Webhook
+                            </button>
+                        </div>
+                        
+                        <div id="fileAiFields">
+                            <div class="form-group">
+                                <label>📎 اختر الملف</label>
+                                <select id="nodeFileId"></select>
+                            </div>
+                        </div>
+                        
+                        <div id="staticFields" style="display:none;">
+                            <div class="form-group">
+                                <label>الرد (عربي)</label>
+                                <textarea id="nodeResponseAr" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>الرد (إنجليزي)</label>
+                                <textarea id="nodeResponseEn" rows="3"></textarea>
+                            </div>
+                        </div>
+                        
+                        <div id="phoneFields" style="display:none;">
+                            <div class="form-group">
+                                <label>📱 رقم الهاتف</label>
+                                <input type="text" id="nodePhone" placeholder="966501234567">
+                            </div>
+                        </div>
+                        
+                        <div id="webhookFields" style="display:none;">
+                            <div class="form-group">
+                                <label>🔗 Webhook URL</label>
+                                <input type="text" id="nodeWebhook" placeholder="https://...">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" style="background:var(--gray-200);" onclick="closeModal('nodeModal')">إلغاء</button>
+                <button class="btn btn-success" onclick="saveNode()">💾 حفظ</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- File Edit Modal -->
+    <div class="modal" id="fileModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2>⚙️ إعدادات الملف</h2>
+                <button class="modal-close" onclick="closeModal('fileModal')">×</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editFileId">
+                <div class="form-group">
+                    <label>📂 الفولدر</label>
+                    <input type="text" id="editFileFolderName" placeholder="مثال: الرواتب">
                 </div>
-                <div class="form-row">
-                    <div class="form-group"><label>الاسم عربي</label><input type="text" id="nodeLabelAr" required></div>
-                    <div class="form-group"><label>الاسم إنجليزي</label><input type="text" id="nodeLabelEn" required></div>
+                <div class="form-group">
+                    <label>🔍 أعمدة البحث (للـ Excel)</label>
+                    <input type="text" id="editFileSearchColumns" placeholder="مثال: emp_id,name">
+                    <p style="font-size:11px;color:var(--gray-600);margin-top:4px;">الأعمدة التي يبحث فيها النظام</p>
                 </div>
-                <div class="form-row">
-                    <div class="form-group"><label>🔤 اسم المتغير</label><input type="text" id="nodeVar" placeholder="name, emp_id"></div>
-                    <div class="form-group"><label>📋 نوع الإدخال</label><select id="nodeInputType" onchange="toggleNodeOptions()"><option value="none">بدون (قسم)</option><option value="text">نص</option><option value="number">رقم</option><option value="select">اختيارات</option><option value="date">تاريخ</option></select></div>
+                <div class="form-group">
+                    <label>🤖 تعليمات AI</label>
+                    <textarea id="editFilePrompt" rows="4" placeholder="مثال: ابحث عن بيانات الموظف باستخدام الرقم الوظيفي أو الاسم"></textarea>
                 </div>
-                <div class="form-group" id="nodeOptionsGroup" style="display:none;"><label>الاختيارات (سطر لكل اختيار)</label><textarea id="nodeOptions" rows="3" placeholder="HR&#10;Finance&#10;IT"></textarea></div>
-                <div class="form-group" id="nodeConditionGroup" style="display:none;"><label>🔗 يظهر فقط إذا الإجابة السابقة =</label><input type="text" id="nodeCondition" placeholder="HR"></div>
-                <div class="switch-row"><div class="switch" id="hasActionSwitch" onclick="toggleHasAction()"></div><label style="flex:1;">⚡ ينفذ أكشن بعد هذا العنصر</label></div>
-                <div id="nodeActionGroup" style="display:none;"><div class="form-group"><label>🎬 اختر الأكشن</label><select id="nodeAction"></select></div></div>
-                <div class="modal-btns"><button type="button" class="btn-cancel" onclick="closeModal('nodeModal')">إلغاء</button><button type="submit" class="btn-save">💾 حفظ</button></div>
-            </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" style="background:var(--gray-200);" onclick="closeModal('fileModal')">إلغاء</button>
+                <button class="btn btn-success" onclick="saveFileSettings()">💾 حفظ</button>
+            </div>
         </div>
     </div>
     
@@ -260,163 +433,487 @@
 
     <script type="module">
         import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+        
         const SUPABASE_URL = 'https://nrsnsysjmhboovutirdn.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5yc25zeXNqbWhib292dXRpcmRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2MDYxNjYsImV4cCI6MjA4NzE4MjE2Nn0.A6XRe0wUA267hogwWnNpXe08B-MrL1HSjBVbURyLdsU';
+        
         const db = createClient(SUPABASE_URL, SUPABASE_KEY);
         
-        let folders = [], actions = [], tree = [], settings = {};
-        let actionType = 'file_ai', hasAction = false;
+        let flowNodes = [], files = [], settings = {};
+        let nodeType = 'section', actionType = 'file_ai';
 
+        // ==================== LOAD DATA ====================
         async function loadData() {
-            const { data: s } = await db.from('settings').select('*').limit(1).single();
-            if (s) { settings = s; document.getElementById('geminiKey').value = s.gemini_key || ''; document.getElementById('webhookUrl').value = s.webhook_url || ''; }
-            const { data: f } = await db.from('folders').select('*').eq('is_active', true).order('sort_order');
-            folders = f || [];
-            const { data: a } = await db.from('actions').select('*').eq('is_active', true).order('sort_order');
-            actions = a || [];
-            const { data: t } = await db.from('tree').select('*').eq('is_active', true).order('sort_order');
-            tree = t || [];
-            renderFolders(); renderTree(); updateSelects();
+            try {
+                const { data: s } = await db.from('settings').select('*').limit(1).single();
+                if (s) {
+                    settings = s;
+                    document.getElementById('geminiKey').value = s.gemini_key || '';
+                    document.getElementById('webhookUrl').value = s.webhook_url || '';
+                }
+                
+                const { data: nodes } = await db.from('flow_nodes').select('*').eq('is_active', true).order('sort_order');
+                flowNodes = nodes || [];
+                
+                const { data: f } = await db.from('files').select('*').eq('is_active', true).order('created_at', { ascending: false });
+                files = f || [];
+                
+                renderFlow();
+                renderFiles();
+                updateSelects();
+            } catch (e) {
+                console.error('Load error:', e);
+                toast('خطأ في تحميل البيانات', 'error');
+            }
         }
 
-        function renderFolders() {
-            const grid = document.getElementById('foldersGrid');
-            if (!folders.length) { grid.innerHTML = '<div class="empty"><span>📭</span><p>لا توجد فولدرات</p></div>'; return; }
-            grid.innerHTML = folders.map(f => {
-                const fa = actions.filter(a => a.folder_id === f.id);
-                return `<div class="folder-card" id="folder_${f.id}"><div class="folder-header" onclick="toggleFolder('${f.id}')"><span class="icon">${f.icon}</span><span class="name">${f.name}</span><span class="count">${fa.length}</span><div class="folder-actions" onclick="event.stopPropagation()"><button class="edit" onclick="editFolder('${f.id}')">✏️</button><button class="delete" onclick="deleteFolder('${f.id}')">🗑️</button></div></div><div class="folder-content">${fa.map(a => `<div class="action-item"><span class="icon">${a.icon}</span><div class="info"><div class="name">${a.name}</div><div class="type">${getActionTypeLabel(a.action_type)}</div></div><div class="actions"><button class="edit" onclick="editAction('${a.id}')">✏️</button><button class="delete" onclick="deleteAction('${a.id}')">🗑️</button></div></div>`).join('') || '<p style="text-align:center;color:var(--text-light);padding:10px;font-size:12px;">فارغ</p>'}<button class="add-btn" onclick="openActionModal('${f.id}')">➕ أكشن جديد</button></div></div>`;
+        // ==================== RENDER FLOW ====================
+        function renderFlow() {
+            const canvas = document.getElementById('flowCanvas');
+            const roots = flowNodes.filter(n => !n.parent_id);
+            
+            if (!roots.length) {
+                canvas.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🗺️</div>
+                        <h3>لا توجد عناصر</h3>
+                        <p>اضغط "إضافة قسم رئيسي" للبدء</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            canvas.innerHTML = roots.map(n => renderNode(n)).join('');
+        }
+
+        function renderNode(node, level = 0) {
+            const children = flowNodes.filter(n => n.parent_id === node.id);
+            const file = node.action_file_id ? files.find(f => f.id === node.action_file_id) : null;
+            
+            let badges = '';
+            if (node.var_name) badges += `<span class="flow-badge var">{${node.var_name}}</span>`;
+            if (node.input_type) badges += `<span class="flow-badge type">${node.input_type}</span>`;
+            if (file) badges += `<span class="flow-badge file">📎 ${file.original_name || file.file_name}</span>`;
+            if (node.show_condition) badges += `<span class="flow-badge condition">شرط</span>`;
+            if (node.action_type && node.node_type === 'action') {
+                const typeLabels = { file_ai: '🤖 AI', static: '📝 ثابت', phone: '📞 اتصال', whatsapp: '💬 واتساب', webhook: '🔗 Webhook' };
+                badges += `<span class="flow-badge type">${typeLabels[node.action_type] || node.action_type}</span>`;
+            }
+            
+            const pathNum = node.path_number || '';
+            
+            return `
+                <div class="flow-node ${node.node_type}">
+                    <div class="flow-node-actions">
+                        ${node.node_type !== 'action' ? `<button class="add" onclick="openNodeModal('${node.id}')" title="إضافة فرعي">➕</button>` : ''}
+                        <button class="edit" onclick="editNode('${node.id}')" title="تعديل">✏️</button>
+                        <button class="delete" onclick="deleteNode('${node.id}')" title="حذف">🗑️</button>
+                    </div>
+                    <div class="flow-node-header">
+                        <div class="flow-node-icon">${node.icon}</div>
+                        <div class="flow-node-info">
+                            <div class="flow-node-title">${node.title_ar}</div>
+                            <div class="flow-node-subtitle">${node.title_en || ''}</div>
+                        </div>
+                        ${pathNum ? `<span class="flow-node-number">${pathNum}</span>` : ''}
+                    </div>
+                    ${badges ? `<div class="flow-node-badges">${badges}</div>` : ''}
+                    ${children.length ? `<div class="flow-children">${children.map(c => renderNode(c, level + 1)).join('')}</div>` : ''}
+                </div>
+            `;
+        }
+
+        // ==================== RENDER FILES ====================
+        function renderFiles() {
+            const grid = document.getElementById('filesGrid');
+            
+            if (!files.length) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column:1/-1;">
+                        <div class="empty-state-icon">📁</div>
+                        <h3>لا توجد ملفات</h3>
+                        <p>ارفع ملفات Excel أو PDF</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = files.map(f => {
+                const ext = f.file_name?.split('.').pop()?.toLowerCase() || '';
+                let iconClass = 'doc', iconEmoji = '📄';
+                if (['xlsx', 'xls', 'csv'].includes(ext)) { iconClass = 'excel'; iconEmoji = '📗'; }
+                else if (ext === 'pdf') { iconClass = 'pdf'; iconEmoji = '📕'; }
+                else if (['png', 'jpg', 'jpeg'].includes(ext)) { iconClass = 'image'; iconEmoji = '🖼️'; }
+                
+                let columnsHtml = '';
+                if (f.columns_info && Array.isArray(f.columns_info)) {
+                    columnsHtml = `
+                        <div class="file-columns">
+                            <div class="file-columns-title">📊 الأعمدة:</div>
+                            ${f.columns_info.map(c => `<span class="file-column-tag">${c.name || c}</span>`).join('')}
+                        </div>
+                    `;
+                }
+                
+                return `
+                    <div class="file-card">
+                        <button class="file-delete" onclick="deleteFile('${f.id}', '${f.file_name}')">×</button>
+                        <div class="file-card-header">
+                            <div class="file-icon ${iconClass}">${iconEmoji}</div>
+                            <div class="file-card-info">
+                                <h3>${f.original_name || f.file_name}</h3>
+                                <p>📂 ${f.folder_name || 'عام'}</p>
+                            </div>
+                        </div>
+                        ${columnsHtml}
+                        <div class="file-card-actions" style="margin-top:12px;">
+                            <button class="btn btn-sm btn-primary" onclick="editFile('${f.id}')">⚙️ إعدادات</button>
+                        </div>
+                    </div>
+                `;
             }).join('');
         }
 
-        function getActionTypeLabel(type) { return { file_ai: '🤖 ملف + AI', static: '📝 رد ثابت', phone: '📞 اتصال', whatsapp: '💬 واتساب', webhook: '🔗 Webhook' }[type] || type; }
-        window.toggleFolder = (id) => document.getElementById('folder_' + id)?.classList.toggle('open');
-
-        window.openFolderModal = (id) => {
-            document.getElementById('folderModalTitle').textContent = id ? 'تعديل الفولدر' : 'فولدر جديد';
-            document.getElementById('folderId').value = id || '';
-            const f = id ? folders.find(x => x.id === id) : null;
-            document.getElementById('folderIcon').value = f?.icon || '📂';
-            document.getElementById('folderName').value = f?.name || '';
-            openModal('folderModal');
-        };
-        window.editFolder = (id) => openFolderModal(id);
-        window.saveFolder = async (e) => { e.preventDefault(); const id = document.getElementById('folderId').value; const data = { icon: document.getElementById('folderIcon').value, name: document.getElementById('folderName').value }; if (id) await db.from('folders').update(data).eq('id', id); else await db.from('folders').insert({ ...data, sort_order: folders.length }); toast('تم ✅'); closeModal('folderModal'); loadData(); };
-        window.deleteFolder = async (id) => { if (!confirm('حذف الفولدر؟')) return; await db.from('folders').update({ is_active: false }).eq('id', id); toast('تم'); loadData(); };
-
-        window.openActionModal = (folderId) => {
-            document.getElementById('actionModalTitle').textContent = 'أكشن جديد';
-            document.getElementById('actionId').value = '';
-            document.getElementById('actionIcon').value = '📄';
-            document.getElementById('actionName').value = '';
-            document.getElementById('actionPrompt').value = '';
-            document.getElementById('actionRespAr').value = '';
-            document.getElementById('actionRespEn').value = '';
-            document.getElementById('actionPhone').value = '';
-            document.getElementById('actionWebhook').value = '';
-            document.getElementById('uploadLabel').textContent = 'اضغط لاختيار ملف';
-            document.getElementById('actionFile').dataset.fileName = '';
-            setActionType('file_ai');
-            updateFolderSelect(folderId);
-            openModal('actionModal');
-        };
-        window.editAction = (id) => {
-            const a = actions.find(x => x.id === id);
-            document.getElementById('actionModalTitle').textContent = 'تعديل الأكشن';
-            document.getElementById('actionId').value = id;
-            document.getElementById('actionIcon').value = a.icon;
-            document.getElementById('actionName').value = a.name;
-            document.getElementById('actionPrompt').value = a.ai_prompt || '';
-            document.getElementById('actionRespAr').value = a.response_ar || '';
-            document.getElementById('actionRespEn').value = a.response_en || '';
-            document.getElementById('actionPhone').value = a.phone_number || '';
-            document.getElementById('actionWebhook').value = a.webhook_url || '';
-            document.getElementById('uploadLabel').textContent = a.file_name ? '✅ ' + a.file_name.split('_').slice(1).join('_') : 'اضغط لاختيار ملف';
-            document.getElementById('actionFile').dataset.fileName = a.file_name || '';
-            setActionType(a.action_type);
-            updateFolderSelect(a.folder_id);
-            openModal('actionModal');
-        };
-        window.setActionType = (type) => { actionType = type; document.querySelectorAll('.type-btn').forEach(b => b.classList.toggle('active', b.dataset.type === type)); document.getElementById('fileAiFields').style.display = type === 'file_ai' ? '' : 'none'; document.getElementById('staticFields').style.display = type === 'static' ? '' : 'none'; document.getElementById('phoneFields').style.display = (type === 'phone' || type === 'whatsapp') ? '' : 'none'; document.getElementById('webhookFields').style.display = type === 'webhook' ? '' : 'none'; };
-        document.getElementById('actionFile').addEventListener('change', async (e) => { const file = e.target.files[0]; if (!file) return; document.getElementById('uploadLabel').textContent = '⏳ جاري الرفع...'; const fileName = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_'); const { error } = await db.storage.from('files').upload(fileName, file, { upsert: true }); if (error) { toast('خطأ', true); return; } document.getElementById('uploadLabel').textContent = '✅ ' + file.name; document.getElementById('actionFile').dataset.fileName = fileName; toast('تم ✅'); });
-        window.saveAction = async (e) => { e.preventDefault(); const id = document.getElementById('actionId').value; const data = { folder_id: document.getElementById('actionFolder').value || null, icon: document.getElementById('actionIcon').value, name: document.getElementById('actionName').value, action_type: actionType, file_name: document.getElementById('actionFile').dataset.fileName || null, ai_prompt: document.getElementById('actionPrompt').value || null, response_ar: document.getElementById('actionRespAr').value || null, response_en: document.getElementById('actionRespEn').value || null, phone_number: document.getElementById('actionPhone').value || null, webhook_url: document.getElementById('actionWebhook').value || null }; if (id) await db.from('actions').update(data).eq('id', id); else await db.from('actions').insert({ ...data, sort_order: actions.length }); toast('تم ✅'); closeModal('actionModal'); loadData(); };
-        window.deleteAction = async (id) => { if (!confirm('حذف؟')) return; await db.from('actions').update({ is_active: false }).eq('id', id); toast('تم'); loadData(); };
-        function updateFolderSelect(selected) { document.getElementById('actionFolder').innerHTML = '<option value="">-- بدون --</option>' + folders.map(f => `<option value="${f.id}" ${f.id === selected ? 'selected' : ''}>${f.icon} ${f.name}</option>`).join(''); }
-
-        function renderTree() {
-            const container = document.getElementById('treeContainer');
-            const roots = tree.filter(n => !n.parent_id);
-            if (!roots.length) { container.innerHTML = '<div class="empty"><span>🌳</span><p>لا توجد عناصر</p></div>'; return; }
-            container.innerHTML = roots.map(n => renderNode(n)).join('');
-        }
-        function renderNode(node) {
-            const children = tree.filter(n => n.parent_id === node.id);
-            const action = node.action_id ? actions.find(a => a.id === node.action_id) : null;
-            let badges = '';
-            if (node.var_name) badges += `<span class="badge var">{${node.var_name}}</span>`;
-            if (node.show_if_value) badges += `<span class="badge condition">إذا: ${node.show_if_value}</span>`;
-            if (action) badges += `<span class="badge action">${action.icon} ${action.name}</span>`;
-            return `<div class="tree-node"><div class="node-row"><span class="icon">${node.icon}</span><span class="label">${node.label_ar}</span><div class="badges">${badges}</div><div class="node-actions"><button class="add" onclick="openNodeModal('${node.id}')">➕</button><button class="edit" onclick="editNode('${node.id}')">✏️</button><button class="delete" onclick="deleteNode('${node.id}')">🗑️</button></div></div>${children.length ? `<div class="node-children">${children.map(c => renderNode(c)).join('')}</div>` : ''}</div>`;
-        }
-
+        // ==================== NODE MODAL ====================
         window.openNodeModal = (parentId) => {
             document.getElementById('nodeModalTitle').textContent = parentId ? 'إضافة عنصر فرعي' : 'إضافة قسم رئيسي';
             document.getElementById('nodeId').value = '';
-            document.getElementById('nodeIcon').value = parentId ? '❓' : '📁';
+            document.getElementById('nodeParentId').value = parentId || '';
+            document.getElementById('nodeIcon').value = parentId ? '❓' : '📂';
             document.getElementById('nodeOrder').value = '0';
-            document.getElementById('nodeLabelAr').value = '';
-            document.getElementById('nodeLabelEn').value = '';
-            document.getElementById('nodeVar').value = '';
-            document.getElementById('nodeInputType').value = parentId ? 'text' : 'none';
+            document.getElementById('nodeTitleAr').value = '';
+            document.getElementById('nodeTitleEn').value = '';
+            document.getElementById('nodeVarName').value = '';
+            document.getElementById('nodeInputType').value = 'text';
             document.getElementById('nodeOptions').value = '';
             document.getElementById('nodeCondition').value = '';
-            document.getElementById('nodeAction').value = '';
-            hasAction = false;
-            document.getElementById('hasActionSwitch').classList.remove('on');
-            document.getElementById('nodeActionGroup').style.display = 'none';
+            document.getElementById('nodeResponseAr').value = '';
+            document.getElementById('nodeResponseEn').value = '';
+            document.getElementById('nodePhone').value = '';
+            document.getElementById('nodeWebhook').value = '';
+            document.getElementById('nodeFileId').value = '';
+            
+            setNodeType(parentId ? 'question' : 'section');
+            setActionType('file_ai');
             updateParentSelect(parentId);
-            updateActionSelect();
-            toggleNodeOptions();
-            checkShowCondition(parentId);
+            updateFileSelect();
             openModal('nodeModal');
         };
+
         window.editNode = (id) => {
-            const n = tree.find(x => x.id === id);
+            const node = flowNodes.find(n => n.id === id);
+            if (!node) return;
+            
             document.getElementById('nodeModalTitle').textContent = 'تعديل العنصر';
             document.getElementById('nodeId').value = id;
-            document.getElementById('nodeIcon').value = n.icon;
-            document.getElementById('nodeOrder').value = n.sort_order || 0;
-            document.getElementById('nodeLabelAr').value = n.label_ar;
-            document.getElementById('nodeLabelEn').value = n.label_en;
-            document.getElementById('nodeVar').value = n.var_name || '';
-            document.getElementById('nodeInputType').value = n.input_type || 'none';
-            document.getElementById('nodeOptions').value = n.options || '';
-            document.getElementById('nodeCondition').value = n.show_if_value || '';
-            document.getElementById('nodeAction').value = n.action_id || '';
-            hasAction = n.has_action || false;
-            document.getElementById('hasActionSwitch').classList.toggle('on', hasAction);
-            document.getElementById('nodeActionGroup').style.display = hasAction ? '' : 'none';
-            updateParentSelect(n.parent_id, id);
-            updateActionSelect();
-            toggleNodeOptions();
-            checkShowCondition(n.parent_id);
+            document.getElementById('nodeParentId').value = node.parent_id || '';
+            document.getElementById('nodeIcon').value = node.icon;
+            document.getElementById('nodeOrder').value = node.sort_order || 0;
+            document.getElementById('nodeTitleAr').value = node.title_ar;
+            document.getElementById('nodeTitleEn').value = node.title_en || '';
+            document.getElementById('nodeVarName').value = node.var_name || '';
+            document.getElementById('nodeInputType').value = node.input_type || 'text';
+            document.getElementById('nodeOptions').value = node.options ? JSON.stringify(node.options) : '';
+            document.getElementById('nodeCondition').value = node.show_condition ? JSON.stringify(node.show_condition) : '';
+            document.getElementById('nodeFileId').value = node.action_file_id || '';
+            
+            const actionData = node.action_data || {};
+            document.getElementById('nodeResponseAr').value = actionData.response_ar || '';
+            document.getElementById('nodeResponseEn').value = actionData.response_en || '';
+            document.getElementById('nodePhone').value = actionData.phone || '';
+            document.getElementById('nodeWebhook').value = actionData.webhook || '';
+            
+            setNodeType(node.node_type);
+            setActionType(node.action_type || 'file_ai');
+            updateParentSelect(node.parent_id, id);
+            updateFileSelect();
             openModal('nodeModal');
         };
-        window.saveNode = async (e) => { e.preventDefault(); const id = document.getElementById('nodeId').value; const data = { parent_id: document.getElementById('nodeParent').value || null, icon: document.getElementById('nodeIcon').value, sort_order: parseInt(document.getElementById('nodeOrder').value) || 0, label_ar: document.getElementById('nodeLabelAr').value, label_en: document.getElementById('nodeLabelEn').value, var_name: document.getElementById('nodeVar').value || null, input_type: document.getElementById('nodeInputType').value, options: document.getElementById('nodeOptions').value || null, show_if_value: document.getElementById('nodeCondition').value || null, has_action: hasAction, action_id: hasAction ? (document.getElementById('nodeAction').value || null) : null }; if (id) await db.from('tree').update(data).eq('id', id); else await db.from('tree').insert(data); toast('تم ✅'); closeModal('nodeModal'); loadData(); };
-        window.deleteNode = async (id) => { if (!confirm('حذف؟')) return; await db.from('tree').update({ is_active: false }).eq('id', id); toast('تم'); loadData(); };
-        window.toggleHasAction = () => { hasAction = !hasAction; document.getElementById('hasActionSwitch').classList.toggle('on', hasAction); document.getElementById('nodeActionGroup').style.display = hasAction ? '' : 'none'; };
-        window.toggleNodeOptions = () => { document.getElementById('nodeOptionsGroup').style.display = document.getElementById('nodeInputType').value === 'select' ? '' : 'none'; };
-        function checkShowCondition(parentId) { const parent = tree.find(n => n.id === parentId); document.getElementById('nodeConditionGroup').style.display = (parent?.input_type === 'select') ? '' : 'none'; }
-        function updateParentSelect(selectedId, excludeId) { let opts = '<option value="">🏠 الجذر</option>'; const add = (nodes, lvl = 0) => { nodes.forEach(n => { if (n.id !== excludeId) { opts += `<option value="${n.id}" ${n.id === selectedId ? 'selected' : ''}>${'—'.repeat(lvl)} ${n.icon} ${n.label_ar}</option>`; add(tree.filter(c => c.parent_id === n.id), lvl + 1); } }); }; add(tree.filter(n => !n.parent_id)); document.getElementById('nodeParent').innerHTML = opts; }
-        function updateActionSelect() { let opts = '<option value="">-- اختر --</option>'; folders.forEach(f => { const fa = actions.filter(a => a.folder_id === f.id); if (fa.length) { opts += `<optgroup label="${f.icon} ${f.name}">${fa.map(a => `<option value="${a.id}">${a.icon} ${a.name}</option>`).join('')}</optgroup>`; } }); const na = actions.filter(a => !a.folder_id); if (na.length) { opts += `<optgroup label="بدون فولدر">${na.map(a => `<option value="${a.id}">${a.icon} ${a.name}</option>`).join('')}</optgroup>`; } document.getElementById('nodeAction').innerHTML = opts; }
-        function updateSelects() { updateFolderSelect(); updateActionSelect(); }
 
-        window.saveSettings = async () => { const data = { gemini_key: document.getElementById('geminiKey').value, webhook_url: document.getElementById('webhookUrl').value }; if (settings.id) await db.from('settings').update(data).eq('id', settings.id); else await db.from('settings').insert(data); settings = { ...settings, ...data }; toast('تم ✅'); };
+        window.saveNode = async () => {
+            const id = document.getElementById('nodeId').value;
+            const parentId = document.getElementById('nodeParentId').value;
+            
+            // Calculate path number
+            let pathNumber = '';
+            if (parentId) {
+                const siblings = flowNodes.filter(n => n.parent_id === parentId && n.id !== id);
+                const parent = flowNodes.find(n => n.id === parentId);
+                const parentPath = parent?.path_number || '';
+                pathNumber = parentPath ? `${parentPath}.${siblings.length + 1}` : `${siblings.length + 1}`;
+            } else {
+                const roots = flowNodes.filter(n => !n.parent_id && n.id !== id);
+                pathNumber = `${roots.length + 1}`;
+            }
+            
+            let options = null;
+            try { options = document.getElementById('nodeOptions').value ? JSON.parse(document.getElementById('nodeOptions').value) : null; } catch (e) {}
+            
+            let showCondition = null;
+            try { showCondition = document.getElementById('nodeCondition').value ? JSON.parse(document.getElementById('nodeCondition').value) : null; } catch (e) {}
+            
+            const actionData = {};
+            if (actionType === 'static') {
+                actionData.response_ar = document.getElementById('nodeResponseAr').value;
+                actionData.response_en = document.getElementById('nodeResponseEn').value;
+            } else if (actionType === 'phone' || actionType === 'whatsapp') {
+                actionData.phone = document.getElementById('nodePhone').value;
+            } else if (actionType === 'webhook') {
+                actionData.webhook = document.getElementById('nodeWebhook').value;
+            }
+            
+            const data = {
+                parent_id: parentId || null,
+                path_number: pathNumber,
+                sort_order: parseInt(document.getElementById('nodeOrder').value) || 0,
+                node_type: nodeType,
+                icon: document.getElementById('nodeIcon').value,
+                title_ar: document.getElementById('nodeTitleAr').value,
+                title_en: document.getElementById('nodeTitleEn').value || null,
+                var_name: nodeType === 'question' ? document.getElementById('nodeVarName').value : null,
+                input_type: nodeType === 'question' ? document.getElementById('nodeInputType').value : null,
+                options: options,
+                show_condition: showCondition,
+                action_type: nodeType === 'action' ? actionType : null,
+                action_file_id: (nodeType === 'action' && actionType === 'file_ai') ? (document.getElementById('nodeFileId').value || null) : null,
+                action_data: Object.keys(actionData).length ? actionData : null
+            };
+            
+            try {
+                if (id) {
+                    await db.from('flow_nodes').update(data).eq('id', id);
+                } else {
+                    await db.from('flow_nodes').insert(data);
+                }
+                toast('تم الحفظ بنجاح ✅', 'success');
+                closeModal('nodeModal');
+                loadData();
+            } catch (e) {
+                console.error('Save error:', e);
+                toast('خطأ في الحفظ', 'error');
+            }
+        };
 
-        window.showPage = (page, el) => { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); document.getElementById('page-' + page).classList.add('active'); el.classList.add('active'); };
-        function openModal(id) { document.getElementById(id).classList.add('active'); }
-        window.closeModal = (id) => document.getElementById(id).classList.remove('active');
-        function toast(msg, isError = false) { const t = document.getElementById('toast'); t.textContent = msg; t.className = 'toast show' + (isError ? ' error' : ''); setTimeout(() => t.classList.remove('show'), 2500); }
-        document.querySelectorAll('.modal').forEach(m => { m.addEventListener('click', e => { if (e.target === m) m.classList.remove('active'); }); });
+        window.deleteNode = async (id) => {
+            if (!confirm('حذف هذا العنصر وكل فروعه؟')) return;
+            try {
+                await db.from('flow_nodes').update({ is_active: false }).eq('id', id);
+                toast('تم الحذف', 'success');
+                loadData();
+            } catch (e) {
+                toast('خطأ', 'error');
+            }
+        };
+
+        window.setNodeType = (type) => {
+            nodeType = type;
+            document.querySelectorAll('.node-type-btn').forEach(b => b.classList.toggle('active', b.dataset.type === type));
+            document.getElementById('questionFields').style.display = type === 'question' ? '' : 'none';
+            document.getElementById('actionFields').style.display = type === 'action' ? '' : 'none';
+            document.getElementById('conditionField').style.display = type !== 'section' ? '' : 'none';
+            
+            // Update icon
+            const icons = { section: '📂', question: '❓', action: '⚡' };
+            document.getElementById('nodeIcon').value = icons[type];
+        };
+
+        window.setActionType = (type) => {
+            actionType = type;
+            document.querySelectorAll('.action-type-btn').forEach(b => b.classList.toggle('active', b.dataset.type === type));
+            document.getElementById('fileAiFields').style.display = type === 'file_ai' ? '' : 'none';
+            document.getElementById('staticFields').style.display = type === 'static' ? '' : 'none';
+            document.getElementById('phoneFields').style.display = (type === 'phone' || type === 'whatsapp') ? '' : 'none';
+            document.getElementById('webhookFields').style.display = type === 'webhook' ? '' : 'none';
+        };
+
+        window.toggleOptionsField = () => {
+            document.getElementById('optionsField').style.display = document.getElementById('nodeInputType').value === 'select' ? '' : 'none';
+        };
+
+        function updateParentSelect(selectedId, excludeId) {
+            let options = '<option value="">🏠 الجذر (قسم رئيسي)</option>';
+            
+            const addOptions = (nodes, level = 0) => {
+                nodes.forEach(n => {
+                    if (n.id !== excludeId && n.node_type !== 'action') {
+                        const prefix = '—'.repeat(level);
+                        const selected = n.id === selectedId ? 'selected' : '';
+                        options += `<option value="${n.id}" ${selected}>${prefix} ${n.icon} ${n.title_ar} ${n.path_number ? `(${n.path_number})` : ''}</option>`;
+                        addOptions(flowNodes.filter(c => c.parent_id === n.id), level + 1);
+                    }
+                });
+            };
+            
+            addOptions(flowNodes.filter(n => !n.parent_id));
+            document.getElementById('nodeParentSelect').innerHTML = options;
+        }
+
+        function updateFileSelect() {
+            let options = '<option value="">-- اختر ملف --</option>';
+            files.forEach(f => {
+                options += `<option value="${f.id}">${f.icon || '📄'} ${f.original_name || f.file_name} (${f.folder_name || 'عام'})</option>`;
+            });
+            document.getElementById('nodeFileId').innerHTML = options;
+        }
+
+        function updateSelects() {
+            updateFileSelect();
+        }
+
+        // ==================== FILES ====================
+        document.getElementById('fileInput').addEventListener('change', async (e) => {
+            for (const file of e.target.files) {
+                await uploadFile(file);
+            }
+            e.target.value = '';
+        });
+
+        async function uploadFile(file) {
+            toast('جاري رفع ' + file.name + '...', 'info');
+            
+            try {
+                const fileName = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+                const ext = file.name.split('.').pop().toLowerCase();
+                let fileType = 'doc';
+                if (['xlsx', 'xls', 'csv'].includes(ext)) fileType = 'excel';
+                else if (ext === 'pdf') fileType = 'pdf';
+                else if (['png', 'jpg', 'jpeg'].includes(ext)) fileType = 'image';
+                
+                // Upload to storage
+                const { error: uploadError } = await db.storage.from('files').upload(fileName, file, { upsert: true });
+                if (uploadError) throw uploadError;
+                
+                // Read Excel columns
+                let columnsInfo = null;
+                if (fileType === 'excel') {
+                    try {
+                        const arrayBuffer = await file.arrayBuffer();
+                        const workbook = XLSX.read(arrayBuffer);
+                        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                        const jsonData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+                        if (jsonData.length > 0) {
+                            columnsInfo = jsonData[0].map(col => ({ name: col, type: 'text' }));
+                        }
+                    } catch (e) {
+                        console.error('Excel parse error:', e);
+                    }
+                }
+                
+                // Save to database
+                const fileData = {
+                    file_name: fileName,
+                    original_name: file.name,
+                    file_type: fileType,
+                    file_size: file.size,
+                    columns_info: columnsInfo,
+                    folder_name: 'عام'
+                };
+                
+                await db.from('files').insert(fileData);
+                toast('تم رفع ' + file.name + ' ✅', 'success');
+                loadData();
+            } catch (e) {
+                console.error('Upload error:', e);
+                toast('خطأ في الرفع: ' + e.message, 'error');
+            }
+        }
+
+        window.editFile = (id) => {
+            const file = files.find(f => f.id === id);
+            if (!file) return;
+            
+            document.getElementById('editFileId').value = id;
+            document.getElementById('editFileFolderName').value = file.folder_name || '';
+            document.getElementById('editFileSearchColumns').value = file.search_columns?.join(',') || '';
+            document.getElementById('editFilePrompt').value = file.ai_prompt || '';
+            openModal('fileModal');
+        };
+
+        window.saveFileSettings = async () => {
+            const id = document.getElementById('editFileId').value;
+            const searchColumnsStr = document.getElementById('editFileSearchColumns').value;
+            
+            const data = {
+                folder_name: document.getElementById('editFileFolderName').value || 'عام',
+                search_columns: searchColumnsStr ? searchColumnsStr.split(',').map(s => s.trim()) : null,
+                ai_prompt: document.getElementById('editFilePrompt').value || null
+            };
+            
+            try {
+                await db.from('files').update(data).eq('id', id);
+                toast('تم الحفظ ✅', 'success');
+                closeModal('fileModal');
+                loadData();
+            } catch (e) {
+                toast('خطأ', 'error');
+            }
+        };
+
+        window.deleteFile = async (id, fileName) => {
+            if (!confirm('حذف الملف؟')) return;
+            try {
+                await db.storage.from('files').remove([fileName]);
+                await db.from('files').update({ is_active: false }).eq('id', id);
+                toast('تم الحذف', 'success');
+                loadData();
+            } catch (e) {
+                toast('خطأ', 'error');
+            }
+        };
+
+        // ==================== SETTINGS ====================
+        window.saveSettings = async () => {
+            const data = {
+                gemini_key: document.getElementById('geminiKey').value,
+                webhook_url: document.getElementById('webhookUrl').value
+            };
+            
+            try {
+                if (settings.id) {
+                    await db.from('settings').update(data).eq('id', settings.id);
+                } else {
+                    await db.from('settings').insert(data);
+                }
+                settings = { ...settings, ...data };
+                toast('تم الحفظ ✅', 'success');
+            } catch (e) {
+                toast('خطأ', 'error');
+            }
+        };
+
+        // ==================== HELPERS ====================
+        window.showPage = (page, el) => {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('page-' + page).classList.add('active');
+            el.classList.add('active');
+        };
+
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        window.closeModal = (id) => {
+            document.getElementById(id).classList.remove('active');
+        };
+
+        function toast(msg, type = 'info') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = 'toast show ' + type;
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        window.testSystem = () => {
+            window.open('index.html', '_blank');
+        };
+
+        // Close modals on backdrop click
+        document.querySelectorAll('.modal').forEach(m => {
+            m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); });
+        });
+
+        // Load data on start
         loadData();
     </script>
 </body>
