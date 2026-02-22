@@ -49,26 +49,38 @@
         .msg.user .msg-bubble { background: var(--gradient); color: white; border-bottom-left-radius: 6px; }
         .msg-time { font-size: 10px; color: var(--text-light); margin-top: 6px; padding: 0 4px; }
         
+        /* Buttons Grid */
         .btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 14px; }
         .menu-btn { padding: 20px 14px; background: white; border: 2px solid var(--border); border-radius: 16px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; align-items: center; gap: 10px; font-family: inherit; }
         .menu-btn:hover { border-color: var(--primary); background: var(--primary-light); transform: translateY(-2px); }
         .menu-btn .icon { font-size: 32px; }
         .menu-btn .label { font-size: 14px; font-weight: 600; color: var(--text); }
+        .menu-btn .number { background: var(--primary); color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; margin-bottom: 4px; }
         
+        /* Quick Buttons */
         .quick-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-        .quick-btn { padding: 12px 20px; background: white; border: 2px solid var(--primary); border-radius: 25px; color: var(--primary); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        .quick-btn { padding: 12px 20px; background: white; border: 2px solid var(--primary); border-radius: 25px; color: var(--primary); font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
         .quick-btn:hover { background: var(--primary); color: white; }
         .quick-btn.green { border-color: var(--success); color: var(--success); }
         .quick-btn.green:hover { background: var(--success); color: white; }
+        .quick-btn .q-num { background: var(--primary-light); color: var(--primary); padding: 2px 6px; border-radius: 6px; font-size: 10px; font-weight: 700; }
+        .quick-btn:hover .q-num { background: rgba(255,255,255,0.3); color: white; }
         
+        /* Question Number Badge */
+        .q-number { display: inline-flex; align-items: center; justify-content: center; background: var(--primary); color: white; min-width: 28px; height: 28px; padding: 0 8px; border-radius: 14px; font-size: 12px; font-weight: 700; margin-left: 8px; }
+        
+        /* Info Card */
         .info-card { background: linear-gradient(135deg, var(--primary-light), #F3E8FF); border-radius: 16px; padding: 18px; margin-top: 14px; font-size: 14px; line-height: 1.8; white-space: pre-wrap; }
         
+        /* Contact Card */
         .contact-card { background: var(--success-light); border-radius: 16px; padding: 24px; margin-top: 14px; text-align: center; }
         .contact-card a { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 32px; background: var(--success); color: white; text-decoration: none; border-radius: 30px; font-weight: 700; font-size: 16px; }
         .contact-card.whatsapp a { background: #25D366; }
         
+        /* AI Badge */
         .ai-badge { display: inline-flex; align-items: center; gap: 6px; background: #DBEAFE; color: #1D4ED8; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 10px; }
         
+        /* Data Summary */
         .data-summary { background: white; border-radius: 12px; padding: 14px; margin: 12px 0; border: 1px solid var(--border); }
         .data-summary-title { font-size: 12px; font-weight: 700; color: var(--text-light); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
         .data-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
@@ -76,15 +88,18 @@
         .data-row .key { color: var(--text-light); }
         .data-row .value { font-weight: 600; color: var(--text); }
         
+        /* Back Button */
         .back-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; background: white; border: 1px solid var(--border); border-radius: 25px; color: var(--text-light); font-family: inherit; font-size: 13px; cursor: pointer; margin-top: 14px; transition: 0.2s; }
         .back-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
         
+        /* Typing Indicator */
         .typing { display: flex; gap: 6px; padding: 16px 20px; background: var(--bg); border-radius: 20px; width: fit-content; }
         .typing span { width: 8px; height: 8px; background: var(--text-light); border-radius: 50%; animation: bounce 1.4s infinite ease-in-out; }
         .typing span:nth-child(2) { animation-delay: 0.2s; }
         .typing span:nth-child(3) { animation-delay: 0.4s; }
         @keyframes bounce { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-8px); } }
         
+        /* Input Area */
         .input-area { padding: 16px 20px; background: white; border-top: 1px solid var(--border); }
         .input-wrap { display: flex; gap: 12px; }
         .input-field { flex: 1; padding: 14px 20px; border: 2px solid var(--border); border-radius: 25px; font-family: inherit; font-size: 14px; outline: none; transition: 0.2s; }
@@ -92,13 +107,16 @@
         .send-btn { width: 52px; height: 52px; background: var(--gradient); border: none; border-radius: 50%; color: white; font-size: 20px; cursor: pointer; transition: 0.2s; }
         .send-btn:hover { transform: scale(1.05); }
         
+        /* Loading */
         .loading { text-align: center; padding: 40px; color: var(--text-light); }
         .spinner { width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 14px; }
         @keyframes spin { to { transform: rotate(360deg); } }
         
+        /* Error Card */
         .error-card { background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: 12px; padding: 14px; margin-top: 12px; color: #B91C1C; font-size: 13px; }
         
-        .debug-info { background: #FEF3C7; border: 1px solid #F59E0B; border-radius: 8px; padding: 10px; margin-top: 10px; font-size: 11px; color: #92400E; }
+        /* Progress Indicator */
+        .progress-indicator { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px 12px; background: var(--warning-light); border-radius: 10px; font-size: 12px; color: var(--warning); font-weight: 600; }
         
         @media (max-width: 480px) {
             body { padding: 0; }
@@ -156,7 +174,8 @@
         let collectedData = {};
         let awaitingInput = false;
         let history = [];
-        let visitedNodes = []; // لتتبع المسار
+        let questionPath = [];
+        let askedQuestions = new Set();
         
         // Translations
         const T = {
@@ -167,15 +186,16 @@
                 placeholder: 'اكتب رسالتك هنا...',
                 back: '← رجوع',
                 home: '🏠 الرئيسية',
-                searching: '🔍 جاري البحث في البيانات...',
+                searching: '🔍 جاري البحث...',
                 aiAnswer: '🤖 إجابة ذكية',
                 yourData: '📋 البيانات المُدخلة',
                 call: '📞 اتصل الآن',
                 whatsapp: '💬 تواصل واتساب',
                 noData: 'لا توجد بيانات',
                 error: 'حدث خطأ، يرجى المحاولة مرة أخرى',
-                notFound: 'لم يتم العثور على نتائج مطابقة للبيانات المدخلة',
-                noAction: 'لم يتم تعيين إجراء لهذا المسار'
+                notFound: 'لم يتم العثور على نتائج مطابقة',
+                question: 'سؤال',
+                step: 'خطوة'
             },
             en: {
                 title: 'Employee Support Center',
@@ -184,7 +204,7 @@
                 placeholder: 'Type your message...',
                 back: '← Back',
                 home: '🏠 Home',
-                searching: '🔍 Searching data...',
+                searching: '🔍 Searching...',
                 aiAnswer: '🤖 AI Answer',
                 yourData: '📋 Your Data',
                 call: '📞 Call Now',
@@ -192,12 +212,35 @@
                 noData: 'No data available',
                 error: 'Error occurred, please try again',
                 notFound: 'No matching results found',
-                noAction: 'No action configured for this path'
+                question: 'Q',
+                step: 'Step'
             }
         };
         
         function t(key) { return T[lang][key] || key; }
         function getLabel(obj, field) { return obj[field + '_' + lang] || obj[field + '_ar'] || obj['title_' + lang] || obj['title_ar'] || ''; }
+        
+        // ==================== NUMBERING SYSTEM ====================
+        function buildNodeNumbering() {
+            const numbering = new Map();
+            
+            function assignNumbers(parentId, prefix = '') {
+                const children = flowNodes
+                    .filter(n => n.parent_id === parentId)
+                    .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+                
+                children.forEach((child, index) => {
+                    const num = prefix ? `${prefix}.${index + 1}` : String(index + 1);
+                    numbering.set(child.id, num);
+                    assignNumbers(child.id, num);
+                });
+            }
+            
+            assignNumbers(null);
+            return numbering;
+        }
+        
+        let nodeNumbering = new Map();
         
         // ==================== INIT ====================
         async function init() {
@@ -207,11 +250,11 @@
                 
                 const { data: nodes } = await db.from('flow_nodes').select('*').eq('is_active', true).order('sort_order');
                 flowNodes = nodes || [];
-                console.log('Loaded nodes:', flowNodes.length);
+                
+                nodeNumbering = buildNodeNumbering();
                 
                 const { data: f } = await db.from('files').select('*').eq('is_active', true);
                 files = f || [];
-                console.log('Loaded files:', files.length);
                 
                 applyLang();
                 showMainMenu();
@@ -247,11 +290,10 @@
         
         function scrollToBottom() {
             const chat = document.getElementById('chat');
-            setTimeout(() => { chat.scrollTop = chat.scrollHeight; }, 100);
+            chat.scrollTop = chat.scrollHeight;
         }
         
         function showTyping() {
-            hideTyping();
             const div = document.createElement('div');
             div.className = 'msg bot';
             div.id = 'typingIndicator';
@@ -306,7 +348,8 @@
             collectedData = {};
             awaitingInput = false;
             history = [];
-            visitedNodes = [];
+            questionPath = [];
+            askedQuestions.clear();
             
             const roots = flowNodes.filter(n => !n.parent_id);
             
@@ -317,12 +360,16 @@
             
             showTyping();
             setTimeout(() => {
-                const buttons = roots.map(n => `
-                    <button class="menu-btn" onclick="selectNode('${n.id}')">
-                        <span class="icon">${n.icon}</span>
-                        <span class="label">${getLabel(n, 'title')}</span>
-                    </button>
-                `).join('');
+                const buttons = roots.map((n, idx) => {
+                    const num = nodeNumbering.get(n.id) || (idx + 1);
+                    return `
+                        <button class="menu-btn" onclick="selectNode('${n.id}')">
+                            <span class="number">${num}</span>
+                            <span class="icon">${n.icon}</span>
+                            <span class="label">${getLabel(n, 'title')}</span>
+                        </button>
+                    `;
+                }).join('');
                 
                 addBotMessage(t('welcome'), `<div class="btn-grid">${buttons}</div>`);
             }, 400);
@@ -332,52 +379,54 @@
             const node = flowNodes.find(n => n.id === nodeId);
             if (!node) return;
             
-            console.log('Selected node:', node.title_ar, 'Type:', node.node_type);
+            // منع تكرار السؤال
+            if (node.node_type === 'question' && askedQuestions.has(nodeId)) {
+                const children = getValidChildren(node.id);
+                if (children.length === 1) {
+                    selectNode(children[0].id);
+                } else if (children.length > 1) {
+                    showChildren(children);
+                }
+                return;
+            }
             
             history.push(currentNode?.id || null);
             currentNode = node;
-            visitedNodes.push(node.id);
             
-            // لا تظهر رسالة المستخدم للأقسام الرئيسية
-            if (node.node_type !== 'section' || node.parent_id) {
-                addUserMessage(getLabel(node, 'title'));
+            const nodeNum = nodeNumbering.get(nodeId);
+            if (nodeNum) {
+                questionPath = nodeNum.split('.').map(Number);
             }
             
-            // If this is an action node, execute it
+            addUserMessage(`${nodeNumbering.get(nodeId) || ''} ${getLabel(node, 'title')}`);
+            
             if (node.node_type === 'action') {
                 executeAction(node);
                 return;
             }
             
-            // Get children
             const children = getValidChildren(node.id);
-            console.log('Children count:', children.length);
             
-            // If this is a question node
             if (node.node_type === 'question') {
-                askQuestion(node);
+                if (!askedQuestions.has(nodeId)) {
+                    askedQuestions.add(nodeId);
+                    askQuestion(node, children);
+                } else {
+                    if (children.length === 1) {
+                        setTimeout(() => selectNode(children[0].id), 300);
+                    } else if (children.length > 1) {
+                        showChildren(children);
+                    } else {
+                        addBotMessage('شكراً لك! ✅', getNavButtons());
+                    }
+                }
                 return;
             }
             
-            // If section node with children
-            if (children.length > 0) {
-                // Check if all children are questions - ask first one
-                const firstQuestion = children.find(c => c.node_type === 'question');
-                const firstAction = children.find(c => c.node_type === 'action');
-                
-                if (firstQuestion) {
-                    // Go directly to first question
-                    setTimeout(() => selectNode(firstQuestion.id), 300);
-                } else if (firstAction) {
-                    // Execute action directly
-                    setTimeout(() => selectNode(firstAction.id), 300);
-                } else {
-                    // Show children as buttons
-                    showChildren(children);
-                }
+            if (children.length) {
+                showChildren(children);
             } else {
-                // No children - look for action in path
-                findAndExecuteAction();
+                addBotMessage(t('noData'), getNavButtons());
             }
         };
         
@@ -385,7 +434,6 @@
             return flowNodes.filter(n => {
                 if (n.parent_id !== parentId) return false;
                 
-                // Check condition
                 if (n.show_condition) {
                     try {
                         const cond = typeof n.show_condition === 'string' ? JSON.parse(n.show_condition) : n.show_condition;
@@ -402,40 +450,64 @@
         function showChildren(children) {
             showTyping();
             setTimeout(() => {
-                const buttons = children.map(c => `
-                    <button class="quick-btn" onclick="selectNode('${c.id}')">${c.icon} ${getLabel(c, 'title')}</button>
-                `).join('');
-                
-                addBotMessage('', `<div class="quick-btns">${buttons}</div>${getBackButton()}`);
+                if (children.length === 1 && children[0].node_type !== 'question') {
+                    hideTyping();
+                    selectNode(children[0].id);
+                } 
+                else if (children.length === 1 && children[0].node_type === 'question' && !askedQuestions.has(children[0].id)) {
+                    hideTyping();
+                    selectNode(children[0].id);
+                }
+                else {
+                    const buttons = children.map(c => {
+                        const num = nodeNumbering.get(c.id) || '';
+                        return `
+                            <button class="quick-btn" onclick="selectNode('${c.id}')">
+                                ${num ? `<span class="q-num">${num}</span>` : ''}
+                                ${c.icon} ${getLabel(c, 'title')}
+                            </button>
+                        `;
+                    }).join('');
+                    
+                    addBotMessage('', `<div class="quick-btns">${buttons}</div>${getBackButton()}`);
+                }
             }, 400);
         }
         
-        function askQuestion(node) {
+        function askQuestion(node, children) {
             awaitingInput = true;
             showTyping();
             
+            const questionNum = nodeNumbering.get(node.id) || '';
+            const progressHtml = questionNum ? 
+                `<div class="progress-indicator">📍 ${t('question')} ${questionNum}</div>` : '';
+            
             setTimeout(() => {
                 if (node.input_type === 'select' && node.options) {
-                    let options;
-                    try {
-                        options = typeof node.options === 'string' ? JSON.parse(node.options) : node.options;
-                    } catch (e) {
-                        options = [];
-                    }
+                    const options = typeof node.options === 'string' ? JSON.parse(node.options) : node.options;
+                    const buttons = options.map((opt, idx) => {
+                        const label = opt.label_ar || opt.label || opt.value;
+                        return `<button class="quick-btn" onclick="answerQuestion('${opt.value}')">${label}</button>`;
+                    }).join('');
                     
-                    if (options.length > 0) {
-                        const buttons = options.map(opt => {
-                            const label = opt.label_ar || opt.label || opt.value;
-                            return `<button class="quick-btn" onclick="answerQuestion('${opt.value}')">${label}</button>`;
-                        }).join('');
-                        
-                        addBotMessage(`${node.icon} ${getLabel(node, 'title')}`, `<div class="quick-btns">${buttons}</div>${getBackButton()}`);
-                    } else {
-                        addBotMessage(`${node.icon} ${getLabel(node, 'title')}`, getBackButton());
-                        document.getElementById('userInput').focus();
-                    }
+                    addBotMessage('', `
+                        ${progressHtml}
+                        <div class="msg-bubble" style="background: var(--bg); margin-bottom: 10px;">
+                            <span class="q-number">${questionNum}</span>
+                            ${node.icon} ${getLabel(node, 'title')}
+                        </div>
+                        <div class="quick-btns">${buttons}</div>
+                        ${getBackButton()}
+                    `);
                 } else {
-                    addBotMessage(`${node.icon} ${getLabel(node, 'title')}`, getBackButton());
+                    addBotMessage('', `
+                        ${progressHtml}
+                        <div class="msg-bubble" style="background: var(--bg);">
+                            <span class="q-number">${questionNum}</span>
+                            ${node.icon} ${getLabel(node, 'title')}
+                        </div>
+                        ${getBackButton()}
+                    `);
                     document.getElementById('userInput').focus();
                 }
             }, 400);
@@ -444,9 +516,6 @@
         window.answerQuestion = (answer) => {
             if (!awaitingInput || !currentNode) return;
             
-            console.log('Answer:', answer, 'for var:', currentNode.var_name);
-            
-            // Save answer
             if (currentNode.var_name) {
                 collectedData[currentNode.var_name] = answer;
             }
@@ -454,103 +523,26 @@
             addUserMessage(answer);
             awaitingInput = false;
             
-            // Get children of current question
             const children = getValidChildren(currentNode.id);
-            console.log('Children after answer:', children.length);
             
-            if (children.length > 0) {
-                // Check for next question or action
-                const nextQuestion = children.find(c => c.node_type === 'question');
-                const action = children.find(c => c.node_type === 'action');
-                
-                if (nextQuestion) {
-                    setTimeout(() => selectNode(nextQuestion.id), 300);
-                } else if (action) {
-                    setTimeout(() => selectNode(action.id), 300);
+            if (children.length) {
+                if (children.length === 1) {
+                    setTimeout(() => selectNode(children[0].id), 300);
                 } else {
                     showChildren(children);
                 }
             } else {
-                // No children - look for action in siblings or parent path
-                console.log('No children, looking for action...');
-                findAndExecuteAction();
+                addBotMessage('شكراً لك! ✅', getNavButtons());
             }
         };
         
-        // ==================== FIND ACTION IN PATH ====================
-        function findAndExecuteAction() {
-            console.log('Finding action... Collected data:', collectedData);
-            
-            // Strategy 1: Look for action node that is sibling of any visited node
-            for (const visitedId of visitedNodes) {
-                const visited = flowNodes.find(n => n.id === visitedId);
-                if (!visited) continue;
-                
-                // Get siblings (same parent)
-                const siblings = flowNodes.filter(n => n.parent_id === visited.parent_id && n.id !== visitedId);
-                const siblingAction = siblings.find(s => s.node_type === 'action');
-                
-                if (siblingAction) {
-                    console.log('Found sibling action:', siblingAction.title_ar);
-                    executeAction(siblingAction);
-                    return;
-                }
-            }
-            
-            // Strategy 2: Look for action in parent chain
-            let checkNode = currentNode;
-            while (checkNode) {
-                const parent = flowNodes.find(n => n.id === checkNode.parent_id);
-                if (!parent) break;
-                
-                // Check siblings of current node's parent
-                const siblings = flowNodes.filter(n => n.parent_id === parent.id);
-                const action = siblings.find(s => s.node_type === 'action');
-                
-                if (action) {
-                    console.log('Found action in parent path:', action.title_ar);
-                    executeAction(action);
-                    return;
-                }
-                
-                checkNode = parent;
-            }
-            
-            // Strategy 3: Look for any action connected to root section
-            const rootSection = findRootSection(currentNode);
-            if (rootSection) {
-                const rootChildren = flowNodes.filter(n => n.parent_id === rootSection.id);
-                const rootAction = rootChildren.find(c => c.node_type === 'action');
-                
-                if (rootAction) {
-                    console.log('Found action in root section:', rootAction.title_ar);
-                    executeAction(rootAction);
-                    return;
-                }
-            }
-            
-            // No action found
-            console.log('No action found in path');
-            addBotMessage(t('noAction'), getNavButtons());
-        }
-        
-        function findRootSection(node) {
-            if (!node) return null;
-            if (!node.parent_id) return node;
-            
-            const parent = flowNodes.find(n => n.id === node.parent_id);
-            return findRootSection(parent);
-        }
-        
-        // ==================== EXECUTE ACTION ====================
+        // ==================== ACTIONS ====================
         async function executeAction(node) {
-            console.log('Executing action:', node.title_ar, 'Type:', node.action_type);
             showTyping();
             
             const actionType = node.action_type;
             const actionData = node.action_data || {};
             
-            // Build data summary
             let dataSummaryHtml = '';
             if (Object.keys(collectedData).length) {
                 dataSummaryHtml = `
@@ -608,11 +600,11 @@
                         addBotMessage('', `${dataSummaryHtml}<div class="info-card">📩 تم إرسال طلبك بنجاح!</div>${getNavButtons()}`);
                     }
                     else {
-                        addBotMessage('', `${dataSummaryHtml}<div class="error-card">${t('noAction')}</div>${getNavButtons()}`);
+                        addBotMessage(t('error'), getNavButtons());
                     }
                 } catch (e) {
                     console.error('Action error:', e);
-                    addBotMessage('', `<div class="error-card">${t('error')}: ${e.message}</div>${getNavButtons()}`);
+                    addBotMessage('', `<div class="error-card">${t('error')}</div>${getNavButtons()}`);
                 }
             }, 500);
         }
@@ -620,173 +612,165 @@
         // ==================== SMART FILE SEARCH ====================
         async function searchInFile(node) {
             const file = files.find(f => f.id === node.action_file_id);
-            
-            if (!file) {
-                console.error('File not found for action');
-                return t('notFound') + ' (الملف غير موجود)';
-            }
-            
-            console.log('Searching in file:', file.original_name || file.file_name);
-            console.log('Search data:', collectedData);
+            if (!file) return t('notFound');
             
             try {
-                // Download file
-                const { data: fileBlob, error: downloadError } = await db.storage.from('files').download(file.file_name);
-                
-                if (downloadError) {
-                    console.error('Download error:', downloadError);
-                    return t('error') + ': ' + downloadError.message;
-                }
-                
-                if (!fileBlob) {
-                    return t('notFound') + ' (فشل تحميل الملف)';
-                }
+                const { data: fileBlob } = await db.storage.from('files').download(file.file_name);
+                if (!fileBlob) return t('notFound');
                 
                 const ext = file.file_name.split('.').pop().toLowerCase();
-                console.log('File extension:', ext);
                 
-                // For Excel files - SMART SEARCH
                 if (['xlsx', 'xls', 'csv'].includes(ext)) {
                     const arrayBuffer = await fileBlob.arrayBuffer();
                     const workbook = XLSX.read(arrayBuffer);
-                    const sheetName = workbook.SheetNames[0];
-                    const sheet = workbook.Sheets[sheetName];
-                    const jsonData = XLSX.utils.sheet_to_json(sheet);
+                    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                    let jsonData = XLSX.utils.sheet_to_json(sheet);
                     
-                    console.log('Excel rows:', jsonData.length);
-                    console.log('First row sample:', jsonData[0]);
+                    jsonData = cleanAndNormalizeData(jsonData);
+                    const searchResults = smartSearch(jsonData, collectedData, file.search_columns);
                     
-                    // Get column names
-                    const columnNames = jsonData.length > 0 ? Object.keys(jsonData[0]) : [];
-                    console.log('Column names:', columnNames);
-                    
-                    // Search for matching rows
-                    let foundRows = [];
-                    
-                    for (const row of jsonData) {
-                        let matchScore = 0;
-                        
-                        for (const [searchKey, searchValue] of Object.entries(collectedData)) {
-                            if (!searchValue) continue;
-                            
-                            const searchValueStr = String(searchValue).trim().toLowerCase();
-                            
-                            // Try to find matching column
-                            for (const colName of columnNames) {
-                                const colNameLower = colName.toLowerCase();
-                                const rowValue = row[colName];
-                                
-                                if (rowValue === undefined || rowValue === null) continue;
-                                
-                                const rowValueStr = String(rowValue).trim().toLowerCase();
-                                
-                                // Check if column name matches search key or if values match
-                                const keyMatches = colNameLower.includes(searchKey.toLowerCase()) || 
-                                                   searchKey.toLowerCase().includes(colNameLower);
-                                
-                                if (keyMatches || colNameLower.includes('id') || colNameLower.includes('name') || colNameLower.includes('اسم')) {
-                                    if (rowValueStr === searchValueStr || 
-                                        rowValueStr.includes(searchValueStr) || 
-                                        searchValueStr.includes(rowValueStr)) {
-                                        matchScore++;
-                                    }
-                                }
-                            }
-                        }
-                        
-                        if (matchScore > 0) {
-                            foundRows.push({ row, score: matchScore });
-                        }
-                    }
-                    
-                    // Sort by score and get best matches
-                    foundRows.sort((a, b) => b.score - a.score);
-                    console.log('Found rows:', foundRows.length);
-                    
-                    if (foundRows.length > 0) {
-                        // Take top 5 matches
-                        const topMatches = foundRows.slice(0, 5).map(f => f.row);
-                        return await formatWithGemini(file, topMatches);
+                    if (searchResults.length > 0) {
+                        return await askGemini(file, searchResults);
                     } else {
-                        // No exact match - send sample data to Gemini
-                        return await askGeminiForHelp(file, jsonData.slice(0, 20));
+                        return await askGeminiWithContext(file, jsonData);
                     }
                 }
-                // For PDF/other files
                 else {
                     const text = await fileBlob.text();
                     return await askGeminiWithText(file, text);
                 }
             } catch (e) {
                 console.error('Search error:', e);
-                return t('error') + ': ' + e.message;
+                return t('error');
             }
         }
         
-        async function formatWithGemini(file, foundData) {
-            if (!settings.gemini_key) {
-                // Return raw data if no Gemini
-                return JSON.stringify(foundData, null, 2);
+        function cleanAndNormalizeData(data) {
+            if (!data.length) return data;
+            
+            const columns = Object.keys(data[0]);
+            let lastValidValues = {};
+            
+            const keyColumns = columns.filter(col => {
+                const name = col.toLowerCase();
+                return name.includes('code') || name.includes('id') || name.includes('name') || 
+                       name.includes('اسم') || name.includes('كود') || name.includes('رقم');
+            });
+            
+            return data.map((row, idx) => {
+                const newRow = { ...row };
+                
+                keyColumns.forEach(col => {
+                    if (newRow[col] === null || newRow[col] === undefined || newRow[col] === '' || 
+                        (typeof newRow[col] === 'number' && isNaN(newRow[col]))) {
+                        if (lastValidValues[col] !== undefined) {
+                            newRow[col] = lastValidValues[col];
+                        }
+                    } else {
+                        lastValidValues[col] = newRow[col];
+                    }
+                });
+                
+                return newRow;
+            });
+        }
+        
+        function smartSearch(data, searchCriteria, searchColumns) {
+            const results = [];
+            
+            const normalizedCriteria = {};
+            Object.entries(searchCriteria).forEach(([key, value]) => {
+                normalizedCriteria[key.toLowerCase().trim()] = String(value).toLowerCase().trim();
+            });
+            
+            for (const row of data) {
+                let matchScore = 0;
+                let matchedFields = 0;
+                
+                for (const [searchKey, searchValue] of Object.entries(normalizedCriteria)) {
+                    for (const [colName, colValue] of Object.entries(row)) {
+                        if (colValue === null || colValue === undefined) continue;
+                        
+                        const normalizedColName = colName.toLowerCase().trim();
+                        const normalizedColValue = String(colValue).toLowerCase().trim();
+                        
+                        const colNameMatch = normalizedColName.includes(searchKey) || 
+                                            searchKey.includes(normalizedColName) ||
+                                            normalizedColName.replace(/[_\s]/g, '') === searchKey.replace(/[_\s]/g, '');
+                        
+                        if (colNameMatch || searchColumns?.includes(colName)) {
+                            if (normalizedColValue === searchValue) {
+                                matchScore += 10;
+                                matchedFields++;
+                            } else if (normalizedColValue.includes(searchValue) || searchValue.includes(normalizedColValue)) {
+                                matchScore += 5;
+                                matchedFields++;
+                            }
+                        }
+                        
+                        if (normalizedColValue === searchValue) {
+                            matchScore += 3;
+                        }
+                    }
+                }
+                
+                if (matchScore > 0) {
+                    results.push({ row, matchScore, matchedFields });
+                }
             }
             
-            const prompt = `${file.ai_prompt || 'قم بعرض هذه البيانات بشكل منسق وواضح للمستخدم'}
+            results.sort((a, b) => b.matchScore - a.matchScore);
+            return results.slice(0, 10).map(r => r.row);
+        }
+        
+        async function askGemini(file, foundData) {
+            if (!settings.gemini_key) return JSON.stringify(foundData, null, 2);
+            
+            const prompt = `${file.ai_prompt || 'قم بتنسيق وعرض هذه البيانات بشكل واضح ومفهوم للمستخدم'}
 
-البيانات التي بحث عنها المستخدم:
+البيانات المطلوبة للمستخدم:
 ${JSON.stringify(collectedData, null, 2)}
 
-النتائج الموجودة:
+البيانات الموجودة (${Array.isArray(foundData) ? foundData.length + ' نتيجة' : 'نتيجة واحدة'}):
 ${JSON.stringify(foundData, null, 2)}
 
-المطلوب:
-- اعرض البيانات بشكل واضح ومنظم
-- إذا وجدت أكثر من نتيجة، اعرضها كلها
-- استخدم اللغة العربية
-- كن مختصراً ومفيداً`;
+قدم الإجابة باللغة العربية بشكل مختصر وواضح. إذا كانت هناك عدة نتائج، اعرضها بشكل منظم.`;
 
             return await callGeminiAPI(prompt);
         }
         
-        async function askGeminiForHelp(file, sampleData) {
-            if (!settings.gemini_key) {
-                return t('notFound');
-            }
+        async function askGeminiWithContext(file, allData) {
+            if (!settings.gemini_key) return t('notFound');
             
-            const prompt = `${file.ai_prompt || 'ابحث في البيانات وحاول إيجاد ما يطلبه المستخدم'}
+            const limitedData = allData.slice(0, 50);
+            
+            const prompt = `${file.ai_prompt || 'ابحث في البيانات التالية وأجب على استفسار المستخدم'}
 
-البيانات التي يبحث عنها المستخدم:
+بيانات البحث من المستخدم:
 ${JSON.stringify(collectedData, null, 2)}
 
-عينة من البيانات المتاحة (${sampleData.length} صف):
-${JSON.stringify(sampleData, null, 2)}
+البيانات المتاحة (${allData.length} صف):
+${JSON.stringify(limitedData, null, 2)}
 
-المطلوب:
-- حاول إيجاد أقرب تطابق
-- إذا لم تجد تطابق مباشر، أخبر المستخدم بذلك
-- اقترح بيانات بديلة إن وجدت
-- استخدم اللغة العربية`;
+ابحث عن أفضل تطابق وقدم الإجابة باللغة العربية. إذا لم تجد تطابق، أخبر المستخدم.`;
 
             return await callGeminiAPI(prompt);
         }
         
         async function askGeminiWithText(file, text) {
-            if (!settings.gemini_key) {
-                return text.substring(0, 500) + '...';
-            }
+            if (!settings.gemini_key) return text.substring(0, 500);
             
-            const limitedText = text.substring(0, 8000);
+            const limitedText = text.substring(0, 10000);
             
-            const prompt = `${file.ai_prompt || 'ابحث في المستند وأجب على استفسار المستخدم'}
+            const prompt = `${file.ai_prompt || 'ابحث في المستند التالي وأجب على استفسار المستخدم'}
 
-البيانات المطلوبة:
+بيانات البحث من المستخدم:
 ${JSON.stringify(collectedData, null, 2)}
 
 محتوى المستند:
 ${limitedText}
 
-المطلوب:
-- ابحث عن المعلومات المطلوبة
-- قدم إجابة مختصرة ومفيدة
-- استخدم اللغة العربية`;
+ابحث وقدم الإجابة باللغة العربية بشكل مختصر ومفيد.`;
 
             return await callGeminiAPI(prompt);
         }
@@ -802,16 +786,10 @@ ${limitedText}
                 });
                 
                 const data = await response.json();
-                
-                if (data.error) {
-                    console.error('Gemini API error:', data.error);
-                    return t('error') + ': ' + (data.error.message || 'API Error');
-                }
-                
                 return data.candidates?.[0]?.content?.parts?.[0]?.text || t('error');
             } catch (e) {
-                console.error('Gemini call error:', e);
-                return t('error') + ': ' + e.message;
+                console.error('Gemini error:', e);
+                return t('error');
             }
         }
         
@@ -849,13 +827,23 @@ ${limitedText}
             addUserMessage(t('back'));
             awaitingInput = false;
             
-            const prevId = history.pop();
-            visitedNodes.pop();
+            if (currentNode) {
+                askedQuestions.delete(currentNode.id);
+            }
             
+            const prevId = history.pop();
             if (!prevId) {
                 showMainMenu();
             } else {
                 currentNode = flowNodes.find(n => n.id === prevId);
+                
+                const nodeNum = nodeNumbering.get(prevId);
+                if (nodeNum) {
+                    questionPath = nodeNum.split('.').map(Number);
+                } else {
+                    questionPath = [];
+                }
+                
                 const children = getValidChildren(prevId);
                 if (children.length) {
                     showChildren(children);
@@ -880,7 +868,6 @@ ${limitedText}
             if (awaitingInput) {
                 answerQuestion(text);
             } else {
-                // Free text - general AI
                 addUserMessage(text);
                 showTyping();
                 setTimeout(async () => {
@@ -900,12 +887,10 @@ ${question}`;
             return await callGeminiAPI(prompt);
         }
         
-        // Enter key handler
         document.getElementById('userInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') handleUserInput();
         });
         
-        // Start
         init();
     </script>
 </body>
